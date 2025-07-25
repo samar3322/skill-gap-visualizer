@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Skill Gap Visualizer</title>
+    <style>
+        :root {
+            --primary: #87CEEB;
+            --primary-dark: #5BAED4;
+            --secondary: #f5f5f5;
+            --dark: #333;
+            --light: #fff;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #F44336;
+            --gray: #808080;
+            --light-gray: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .app-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 768px) {
+            .app-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .input-section, .results-section {
+            background: var(--light);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--light-gray);
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            background: var(--light-gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background: var(--gray);
+        }
+
+        .btn-secondary:hover {
+            background: #666;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .skill-tag {
+            background: var(--primary);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .results-container {
+            margin-top: 20px;
+        }
+
+        .result-category {
+            margin-bottom: 25px;
+        }
+
+        .category-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .has-skills .category-title {
+            color: var(--success);
+        }
+
+        .missing-skills .category-title {
+            color: var(--danger);
+        }
+
+        .suggested-resources .category-title {
+            color: var(--warning);
+        }
+
+        .resource-list {
+            list-style-type: none;
+        }
+
+        .resource-item {
+            padding: 12px;
+            margin-bottom: 10px;
+            background: var(--secondary);
+            border-radius: 5px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .resource-item a {
+            color: var(--primary-dark);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .resource-item a:hover {
+            text-decoration: underline;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .example-btn {
+            background: none;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .example-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .domain-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .domain-btn {
+            background: var(--light-gray);
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .domain-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .domain-btn.active {
+            background: var(--primary-dark);
+            color: white;
+        }
+
+        .role-search {
+            margin-bottom: 15px;
+        }
+
+        .role-search input {
+            margin-bottom: 10px;
+        }
+
+        .roles-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid var(--light-gray);
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .role-item {
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .role-item:hover {
+            background: var(--light-gray);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Universal Skill Gap Visualizer</h1>
+            <p class="subtitle">Identify skill gaps across all educational and research domains worldwide</p>
+        </header>
+
+        <div class="app-container">
+            <div class="input-section">
+                <h2 class="section-title">Your Skills & Target Role</h2>
+                
+                <div class="form-group">
+                    <label>Domain Selection</label>
+                    <div class="domain-selector" id="domain-selector">
+                        <!-- Domains will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="role-search">Search Target Role</label>
+                    <input type="text" id="role-search" placeholder="Search for a role...">
+                    <div class="roles-list" id="roles-list"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="current-skills">Your Current Skills (comma-separated)</label>
+                    <textarea id="current-skills" placeholder="e.g., Research Methodology, Statistical Analysis, Critical Thinking, Academic Writing"></textarea>
+                    <div class="skill-list" id="current-skills-display"></div>
+                </div>
+
+                <button id="analyze-btn" class="btn">Analyze Skill Gap</button>
+                <button id="example-btn" class="example-btn">Load Example Data</button>
+            </div>
+
+            <div class="results-section">
+                <h2 class="section-title">Analysis Results</h2>
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Analyzing your skills...</p>
+                </div>
+                <div class="results-container" id="results-container">
+                    <div class="empty-state">
+                        <div>📊</div>
+                        <p>Select a domain, choose a role, enter your skills, then click "Analyze Skill Gap"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Universal Skill Gap Visualizer &copy; 2025 | Helping researchers and students worldwide</p>
+        </footer>
+    </div>
+
+    <script>
+        // Comprehensive database of educational and research domains
+        const domains = [
+            "Natural Sciences", "Mathematics", "Engineering", "Medicine", 
+            "Social Sciences", "Humanities", "Business", "Law", 
+            "Education", "Arts", "Computer Science", "Environmental Science",
+            "Biotechnology", "Nanotechnology", "Space Science", "Psychology",
+            "Philosophy", "History", "Linguistics", "Political Science",
+            "Economics", "Sociology", "Anthropology", "Geology",
+            "Chemistry", "Physics", "Biology", "Astronomy",
+            "Literature", "Music", "Theater", "Film Studies",
+            "Architecture", "Urban Planning", "Public Health", "Veterinary Science",
+            "Agriculture", "Forestry", "Marine Science", "Meteorology",
+            "Statistics", "Data Science", "Artificial Intelligence", "Robotics",
+            "Cybersecurity", "Bioinformatics", "Genetics", "Neuroscience",
+            "Linguistics", "Archaeology", "Religious Studies", "Ethics"
+        ];
+
+        // Comprehensive database of roles and skills across all domains
+        const roleRequirements = {
+            // Natural Sciences
+            "Research Scientist": ["Research Methodology", "Data Analysis", "Scientific Writing", "Laboratory Techniques", "Statistical Analysis", "Critical Thinking", "Peer Review", "Grant Writing"],
+            "Lab Technician": ["Laboratory Safety", "Equipment Operation", "Sample Preparation", "Data Recording", "Quality Control", "Documentation", "Basic Chemistry", "Attention to Detail"],
+            "Science Educator": ["Curriculum Development", "Pedagogy", "Subject Matter Expertise", "Classroom Management", "Assessment Design", "Educational Technology", "Student Engagement", "Differentiated Instruction"],
+            
+            // Mathematics
+            "Mathematician": ["Advanced Mathematics", "Proof Writing", "Abstract Reasoning", "Problem Solving", "Computational Methods", "Mathematical Modeling", "Research Publication", "Academic Collaboration"],
+            "Data Analyst": ["Statistical Analysis", "Programming", "Data Visualization", "Database Management", "Machine Learning", "Business Acumen", "Communication", "Problem Solving"],
+            "Actuary": ["Probability Theory", "Risk Assessment", "Financial Mathematics", "Insurance Principles", "Regulatory Knowledge", "Modeling", "Communication", "Attention to Detail"],
+            
+            // Engineering
+            "Software Engineer": ["Programming", "System Design", "Algorithms", "Database Management", "Version Control", "Testing", "Agile Methodologies", "Problem Solving"],
+            "Civil Engineer": ["Structural Analysis", "Project Management", "CAD Software", "Materials Science", "Construction Standards", "Environmental Regulations", "Cost Estimation", "Risk Assessment"],
+            "Biomedical Engineer": ["Biology", "Engineering Principles", "Medical Device Design", "Regulatory Affairs", "Biomechanics", "Tissue Engineering", "Clinical Trials", "Problem Solving"],
+            
+            // Medicine
+            "Physician": ["Clinical Diagnosis", "Patient Care", "Medical Knowledge", "Communication", "Ethics", "Evidence-Based Practice", "Team Collaboration", "Continuous Learning"],
+            "Medical Researcher": ["Clinical Research", "Biostatistics", "Regulatory Compliance", "Protocol Development", "Data Management", "Publication", "Grant Writing", "Ethical Standards"],
+            "Public Health Specialist": ["Epidemiology", "Biostatistics", "Health Policy", "Community Health", "Program Evaluation", "Cultural Competency", "Data Analysis", "Communication"],
+            
+            // Social Sciences
+            "Sociologist": ["Social Theory", "Research Methods", "Statistical Analysis", "Qualitative Research", "Cultural Analysis", "Writing", "Critical Thinking", "Ethics"],
+            "Psychologist": ["Psychological Theory", "Research Methods", "Assessment", "Therapeutic Techniques", "Ethics", "Data Analysis", "Communication", "Cultural Sensitivity"],
+            "Political Scientist": ["Political Theory", "Research Methods", "Statistical Analysis", "Policy Analysis", "Comparative Politics", "International Relations", "Writing", "Critical Thinking"],
+            
+            // Humanities
+            "Historian": ["Historical Research", "Archival Research", "Critical Analysis", "Writing", "Source Evaluation", "Period Knowledge", "Interpretation", "Argumentation"],
+            "Philosopher": ["Philosophical Reasoning", "Critical Thinking", "Argumentation", "Writing", "Historical Knowledge", "Logic", "Ethics", "Metaphysics"],
+            "Literary Scholar": ["Literary Theory", "Textual Analysis", "Research Methods", "Writing", "Historical Context", "Critical Interpretation", "Comparative Literature", "Language Skills"],
+            
+            // Business
+            "Business Analyst": ["Data Analysis", "Process Modeling", "Requirements Gathering", "Stakeholder Management", "Communication", "Problem Solving", "Project Management", "Business Acumen"],
+            "Marketing Manager": ["Market Research", "Consumer Behavior", "Brand Management", "Digital Marketing", "Analytics", "Communication", "Strategic Planning", "Creativity"],
+            "Financial Analyst": ["Financial Modeling", "Valuation", "Risk Analysis", "Accounting", "Economics", "Data Analysis", "Communication", "Attention to Detail"],
+            
+            // Law
+            "Lawyer": ["Legal Research", "Writing", "Advocacy", "Client Counseling", "Negotiation", "Ethics", "Attention to Detail", "Critical Thinking"],
+            "Legal Researcher": ["Legal Databases", "Case Analysis", "Statutory Interpretation", "Writing", "Research Methods", "Citation", "Attention to Detail", "Analytical Skills"],
+            "Compliance Officer": ["Regulatory Knowledge", "Risk Assessment", "Policy Development", "Auditing", "Training", "Communication", "Attention to Detail", "Ethics"],
+            
+            // Education
+            "University Professor": ["Subject Expertise", "Research", "Teaching", "Curriculum Development", "Mentoring", "Publishing", "Grant Writing", "Academic Service"],
+            "Instructional Designer": ["Learning Theory", "Curriculum Design", "Educational Technology", "Assessment", "Project Management", "Communication", "Creativity", "Problem Solving"],
+            "Education Policy Analyst": ["Policy Analysis", "Research Methods", "Data Analysis", "Stakeholder Engagement", "Writing", "Communication", "Political Acumen", "Ethics"],
+            
+            // Arts
+            "Fine Artist": ["Technical Skills", "Creativity", "Art History", "Conceptual Development", "Presentation", "Marketing", "Critical Analysis", "Portfolio Development"],
+            "Art Historian": ["Art History", "Research Methods", "Critical Analysis", "Writing", "Museum Studies", "Cultural Context", "Foreign Languages", "Visual Analysis"],
+            "Musician": ["Performance", "Theory", "Composition", "Ear Training", "Music History", "Practice", "Collaboration", "Creativity"],
+            
+            // Computer Science
+            "AI Researcher": ["Machine Learning", "Deep Learning", "Mathematics", "Programming", "Research Methods", "Algorithm Design", "Data Analysis", "Publication"],
+            "Cybersecurity Specialist": ["Network Security", "Risk Assessment", "Incident Response", "Encryption", "Compliance", "Forensics", "Communication", "Problem Solving"],
+            "Systems Architect": ["System Design", "Scalability", "Cloud Computing", "Security", "Performance Optimization", "Documentation", "Communication", "Problem Solving"],
+            
+            // Environmental Science
+            "Environmental Scientist": ["Ecology", "Environmental Chemistry", "Data Analysis", "GIS", "Regulatory Knowledge", "Field Work", "Report Writing", "Sustainability"],
+            "Climate Researcher": ["Climate Modeling", "Data Analysis", "Statistics", "Programming", "Research Methods", "Publication", "Policy Understanding", "Communication"],
+            "Conservation Biologist": ["Ecology", "Wildlife Management", "Conservation Planning", "Field Research", "Data Analysis", "Policy", "Community Engagement", "Writing"],
+            
+            // Additional specialized roles
+            "Bioinformatician": ["Genomics", "Programming", "Statistics", "Database Management", "Algorithm Design", "Biological Knowledge", "Data Analysis", "Research"],
+            "Nanotechnologist": ["Materials Science", "Physics", "Chemistry", "Fabrication Techniques", "Characterization", "Safety Protocols", "Research", "Innovation"],
+            "Astrophysicist": ["Mathematics", "Physics", "Computational Methods", "Observational Techniques", "Data Analysis", "Research", "Publication", "Instrumentation"],
+            "Neuroscientist": ["Neuroanatomy", "Neurophysiology", "Research Methods", "Data Analysis", "Statistics", "Laboratory Techniques", "Ethics", "Communication"],
+            "Linguist": ["Phonetics", "Syntax", "Semantics", "Sociolinguistics", "Research Methods", "Data Analysis", "Language Teaching", "Cross-cultural Communication"],
+            "Archaeologist": ["Field Methods", "Artifact Analysis", "Dating Techniques", "Cultural Context", "Documentation", "Research", "Writing", "Preservation"]
+        };
+
+        // Learning resources database
+        const learningResources = {
+            "Research Methodology": [
+                { name: "Research Methods for Beginners - Coursera", url: "#" },
+                { name: "Advanced Research Design - edX", url: "#" }
+            ],
+            "Data Analysis": [
+                { name: "Data Analysis Fundamentals - DataCamp", url: "#" },
+                { name: "Statistical Analysis with R - Udemy", url: "#" }
+            ],
+            "Scientific Writing": [
+                { name: "Scientific Writing - Nature", url: "#" },
+                { name: "Academic Writing Skills - Coursera", url: "#" }
+            ],
+            "Laboratory Techniques": [
+                { name: "Lab Safety and Techniques - MIT", url: "#" },
+                { name: "Advanced Laboratory Methods - edX", url: "#" }
+            ],
+            "Statistical Analysis": [
+                { name: "Statistics for Researchers - Khan Academy", url: "#" },
+                { name: "Applied Statistics - Coursera", url: "#" }
+            ],
+            "Critical Thinking": [
+                { name: "Critical Thinking Skills - edX", url: "#" },
+                { name: "Logical Reasoning - Coursera", url: "#" }
+            ],
+            "Peer Review": [
+                { name: "Peer Review Process - Elsevier", url: "#" },
+                { name: "Becoming a Reviewer - Wiley", url: "#" }
+            ],
+            "Grant Writing": [
+                { name: "Grant Writing Workshop - NSF", url: "#" },
+                { name: "Successful Grant Applications - Coursera", url: "#" }
+            ],
+            "Laboratory Safety": [
+                { name: "Lab Safety Certification - OSHA", url: "#" },
+                { name: "Chemical Safety - ACS", url: "#" }
+            ],
+            "Equipment Operation": [
+                { name: "Instrument Training - Manufacturer", url: "#" },
+                { name: "Lab Equipment Certification - University", url: "#" }
+            ],
+            "Sample Preparation": [
+                { name: "Sample Prep Techniques - Lab Manager", url: "#" },
+                { name: "Quality Sample Handling - Coursera", url: "#" }
+            ],
+            "Data Recording": [
+                { name: "Data Management - Research Data Alliance", url: "#" },
+                { name: "Electronic Lab Notebooks - Coursera", url: "#" }
+            ],
+            "Quality Control": [
+                { name: "Quality Assurance - ISO", url: "#" },
+                { name: "Lab Quality Standards - edX", url: "#" }
+            ],
+            "Documentation": [
+                { name: "Technical Documentation - IEEE", url: "#" },
+                { name: "Lab Documentation Best Practices - Coursera", url: "#" }
+            ],
+            "Basic Chemistry": [
+                { name: "General Chemistry - Khan Academy", url: "#" },
+                { name: "Intro to Chemistry - edX", url: "#" }
+            ],
+            "Attention to Detail": [
+                { name: "Attention to Detail Training - LinkedIn", url: "#" },
+                { name: "Precision in Research - Coursera", url: "#" }
+            ],
+            "Curriculum Development": [
+                { name: "Curriculum Design - edX", url: "#" },
+                { name: "Backward Design - Coursera", url: "#" }
+            ],
+            "Pedagogy": [
+                { name: "Teaching Methods - Teachers College", url: "#" },
+                { name: "Learning Theory - Coursera", url: "#" }
+            ],
+            "Subject Matter Expertise": [
+                { name: "Advanced Subject Study - University", url: "#" },
+                { name: "Specialized Knowledge - Professional Bodies", url: "#" }
+            ],
+            "Classroom Management": [
+                { name: "Classroom Management - edX", url: "#" },
+                { name: "Behavior Management - Coursera", url: "#" }
+            ],
+            "Assessment Design": [
+                { name: "Assessment Methods - edX", url: "#" },
+                { name: "Evaluation Design - Coursera", url: "#" }
+            ],
+            "Educational Technology": [
+                { name: "EdTech Fundamentals - Coursera", url: "#" },
+                { name: "Digital Learning Tools - edX", url: "#" }
+            ],
+            "Student Engagement": [
+                { name: "Engaging Students - edX", url: "#" },
+                { name: "Active Learning - Coursera", url: "#" }
+            ],
+            "Differentiated Instruction": [
+                { name: "Differentiation Strategies - Coursera", url: "#" },
+                { name: "Inclusive Teaching - edX", url: "#" }
+            ],
+            "Advanced Mathematics": [
+                { name: "Higher Mathematics - MIT", url: "#" },
+                { name: "Abstract Mathematics - Coursera", url: "#" }
+            ],
+            "Proof Writing": [
+                { name: "Mathematical Proofs - Khan Academy", url: "#" },
+                { name: "Proof Techniques - edX", url: "#" }
+            ],
+            "Abstract Reasoning": [
+                { name: "Abstract Thinking - Coursera", url: "#" },
+                { name: "Logical Reasoning - edX", url: "#" }
+            ],
+            "Problem Solving": [
+                { name: "Problem Solving Skills - edX", url: "#" },
+                { name: "Creative Problem Solving - Coursera", url: "#" }
+            ],
+            "Computational Methods": [
+                { name: "Computational Mathematics - MIT", url: "#" },
+                { name: "Numerical Methods - Coursera", url: "#" }
+            ],
+            "Mathematical Modeling": [
+                { name: "Modeling Techniques - Coursera", url: "#" },
+                { name: "Applied Mathematical Modeling - edX", url: "#" }
+            ],
+            "Research Publication": [
+                { name: "Academic Publishing - Nature", url: "#" },
+                { name: "Writing for Publication - Coursera", url: "#" }
+            ],
+            "Academic Collaboration": [
+                { name: "Research Collaboration - edX", url: "#" },
+                { name: "Academic Networking - Coursera", url: "#" }
+            ],
+            "Programming": [
+                { name: "Programming Fundamentals - freeCodeCamp", url: "#" },
+                { name: "Advanced Programming - Coursera", url: "#" }
+            ],
+            "System Design": [
+                { name: "System Design - Coursera", url: "#" },
+                { name: "Software Architecture - edX", url: "#" }
+            ],
+            "Algorithms": [
+                { name: "Algorithms - Khan Academy", url: "#" },
+                { name: "Advanced Algorithms - Coursera", url: "#" }
+            ],
+            "Database Management": [
+                { name: "Database Design - Coursera", url: "#" },
+                { name: "SQL Fundamentals - DataCamp", url: "#" }
+            ],
+            "Version Control": [
+                { name: "Git Fundamentals - GitHub", url: "#" },
+                { name: "Advanced Git - Coursera", url: "#" }
+            ],
+            "Testing": [
+                { name: "Software Testing - edX", url: "#" },
+                { name: "Test Automation - Coursera", url: "#" }
+            ],
+            "Agile Methodologies": [
+                { name: "Agile Fundamentals - Scrum.org", url: "#" },
+                { name: "Scrum Master Certification - Coursera", url: "#" }
+            ],
+            "Structural Analysis": [
+                { name: "Structural Engineering - MIT", url: "#" },
+                { name: "Advanced Structural Analysis - Coursera", url: "#" }
+            ],
+            "Project Management": [
+                { name: "Project Management - Coursera", url: "#" },
+                { name: "PMP Certification - edX", url: "#" }
+            ],
+            "CAD Software": [
+                { name: "AutoCAD Training - Autodesk", url: "#" },
+                { name: "3D Modeling - Coursera", url: "#" }
+            ],
+            "Materials Science": [
+                { name: "Materials Engineering - edX", url: "#" },
+                { name: "Advanced Materials - Coursera", url: "#" }
+            ],
+            "Construction Standards": [
+                { name: "Building Codes - ICC", url: "#" },
+                { name: "Construction Standards - Coursera", url: "#" }
+            ],
+            "Environmental Regulations": [
+                { name: "Environmental Law - EPA", url: "#" },
+                { name: "Regulatory Compliance - Coursera", url: "#" }
+            ],
+            "Cost Estimation": [
+                { name: "Cost Engineering - AACE", url: "#" },
+                { name: "Estimation Techniques - Coursera", url: "#" }
+            ],
+            "Risk Assessment": [
+                { name: "Risk Management - Coursera", url: "#" },
+                { name: "Risk Assessment Methods - edX", url: "#" }
+            ],
+            "Medical Device Design": [
+                { name: "Biomedical Design - Coursera", url: "#" },
+                { name: "Medical Device Regulations - edX", url: "#" }
+            ],
+            "Regulatory Affairs": [
+                { name: "Regulatory Affairs - RAPS", url: "#" },
+                { name: "FDA Regulations - Coursera", url: "#" }
+            ],
+            "Biomechanics": [
+                { name: "Biomechanics Fundamentals - Coursera", url: "#" },
+                { name: "Advanced Biomechanics - edX", url: "#" }
+            ],
+            "Tissue Engineering": [
+                { name: "Tissue Engineering - MIT", url: "#" },
+                { name: "Regenerative Medicine - Coursera", url: "#" }
+            ],
+            "Clinical Trials": [
+                { name: "Clinical Trial Design - Coursera", url: "#" },
+                { name: "Good Clinical Practice - edX", url: "#" }
+            ],
+            "Clinical Diagnosis": [
+                { name: "Clinical Reasoning - Coursera", url: "#" },
+                { name: "Diagnostic Skills - Medical Schools", url: "#" }
+            ],
+            "Patient Care": [
+                { name: "Patient Care Skills - Medical Schools", url: "#" },
+                { name: "Bedside Manner - Coursera", url: "#" }
+            ],
+            "Medical Knowledge": [
+                { name: "Medical Education - Coursera", url: "#" },
+                { name: "Continuing Medical Education - edX", url: "#" }
+            ],
+            "Communication": [
+                { name: "Professional Communication - Coursera", url: "#" },
+                { name: "Interpersonal Skills - edX", url: "#" }
+            ],
+            "Ethics": [
+                { name: "Professional Ethics - Coursera", url: "#" },
+                { name: "Ethical Reasoning - edX", url: "#" }
+            ],
+            "Evidence-Based Practice": [
+                { name: "Evidence-Based Medicine - Coursera", url: "#" },
+                { name: "Clinical Research Methods - edX", url: "#" }
+            ],
+            "Team Collaboration": [
+                { name: "Teamwork Skills - Coursera", url: "#" },
+                { name: "Collaborative Leadership - edX", url: "#" }
+            ],
+            "Continuous Learning": [
+                { name: "Lifelong Learning - Coursera", url: "#" },
+                { name: "Professional Development - edX", url: "#" }
+            ],
+            "Clinical Research": [
+                { name: "Clinical Research Methods - Coursera", url: "#" },
+                { name: "Clinical Trial Management - edX", url: "#" }
+            ],
+            "Biostatistics": [
+                { name: "Biostatistics Fundamentals - Coursera", url: "#" },
+                { name: "Advanced Biostatistics - edX", url: "#" }
+            ],
+            "Regulatory Compliance": [
+                { name: "Regulatory Compliance - Coursera", url: "#" },
+                { name: "Compliance Management - edX", url: "#" }
+            ],
+            "Protocol Development": [
+                { name: "Research Protocol Design - Coursera", url: "#" },
+                { name: "Study Design - edX", url: "#" }
+            ],
+            "Data Management": [
+                { name: "Clinical Data Management - Coursera", url: "#" },
+                { name: "Data Governance - edX", url: "#" }
+            ],
+            "Publication": [
+                { name: "Academic Writing - Nature", url: "#" },
+                { name: "Scientific Publication - Coursera", url: "#" }
+            ],
+            "Social Theory": [
+                { name: "Social Theory - Coursera", url: "#" },
+                { name: "Classical Social Theory - edX", url: "#" }
+            ],
+            "Research Methods": [
+                { name: "Social Research Methods - Coursera", url: "#" },
+                { name: "Qualitative Research - edX", url: "#" }
+            ],
+            "Qualitative Research": [
+                { name: "Qualitative Methods - Coursera", url: "#" },
+                { name: "Ethnographic Research - edX", url: "#" }
+            ],
+            "Cultural Analysis": [
+                { name: "Cultural Studies - Coursera", url: "#" },
+                { name: "Cross-Cultural Analysis - edX", url: "#" }
+            ],
+            "Writing": [
+                { name: "Academic Writing - Coursera", url: "#" },
+                { name: "Professional Writing - edX", url: "#" }
+            ],
+            "Source Evaluation": [
+                { name: "Information Literacy - Coursera", url: "#" },
+                { name: "Source Criticism - edX", url: "#" }
+            ],
+            "Period Knowledge": [
+                { name: "Historical Periods - Coursera", url: "#" },
+                { name: "Specialized Historical Knowledge - edX", url: "#" }
+            ],
+            "Interpretation": [
+                { name: "Historical Interpretation - Coursera", url: "#" },
+                { name: "Textual Interpretation - edX", url: "#" }
+            ],
+            "Argumentation": [
+                { name: "Argumentative Writing - Coursera", url: "#" },
+                { name: "Logical Argumentation - edX", url: "#" }
+            ],
+            "Philosophical Reasoning": [
+                { name: "Philosophical Methods - Coursera", url: "#" },
+                { name: "Critical Reasoning - edX", url: "#" }
+            ],
+            "Logic": [
+                { name: "Formal Logic - Coursera", url: "#" },
+                { name: "Symbolic Logic - edX", url: "#" }
+            ],
+            "Metaphysics": [
+                { name: "Metaphysics - Coursera", url: "#" },
+                { name: "Ontology - edX", url: "#" }
+            ],
+            "Literary Theory": [
+                { name: "Literary Criticism - Coursera", url: "#" },
+                { name: "Contemporary Literary Theory - edX", url: "#" }
+            ],
+            "Textual Analysis": [
+                { name: "Text Analysis Methods - Coursera", url: "#" },
+                { name: "Close Reading - edX", url: "#" }
+            ],
+            "Historical Context": [
+                { name: "Historical Contextualization - Coursera", url: "#" },
+                { name: "Cultural History - edX", url: "#" }
+            ],
+            "Critical Interpretation": [
+                { name: "Critical Analysis - Coursera", url: "#" },
+                { name: "Interpretive Methods - edX", url: "#" }
+            ],
+            "Comparative Literature": [
+                { name: "Comparative Literature - Coursera", url: "#" },
+                { name: "World Literature - edX", url: "#" }
+            ],
+            "Language Skills": [
+                { name: "Foreign Languages - Coursera", url: "#" },
+                { name: "Linguistic Competence - edX", url: "#" }
+            ],
+            "Process Modeling": [
+                { name: "Business Process Modeling - Coursera", url: "#" },
+                { name: "Process Improvement - edX", url: "#" }
+            ],
+            "Requirements Gathering": [
+                { name: "Requirements Engineering - Coursera", url: "#" },
+                { name: "Stakeholder Analysis - edX", url: "#" }
+            ],
+            "Stakeholder Management": [
+                { name: "Stakeholder Engagement - Coursera", url: "#" },
+                { name: "Project Stakeholder Management - edX", url: "#" }
+            ],
+            "Business Acumen": [
+                { name: "Business Fundamentals - Coursera", url: "#" },
+                { name: "Strategic Thinking - edX", url: "#" }
+            ],
+            "Market Research": [
+                { name: "Market Analysis - Coursera", url: "#" },
+                { name: "Consumer Insights - edX", url: "#" }
+            ],
+            "Consumer Behavior": [
+                { name: "Consumer Psychology - Coursera", url: "#" },
+                { name: "Behavioral Economics - edX", url: "#" }
+            ],
+            "Brand Management": [
+                { name: "Brand Strategy - Coursera", url: "#" },
+                { name: "Brand Marketing - edX", url: "#" }
+            ],
+            "Digital Marketing": [
+                { name: "Digital Marketing - Google", url: "#" },
+                { name: "Social Media Marketing - Coursera", url: "#" }
+            ],
+            "Analytics": [
+                { name: "Marketing Analytics - Coursera", url: "#" },
+                { name: "Data-Driven Marketing - edX", url: "#" }
+            ],
+            "Creativity": [
+                { name: "Creative Thinking - Coursera", url: "#" },
+                { name: "Innovation Skills - edX", url: "#" }
+            ],
+            "Strategic Planning": [
+                { name: "Strategic Management - Coursera", url: "#" },
+                { name: "Business Strategy - edX", url: "#" }
+            ],
+            "Financial Modeling": [
+                { name: "Financial Modeling - Coursera", url: "#" },
+                { name: "Valuation Methods - edX", url: "#" }
+            ],
+            "Valuation": [
+                { name: "Business Valuation - Coursera", url: "#" },
+                { name: "Investment Valuation - edX", url: "#" }
+            ],
+            "Accounting": [
+                { name: "Financial Accounting - Coursera", url: "#" },
+                { name: "Managerial Accounting - edX", url: "#" }
+            ],
+            "Economics": [
+                { name: "Microeconomics - Coursera", url: "#" },
+                { name: "Macroeconomics - edX", url: "#" }
+            ],
+            "Legal Research": [
+                { name: "Legal Research Methods - Coursera", url: "#" },
+                { name: "Case Law Research - edX", url: "#" }
+            ],
+            "Advocacy": [
+                { name: "Legal Advocacy - Coursera", url: "#" },
+                { name: "Courtroom Skills - edX", url: "#" }
+            ],
+            "Client Counseling": [
+                { name: "Client Relations - Coursera", url: "#" },
+                { name: "Professional Responsibility - edX", url: "#" }
+            ],
+            "Negotiation": [
+                { name: "Legal Negotiation - Coursera", url: "#" },
+                { name: "Conflict Resolution - edX", url: "#" }
+            ],
+            "Citation": [
+                { name: "Legal Citation - Coursera", url: "#" },
+                { name: "Bluebook Training - edX", url: "#" }
+            ],
+            "Analytical Skills": [
+                { name: "Legal Analysis - Coursera", url: "#" },
+                { name: "Critical Legal Thinking - edX", url: "#" }
+            ],
+            "Policy Analysis": [
+                { name: "Policy Analysis Methods - Coursera", url: "#" },
+                { name: "Public Policy - edX", url: "#" }
+            ],
+            "Stakeholder Engagement": [
+                { name: "Stakeholder Management - Coursera", url: "#" },
+                { name: "Public Engagement - edX", url: "#" }
+            ],
+            "Political Acumen": [
+                { name: "Political Strategy - Coursera", url: "#" },
+                { name: "Government Relations - edX", url: "#" }
+            ],
+            "Technical Skills": [
+                { name: "Artistic Techniques - Coursera", url: "#" },
+                { name: "Studio Practice - edX", url: "#" }
+            ],
+            "Art History": [
+                { name: "Art History Survey - Coursera", url: "#" },
+                { name: "Specialized Art History - edX", url: "#" }
+            ],
+            "Conceptual Development": [
+                { name: "Conceptual Art - Coursera", url: "#" },
+                { name: "Creative Development - edX", url: "#" }
+            ],
+            "Presentation": [
+                { name: "Art Presentation - Coursera", url: "#" },
+                { name: "Portfolio Presentation - edX", url: "#" }
+            ],
+            "Marketing": [
+                { name: "Art Marketing - Coursera", url: "#" },
+                { name: "Creative Industries - edX", url: "#" }
+            ],
+            "Portfolio Development": [
+                { name: "Portfolio Creation - Coursera", url: "#" },
+                { name: "Professional Portfolio - edX", url: "#" }
+            ],
+            "Museum Studies": [
+                { name: "Museum Management - Coursera", url: "#" },
+                { name: "Curatorial Practice - edX", url: "#" }
+            ],
+            "Cultural Context": [
+                { name: "Cultural Studies - Coursera", url: "#" },
+                { name: "Cross-Cultural Analysis - edX", url: "#" }
+            ],
+            "Foreign Languages": [
+                { name: "Language Learning - Coursera", url: "#" },
+                { name: "Linguistic Skills - edX", url: "#" }
+            ],
+            "Visual Analysis": [
+                { name: "Visual Literacy - Coursera", url: "#" },
+                { name: "Art Analysis - edX", url: "#" }
+            ],
+            "Performance": [
+                { name: "Musical Performance - Conservatory", url: "#" },
+                { name: "Stage Performance - Coursera", url: "#" }
+            ],
+            "Theory": [
+                { name: "Music Theory - Coursera", url: "#" },
+                { name: "Dramatic Theory - edX", url: "#" }
+            ],
+            "Composition": [
+                { name: "Musical Composition - Coursera", url: "#" },
+                { name: "Creative Composition - edX", url: "#" }
+            ],
+            "Ear Training": [
+                { name: "Aural Skills - Conservatory", url: "#" },
+                { name: "Listening Skills - Coursera", url: "#" }
+            ],
+            "Music History": [
+                { name: "Music History - Coursera", url: "#" },
+                { name: "Historical Performance - edX", url: "#" }
+            ],
+            "Practice": [
+                { name: "Deliberate Practice - Coursera", url: "#" },
+                { name: "Professional Practice - edX", url: "#" }
+            ],
+            "Collaboration": [
+                { name: "Ensemble Work - Conservatory", url: "#" },
+                { name: "Creative Collaboration - Coursera", url: "#" }
+            ],
+            "Machine Learning": [
+                { name: "Machine Learning - Coursera", url: "#" },
+                { name: "Deep Learning - edX", url: "#" }
+            ],
+            "Deep Learning": [
+                { name: "Neural Networks - Coursera", url: "#" },
+                { name: "Advanced Deep Learning - edX", url: "#" }
+            ],
+            "Mathematics": [
+                { name: "Linear Algebra - Khan Academy", url: "#" },
+                { name: "Calculus - Coursera", url: "#" }
+            ],
+            "Algorithm Design": [
+                { name: "Algorithmic Thinking - Coursera", url: "#" },
+                { name: "Advanced Algorithms - edX", url: "#" }
+            ],
+            "Network Security": [
+                { name: "Cybersecurity Fundamentals - Coursera", url: "#" },
+                { name: "Network Security - edX", url: "#" }
+            ],
+            "Incident Response": [
+                { name: "Incident Handling - Coursera", url: "#" },
+                { name: "Forensic Response - edX", url: "#" }
+            ],
+            "Encryption": [
+                { name: "Cryptography - Coursera", url: "#" },
+                { name: "Applied Cryptography - edX", url: "#" }
+            ],
+            "Compliance": [
+                { name: "Security Compliance - Coursera", url: "#" },
+                { name: "Regulatory Compliance - edX", url: "#" }
+            ],
+            "Forensics": [
+                { name: "Digital Forensics - Coursera", url: "#" },
+                { name: "Computer Forensics - edX", url: "#" }
+            ],
+            "Scalability": [
+                { name: "Scalable Systems - Coursera", url: "#" },
+                { name: "High Availability - edX", url: "#" }
+            ],
+            "Cloud Computing": [
+                { name: "Cloud Architecture - Coursera", url: "#" },
+                { name: "Cloud Security - edX", url: "#" }
+            ],
+            "Security": [
+                { name: "Information Security - Coursera", url: "#" },
+                { name: "Application Security - edX", url: "#" }
+            ],
+            "Performance Optimization": [
+                { name: "System Performance - Coursera", url: "#" },
+                { name: "Database Optimization - edX", url: "#" }
+            ],
+            "Ecology": [
+                { name: "Ecological Principles - Coursera", url: "#" },
+                { name: "Ecosystem Dynamics - edX", url: "#" }
+            ],
+            "Environmental Chemistry": [
+                { name: "Environmental Chemistry - Coursera", url: "#" },
+                { name: "Pollution Chemistry - edX", url: "#" }
+            ],
+            "GIS": [
+                { name: "Geographic Information Systems - Coursera", url: "#" },
+                { name: "Spatial Analysis - edX", url: "#" }
+            ],
+            "Field Work": [
+                { name: "Field Research Methods - Coursera", url: "#" },
+                { name: "Field Safety - edX", url: "#" }
+            ],
+            "Sustainability": [
+                { name: "Sustainable Development - Coursera", url: "#" },
+                { name: "Environmental Sustainability - edX", url: "#" }
+            ],
+            "Climate Modeling": [
+                { name: "Climate Science - Coursera", url: "#" },
+                { name: "Atmospheric Modeling - edX", url: "#" }
+            ],
+            "Wildlife Management": [
+                { name: "Wildlife Conservation - Coursera", url: "#" },
+                { name: "Animal Behavior - edX", url: "#" }
+            ],
+            "Conservation Planning": [
+                { name: "Conservation Biology - Coursera", url: "#" },
+                { name: "Protected Areas - edX", url: "#" }
+            ],
+            "Genomics": [
+                { name: "Genomic Analysis - Coursera", url: "#" },
+                { name: "Computational Genomics - edX", url: "#" }
+            ],
+            "Nanotechnology": [
+                { name: "Nanomaterials - Coursera", url: "#" },
+                { name: "Nanofabrication - edX", url: "#" }
+            ],
+            "Fabrication Techniques": [
+                { name: "Nanofabrication - Coursera", url: "#" },
+                { name: "Clean Room Techniques - edX", url: "#" }
+            ],
+            "Characterization": [
+                { name: "Material Characterization - Coursera", url: "#" },
+                { name: "Analytical Techniques - edX", url: "#" }
+            ],
+            "Safety Protocols": [
+                { name: "Lab Safety - Coursera", url: "#" },
+                { name: "Nanomaterial Safety - edX", url: "#" }
+            ],
+            "Innovation": [
+                { name: "Innovation Management - Coursera", url: "#" },
+                { name: "Technology Innovation - edX", url: "#" }
+            ],
+            "Physics": [
+                { name: "Classical Physics - Khan Academy", url: "#" },
+                { name: "Quantum Physics - Coursera", url: "#" }
+            ],
+            "Chemistry": [
+                { name: "General Chemistry - Khan Academy", url: "#" },
+                { name: "Organic Chemistry - Coursera", url: "#" }
+            ],
+            "Observational Techniques": [
+                { name: "Astronomical Observation - Coursera", url: "#" },
+                { name: "Telescope Operation - edX", url: "#" }
+            ],
+            "Instrumentation": [
+                { name: "Scientific Instruments - Coursera", url: "#" },
+                { name: "Lab Instrumentation - edX", url: "#" }
+            ],
+            "Neuroanatomy": [
+                { name: "Brain Anatomy - Coursera", url: "#" },
+                { name: "Neuroimaging - edX", url: "#" }
+            ],
+            "Neurophysiology": [
+                { name: "Neural Function - Coursera", url: "#" },
+                { name: "Cellular Neuroscience - edX", url: "#" }
+            ],
+            "Phonetics": [
+                { name: "Speech Sounds - Coursera", url: "#" },
+                { name: "Phonetic Analysis - edX", url: "#" }
+            ],
+            "Syntax": [
+                { name: "Grammatical Structure - Coursera", url: "#" },
+                { name: "Syntactic Theory - edX", url: "#" }
+            ],
+            "Semantics": [
+                { name: "Meaning in Language - Coursera", url: "#" },
+                { name: "Semantic Theory - edX", url: "#" }
+            ],
+            "Sociolinguistics": [
+                { name: "Language and Society - Coursera", url: "#" },
+                { name: "Social Dialectology - edX", url: "#" }
+            ],
+            "Language Teaching": [
+                { name: "Language Pedagogy - Coursera", url: "#" },
+                { name: "Second Language Acquisition - edX", url: "#" }
+            ],
+            "Cross-cultural Communication": [
+                { name: "Intercultural Communication - Coursera", url: "#" },
+                { name: "Global Communication - edX", url: "#" }
+            ],
+            "Field Methods": [
+                { name: "Archaeological Fieldwork - Coursera", url: "#" },
+                { name: "Excavation Techniques - edX", url: "#" }
+            ],
+            "Artifact Analysis": [
+                { name: "Material Analysis - Coursera", url: "#" },
+                { name: "Conservation Science - edX", url: "#" }
+            ],
+            "Dating Techniques": [
+                { name: "Radiocarbon Dating - Coursera", url: "#" },
+                { name: "Chronometric Methods - edX", url: "#" }
+            ]
+        };
+
+        // DOM Elements
+        const domainSelector = document.getElementById('domain-selector');
+        const roleSearchInput = document.getElementById('role-search');
+        const rolesList = document.getElementById('roles-list');
+        const currentSkillsInput = document.getElementById('current-skills');
+        const analyzeBtn = document.getElementById('analyze-btn');
+        const exampleBtn = document.getElementById('example-btn');
+        const resultsContainer = document.getElementById('results-container');
+        const loadingElement = document.getElementById('loading');
+        const currentSkillsDisplay = document.getElementById('current-skills-display');
+
+        // Initialize domain selector
+        function initializeDomains() {
+            domainSelector.innerHTML = '';
+            domains.forEach(domain => {
+                const btn = document.createElement('button');
+                btn.className = 'domain-btn';
+                btn.textContent = domain;
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    document.querySelectorAll('.domain-btn').forEach(b => b.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    // Filter roles based on domain
+                    filterRolesByDomain(domain);
+                });
+                domainSelector.appendChild(btn);
+            });
+        }
+
+        // Filter roles by domain
+        function filterRolesByDomain(domain) {
+            const roles = Object.keys(roleRequirements);
+            const filteredRoles = roles.filter(role => 
+                role.toLowerCase().includes(domain.toLowerCase()) || 
+                domain.toLowerCase().includes(role.toLowerCase().split(' ')[0].toLowerCase())
+            );
+            
+            // If no specific matches, show all roles
+            const displayRoles = filteredRoles.length > 0 ? filteredRoles : roles;
+            
+            updateRolesList(displayRoles);
+        }
+
+        // Update roles list
+        function updateRolesList(roles) {
+            rolesList.innerHTML = '';
+            roles.forEach(role => {
+                const div = document.createElement('div');
+                div.className = 'role-item';
+                div.textContent = role;
+                div.addEventListener('click', function() {
+                    roleSearchInput.value = role;
+                    rolesList.innerHTML = '';
+                });
+                rolesList.appendChild(div);
+            });
+        }
+
+        // Search roles
+        roleSearchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            if (searchTerm.length > 0) {
+                const matchingRoles = Object.keys(roleRequirements).filter(role => 
+                    role.toLowerCase().includes(searchTerm)
+                );
+                updateRolesList(matchingRoles);
+            } else {
+                rolesList.innerHTML = '';
+            }
+        });
+
+        // Display current skills as tags
+        currentSkillsInput.addEventListener('input', function() {
+            const skills = this.value.split(',').map(skill => skill.trim()).filter(skill => skill);
+            displaySkills(skills, currentSkillsDisplay);
+        });
+
+        function displaySkills(skills, container) {
+            container.innerHTML = '';
+            skills.forEach(skill => {
+                const tag = document.createElement('span');
+                tag.className = 'skill-tag';
+                tag.textContent = skill;
+                container.appendChild(tag);
+            });
+        }
+
+        // Example data
+        exampleBtn.addEventListener('click', function() {
+            currentSkillsInput.value = "Research Methodology, Data Analysis, Scientific Writing, Critical Thinking, Statistical Analysis";
+            roleSearchInput.value = "Research Scientist";
+            displaySkills(["Research Methodology", "Data Analysis", "Scientific Writing", "Critical Thinking", "Statistical Analysis"], currentSkillsDisplay);
+            rolesList.innerHTML = '';
+        });
+
+        // Analyze skill gap
+        analyzeBtn.addEventListener('click', function() {
+            const userSkills = currentSkillsInput.value.split(',').map(skill => skill.trim().toLowerCase()).filter(skill => skill);
+            const targetRole = roleSearchInput.value;
+            
+            if (!targetRole) {
+                alert("Please select or enter a target job role");
+                return;
+            }
+            
+            if (userSkills.length === 0) {
+                alert("Please enter your current skills");
+                return;
+            }
+            
+            // Show loading
+            loadingElement.style.display = 'block';
+            resultsContainer.innerHTML = '';
+            rolesList.innerHTML = '';
+            
+            // Simulate processing time
+            setTimeout(() => {
+                analyzeSkills(userSkills, targetRole);
+                loadingElement.style.display = 'none';
+            }, 1500);
+        });
+
+        function analyzeSkills(userSkills, targetRole) {
+            // Get required skills for the role
+            const requiredSkills = roleRequirements[targetRole] || 
+                                 roleRequirements[Object.keys(roleRequirements).find(role => 
+                                     role.toLowerCase().includes(targetRole.toLowerCase()))] || 
+                                 [];
+            
+            if (requiredSkills.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <div>❓</div>
+                        <p>No skill requirements found for "${targetRole}". Please try another role.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Convert user skills to lowercase for comparison
+            const userSkillsLower = userSkills.map(skill => skill.toLowerCase());
+            
+            // Find matching and missing skills
+            const hasSkills = requiredSkills.filter(skill => 
+                userSkillsLower.includes(skill.toLowerCase()) || 
+                userSkillsLower.some(userSkill => 
+                    skill.toLowerCase().includes(userSkill) || 
+                    userSkill.includes(skill.toLowerCase())
+                )
+            );
+            
+            const missingSkills = requiredSkills.filter(skill => !hasSkills.includes(skill));
+            
+            // Generate results HTML
+            let resultsHTML = `
+                <div class="result-category has-skills">
+                    <h3 class="category-title">✅ Skills You Already Have</h3>
+                    <div class="skill-list">
+                        ${hasSkills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
+                    </div>
+                </div>
+                
+                <div class="result-category missing-skills">
+                    <h3 class="category-title">❌ Skills You Need to Develop</h3>
+                    <div class="skill-list">
+                        ${missingSkills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
+                    </div>
+                </div>
+                
+                <div class="result-category suggested-resources">
+                    <h3 class="category-title">📚 Suggested Learning Resources</h3>
+                    <ul class="resource-list">
+                        ${missingSkills.slice(0, 5).map(skill => {
+                            const resources = learningResources[skill] || [
+                                { name: `Learning Path for ${skill} - Coursera`, url: "#" },
+                                { name: `${skill} Fundamentals - Udemy`, url: "#" }
+                            ];
+                            return `
+                                <li class="resource-item">
+                                    <strong>${skill}:</strong>
+                                    <ul>
+                                        ${resources.map(res => `<li><a href="${res.url}" target="_blank">${res.name}</a></li>`).join('')}
+                                    </ul>
+                                </li>
+                            `;
+                        }).join('')}
+                    </ul>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn" onclick="exportReport('${targetRole}', ${JSON.stringify(hasSkills)}, ${JSON.stringify(missingSkills)})">
+                        📥 Export Report (JSON)
+                    </button>
+                    <button class="btn btn-secondary" onclick="exportTextReport('${targetRole}', ${JSON.stringify(hasSkills)}, ${JSON.stringify(missingSkills)})">
+                        📄 Export Report (Text)
+                    </button>
+                </div>
+            `;
+            
+            resultsContainer.innerHTML = resultsHTML;
+        }
+
+        // Export functions
+        function exportReport(targetRole, hasSkills, missingSkills) {
+            const report = {
+                targetRole: targetRole,
+                hasSkills: hasSkills,
+                missingSkills: missingSkills,
+                generatedAt: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(report, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `skill-gap-report-${targetRole.replace(/\s+/g, '-')}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function exportTextReport(targetRole, hasSkills, missingSkills) {
+            const report = `SKILL GAP ANALYSIS REPORT
+========================
+
+Target Role: ${targetRole}
+Generated: ${new Date().toLocaleString()}
+
+SKILLS YOU ALREADY HAVE:
+${hasSkills.map(skill => `- ${skill}`).join('\n')}
+
+SKILLS YOU NEED TO DEVELOP:
+${missingSkills.map(skill => `- ${skill}`).join('\n')}
+
+RECOMMENDED LEARNING RESOURCES:
+${missingSkills.slice(0, 5).map(skill => {
+    const resources = learningResources[skill] || [
+        { name: `Learning Path for ${skill} - Coursera`, url: "#" },
+        { name: `${skill} Fundamentals - Udemy`, url: "#" }
+    ];
+    return `\n${skill}:\n${resources.map(res => `  - ${res.name}`).join('\n')}`;
+}).join('')}
+
+---
+Report generated by Universal Skill Gap Visualizer
+`;
+            
+            const blob = new Blob([report], {type: 'text/plain'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `skill-gap-report-${targetRole.replace(/\s+/g, '-')}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDomains();
+            // Show all roles initially
+            updateRolesList(Object.keys(roleRequirements));
+        });
+    </script>
+</body>
+</html>
