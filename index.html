@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+           <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -17,108 +17,147 @@
             --gray: #808080;
             --light-gray: #e0e0e0;
         }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f8f9fa;
             color: var(--dark);
             line-height: 1.6;
         }
-
         .container {
+            width: 95%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 15px; /* Reduced padding for smaller screens */
         }
-
         header {
             text-align: center;
-            margin-bottom: 30px;
-            padding: 20px 0;
+            margin-bottom: 20px; /* Reduced margin */
+            padding: 15px 0; /* Reduced padding */
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px; /* Slightly smaller radius */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slightly reduced shadow */
         }
-
         h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 2rem; /* Smaller font size for mobile */
+            margin-bottom: 8px; /* Reduced margin */
         }
-
         .subtitle {
-            font-size: 1.1rem;
+            font-size: 1rem; /* Smaller font size */
             opacity: 0.9;
         }
-
         .app-container {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 30px;
+            gap: 20px; /* Reduced gap */
         }
-
         @media (min-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            header {
+                margin-bottom: 30px;
+                padding: 20px 0;
+                border-radius: 10px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+            h1 {
+                font-size: 2.5rem;
+                margin-bottom: 10px;
+            }
+            .subtitle {
+                font-size: 1.1rem;
+            }
             .app-container {
+                gap: 30px;
                 grid-template-columns: 1fr 1fr;
             }
         }
-
         .input-section, .results-section {
             background: var(--light);
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px; /* Reduced padding */
+            border-radius: 8px; /* Slightly smaller radius */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Slightly reduced shadow */
         }
-
+        @media (min-width: 768px) {
+             .input-section, .results-section {
+                padding: 25px;
+                border-radius: 10px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+             }
+        }
         .section-title {
             color: var(--primary-dark);
-            margin-bottom: 20px;
-            padding-bottom: 10px;
+            margin-bottom: 15px; /* Reduced margin */
+            padding-bottom: 8px;
             border-bottom: 2px solid var(--light-gray);
+            font-size: 1.4rem; /* Slightly smaller title */
         }
-
+        @media (min-width: 768px) {
+            .section-title {
+                 font-size: 1.5rem;
+                 margin-bottom: 20px;
+            }
+        }
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px; /* Reduced margin */
         }
-
+        @media (min-width: 768px) {
+            .form-group {
+                 margin-bottom: 20px;
+            }
+        }
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px; /* Reduced margin */
             font-weight: 600;
             color: var(--dark);
+            font-size: 0.95rem; /* Slightly smaller label */
         }
-
+        @media (min-width: 768px) {
+            label {
+                 margin-bottom: 8px;
+                 font-size: 1rem;
+            }
+        }
         input, select, textarea {
             width: 100%;
-            padding: 12px;
+            padding: 10px; /* Slightly smaller padding */
             border: 2px solid var(--light-gray);
             border-radius: 5px;
-            font-size: 16px;
+            font-size: 15px; /* Slightly smaller font */
             transition: border-color 0.3s;
         }
-
+        @media (min-width: 768px) {
+            input, select, textarea {
+                 padding: 12px;
+                 font-size: 16px;
+            }
+        }
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--primary);
         }
-
         textarea {
-            min-height: 120px;
+            min-height: 100px; /* Slightly smaller default height */
             resize: vertical;
         }
-
+        @media (min-width: 768px) {
+            textarea {
+                 min-height: 120px;
+            }
+        }
         .btn {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 12px 25px;
-            font-size: 16px;
+            padding: 10px 20px; /* Slightly smaller padding */
+            font-size: 15px; /* Slightly smaller font */
             font-weight: 600;
             border-radius: 5px;
             cursor: pointer;
@@ -127,109 +166,139 @@
             align-items: center;
             justify-content: center;
         }
-
+        @media (min-width: 768px) {
+           .btn {
+                padding: 12px 25px;
+                font-size: 16px;
+           }
+        }
         .btn:hover {
             background: var(--primary-dark);
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-
         .btn:active {
             transform: translateY(0);
         }
-
         .btn:disabled {
             background: var(--light-gray);
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
         }
-
         .btn-secondary {
             background: var(--gray);
         }
-
         .btn-secondary:hover {
             background: #666;
         }
-
         .btn-group {
             display: flex;
-            gap: 10px;
             flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
         }
-
         .skill-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px; /* Slightly smaller gap */
             margin-top: 10px;
         }
-
         .skill-tag {
             background: var(--primary);
             color: white;
-            padding: 5px 10px;
+            padding: 4px 8px; /* Slightly smaller padding */
             border-radius: 20px;
-            font-size: 14px;
+            font-size: 13px; /* Slightly smaller font */
         }
-
+        @media (min-width: 768px) {
+            .skill-tag {
+                 padding: 5px 10px;
+                 font-size: 14px;
+            }
+        }
         .results-container {
-            margin-top: 20px;
+            margin-top: 15px; /* Reduced margin */
         }
-
+        @media (min-width: 768px) {
+            .results-container {
+                 margin-top: 20px;
+            }
+        }
         .result-category {
-            margin-bottom: 25px;
+            margin-bottom: 20px; /* Reduced margin */
         }
-
+        @media (min-width: 768px) {
+            .result-category {
+                 margin-bottom: 25px;
+            }
+        }
         .category-title {
-            font-size: 18px;
+            font-size: 16px; /* Slightly smaller font */
             font-weight: 600;
-            margin-bottom: 15px;
-            padding-bottom: 8px;
+            margin-bottom: 12px; /* Reduced margin */
+            padding-bottom: 6px;
             border-bottom: 1px solid var(--light-gray);
         }
-
+        @media (min-width: 768px) {
+            .category-title {
+                 font-size: 18px;
+                 margin-bottom: 15px;
+                 padding-bottom: 8px;
+            }
+        }
         .has-skills .category-title {
             color: var(--success);
         }
-
         .missing-skills .category-title {
             color: var(--danger);
         }
-
         .suggested-resources .category-title {
             color: var(--warning);
         }
-
         .resource-list {
             list-style-type: none;
+            padding-left: 0;
         }
-
         .resource-item {
-            padding: 12px;
-            margin-bottom: 10px;
+            padding: 10px; /* Slightly smaller padding */
+            margin-bottom: 8px; /* Reduced margin */
             background: var(--secondary);
             border-radius: 5px;
             border-left: 4px solid var(--primary);
         }
-
+         @media (min-width: 768px) {
+            .resource-item {
+                 padding: 12px;
+                 margin-bottom: 10px;
+            }
+         }
+        .resource-item strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .resource-item ul {
+            list-style-type: disc; /* Use disc for inner list */
+            padding-left: 20px; /* Indent inner list */
+            margin-top: 5px;
+        }
+        .resource-item li {
+            margin-bottom: 3px;
+        }
         .resource-item a {
             color: var(--primary-dark);
             text-decoration: none;
             font-weight: 500;
+            font-size: 0.95rem; /* Slightly smaller link font */
         }
-
         .resource-item a:hover {
             text-decoration: underline;
         }
-
         .loading {
             display: none;
             text-align: center;
             padding: 20px;
         }
-
         .spinner {
             border: 4px solid rgba(0, 0, 0, 0.1);
             border-radius: 50%;
@@ -239,97 +308,145 @@
             animation: spin 1s linear infinite;
             margin: 0 auto 15px;
         }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
         .empty-state {
             text-align: center;
-            padding: 40px 20px;
+            padding: 30px 15px; /* Adjusted padding */
             color: var(--gray);
         }
-
-        .empty-state i {
-            font-size: 48px;
-            margin-bottom: 15px;
+        .empty-state i, .empty-state div {
+            font-size: 36px; /* Smaller icon size */
+            margin-bottom: 12px;
             display: block;
         }
-
+        @media (min-width: 768px) {
+            .empty-state {
+                 padding: 40px 20px;
+            }
+            .empty-state i, .empty-state div {
+                 font-size: 48px;
+                 margin-bottom: 15px;
+            }
+        }
         footer {
             text-align: center;
-            margin-top: 40px;
-            padding: 20px;
+            margin-top: 30px; /* Reduced margin */
+            padding: 15px; /* Reduced padding */
             color: var(--gray);
-            font-size: 14px;
+            font-size: 12px; /* Smaller font size */
         }
-
+        @media (min-width: 768px) {
+            footer {
+                 margin-top: 40px;
+                 padding: 20px;
+                 font-size: 14px;
+            }
+        }
         .example-btn {
             background: none;
             border: 1px solid var(--primary);
             color: var(--primary);
-            padding: 8px 15px;
+            padding: 6px 12px; /* Slightly smaller padding */
             border-radius: 5px;
             cursor: pointer;
-            font-size: 14px;
-            margin-top: 10px;
+            font-size: 13px; /* Slightly smaller font */
+            margin-top: 8px; /* Reduced margin */
+            width: 100%; /* Full width on small screens */
         }
-
+        @media (min-width: 768px) {
+            .example-btn {
+                 padding: 8px 15px;
+                 font-size: 14px;
+                 margin-top: 10px;
+                 width: auto; /* Auto width on larger screens */
+            }
+        }
         .example-btn:hover {
             background: var(--primary);
             color: white;
         }
-
         .domain-selector {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Smaller min width */
+            gap: 8px; /* Slightly smaller gap */
+            margin-bottom: 15px; /* Reduced margin */
         }
-
+        @media (min-width: 768px) {
+            .domain-selector {
+                 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                 gap: 10px;
+                 margin-bottom: 20px;
+            }
+        }
         .domain-btn {
             background: var(--light-gray);
             border: none;
-            padding: 10px;
+            padding: 8px; /* Slightly smaller padding */
             border-radius: 5px;
             cursor: pointer;
             text-align: center;
             transition: all 0.3s;
+            font-size: 0.85rem; /* Smaller font size */
         }
-
+        @media (min-width: 768px) {
+            .domain-btn {
+                 padding: 10px;
+                 font-size: 1rem;
+            }
+        }
         .domain-btn:hover {
             background: var(--primary);
             color: white;
         }
-
         .domain-btn.active {
             background: var(--primary-dark);
             color: white;
         }
-
         .role-search {
-            margin-bottom: 15px;
+            margin-bottom: 12px; /* Reduced margin */
         }
-
+        @media (min-width: 768px) {
+            .role-search {
+                 margin-bottom: 15px;
+            }
+        }
         .role-search input {
-            margin-bottom: 10px;
+            margin-bottom: 8px; /* Reduced margin */
         }
-
+        @media (min-width: 768px) {
+            .role-search input {
+                 margin-bottom: 10px;
+            }
+        }
         .roles-list {
-            max-height: 200px;
+            max-height: 180px; /* Slightly smaller height */
             overflow-y: auto;
             border: 1px solid var(--light-gray);
             border-radius: 5px;
-            padding: 10px;
+            padding: 8px; /* Slightly smaller padding */
+            background-color: white; /* Ensure background for list */
         }
-
+        @media (min-width: 768px) {
+            .roles-list {
+                 max-height: 200px;
+                 padding: 10px;
+            }
+        }
         .role-item {
-            padding: 8px;
+            padding: 6px; /* Slightly smaller padding */
             cursor: pointer;
             border-radius: 3px;
+            font-size: 0.9rem; /* Slightly smaller font */
         }
-
+        @media (min-width: 768px) {
+            .role-item {
+                 padding: 8px;
+                 font-size: 1rem;
+            }
+        }
         .role-item:hover {
             background: var(--light-gray);
         }
@@ -341,34 +458,28 @@
             <h1>Universal Skill Gap Visualizer</h1>
             <p class="subtitle">Identify skill gaps across all educational and research domains worldwide</p>
         </header>
-
         <div class="app-container">
             <div class="input-section">
                 <h2 class="section-title">Your Skills & Target Role</h2>
-                
                 <div class="form-group">
                     <label>Domain Selection</label>
                     <div class="domain-selector" id="domain-selector">
                         <!-- Domains will be populated by JavaScript -->
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label for="role-search">Search Target Role</label>
                     <input type="text" id="role-search" placeholder="Search for a role...">
                     <div class="roles-list" id="roles-list"></div>
                 </div>
-
                 <div class="form-group">
                     <label for="current-skills">Your Current Skills (comma-separated)</label>
                     <textarea id="current-skills" placeholder="e.g., Research Methodology, Statistical Analysis, Critical Thinking, Academic Writing"></textarea>
                     <div class="skill-list" id="current-skills-display"></div>
                 </div>
-
                 <button id="analyze-btn" class="btn">Analyze Skill Gap</button>
                 <button id="example-btn" class="example-btn">Load Example Data</button>
             </div>
-
             <div class="results-section">
                 <h2 class="section-title">Analysis Results</h2>
                 <div class="loading" id="loading">
@@ -383,17 +494,16 @@
                 </div>
             </div>
         </div>
-
         <footer>
             <p>Universal Skill Gap Visualizer &copy; 2025 | Helping researchers and students worldwide | All rights reserved. Created by Samar Jeet Jamwal</p>
         </footer>
     </div>
-
     <script>
-        // Comprehensive database of educational and research domains
+        // Expanded database of educational and research domains
         const domains = [
-            "Natural Sciences", "Mathematics", "Engineering", "Medicine", 
-            "Social Sciences", "Humanities", "Business", "Law", 
+            // Existing Domains
+            "Natural Sciences", "Mathematics", "Engineering", "Medicine",
+            "Social Sciences", "Humanities", "Business", "Law",
             "Education", "Arts", "Computer Science", "Environmental Science",
             "Biotechnology", "Nanotechnology", "Space Science", "Psychology",
             "Philosophy", "History", "Linguistics", "Political Science",
@@ -404,81 +514,175 @@
             "Agriculture", "Forestry", "Marine Science", "Meteorology",
             "Statistics", "Data Science", "Artificial Intelligence", "Robotics",
             "Cybersecurity", "Bioinformatics", "Genetics", "Neuroscience",
-            "Linguistics", "Archaeology", "Religious Studies", "Ethics"
+            "Archaeology", "Religious Studies", "Ethics",
+
+            // Additional Expanded Domains
+            "Aerospace Engineering", "Agricultural Economics", "Agricultural Engineering",
+            "American Studies", "Anatomy", "Ancient History", "Animal Science",
+            "Anthropology (Biological)", "Anthropology (Cultural)", "Applied Linguistics",
+            "Applied Mathematics", "Applied Physics", "Aquaculture", "Art Conservation",
+            "Art Education", "Art History (Asian)", "Art Therapy", "Asian Studies",
+            "Astronomy (Observational)", "Astronomy (Theoretical)", "Astrophysics",
+            "Atmospheric Sciences", "Automotive Engineering", "Banking", "Biochemistry",
+            "Bioengineering", "Bioethics", "Biogeochemistry", "Bioinformatics",
+            "Biological Anthropology", "Biological Engineering", "Biomechanics",
+            "Biomedical Engineering", "Biomedical Physics", "Biophysics", "Biostatistics",
+            "Botany", "Business Administration", "Business Analytics", "Cardiology",
+            "Cell Biology", "Ceramic Engineering", "Chemical Engineering",
+            "Child Development", "Chinese Language & Literature", "Civil Engineering",
+            "Classical Archaeology", "Classical Studies", "Clinical Psychology",
+            "Cognitive Science", "Communications", "Comparative Literature",
+            "Computer Engineering", "Computer Graphics", "Computer Vision",
+            "Counseling Psychology", "Criminology", "Cultural Anthropology",
+            "Cultural Studies", "Curriculum & Instruction", "Dance", "Demography",
+            "Dentistry", "Design", "Developmental Biology", "Developmental Psychology",
+            "Digital Humanities", "Disability Studies", "Drama", "Earth Science",
+            "East Asian Studies", "Ecology", "Econometrics", "Economic History",
+            "Educational Administration", "Educational Leadership", "Educational Psychology",
+            "Educational Technology", "Electrical Engineering", "Endocrinology",
+            "Energy Engineering", "English Language & Literature", "Entomology",
+            "Environmental Chemistry", "Environmental Economics", "Environmental Engineering",
+            "Environmental Health", "Environmental Policy", "Epidemiology",
+            "European History", "Evolutionary Biology", "Exercise Physiology",
+            "Family Studies", "Film Criticism", "Film Production", "Finance",
+            "Food Science", "Forensic Science", "French Language & Literature",
+            "Gender Studies", "Genetics", "Genomics", "Geography", "Geophysics",
+            "German Language & Literature", "Gerontology", "Graphic Design",
+            "Health Administration", "Health Communication", "Health Education",
+            "Health Informatics", "Health Policy", "Health Psychology", "Hematology",
+            "Hepatology", "Higher Education", "Hispanic Studies", "Historical Archaeology",
+            "History of Art", "History of Science", "Home Economics", "Horticulture",
+            "Human Computer Interaction", "Human Development", "Human Factors Engineering",
+            "Human Geography", "Human Resources", "Human Rights", "Immunology",
+            "Industrial Engineering", "Industrial Psychology", "Information Science",
+            "Information Systems", "Information Technology", "Inorganic Chemistry",
+            "Instructional Technology", "Insurance", "International Business",
+            "International Development", "International Law", "International Relations",
+            "Islamic Studies", "Italian Language & Literature", "Japanese Language & Literature",
+            "Jewish Studies", "Journalism", "Kinesiology", "Latin American Studies",
+            "Library Science", "Linguistics (Computational)", "Linguistics (Historical)",
+            "Literacy Education", "Logic", "Management", "Marketing", "Materials Engineering",
+            "Materials Science", "Mathematical Biology", "Mathematical Physics",
+            "Mechanical Engineering", "Media Studies", "Medieval History", "Memetics",
+            "Metallurgical Engineering", "Meteorology", "Microbiology", "Microelectronics",
+            "Middle Eastern Studies", "Military Science", "Mineralogy", "Mining Engineering",
+            "Modern Languages", "Molecular Biology", "Molecular Physics", "Music Composition",
+            "Music Education", "Music Performance", "Music Theory", "Nanoscience",
+            "Native American Studies", "Natural Language Processing", "Nephrology",
+            "Neuroanatomy", "Neurobiology", "Neurochemistry", "Neuroengineering",
+            "Neuroimaging", "Neurology", "Neuropsychology", "Neurosurgery", "Nuclear Engineering",
+            "Nuclear Physics", "Nursing", "Nutrition", "Obstetrics & Gynecology",
+            "Occupational Health", "Occupational Therapy", "Ocean Engineering",
+            "Oncology", "Operations Research", "Ophthalmology", "Optometry", "Organic Chemistry",
+            "Orthopedic Surgery", "Otolaryngology", "Paleontology", "Pathology",
+            "Pediatrics", "Pharmacology", "Pharmacy", "Philosophy of Mind",
+            "Philosophy of Science", "Photography", "Physical Chemistry", "Physical Education",
+            "Physical Therapy", "Physics (Applied)", "Physics (Theoretical)", "Physiology",
+            "Plant Biology", "Plant Pathology", "Plastic Surgery", "Poetry", "Political Economy",
+            "Political Philosophy", "Polymer Science", "Population Genetics",
+            "Prehistoric Archaeology", "Primary Education", "Printmaking", "Product Design",
+            "Professional Writing", "Psychiatry", "Psychoanalysis", "Psycholinguistics",
+            "Psychometrics", "Public Administration", "Public Health (Epidemiology)",
+            "Public Health (Nutrition)", "Public Policy", "Pulmonology", "Quantum Computing",
+            "Quantum Physics", "Radiation Biology", "Radiology", "Real Estate",
+            "Religious Studies (Buddhism)", "Religious Studies (Christianity)",
+            "Religious Studies (Hinduism)", "Religious Studies (Islam)", "Robotics Engineering",
+            "Romance Languages", "Russian Language & Literature", "Scandinavian Studies",
+            "Science Education", "Secondary Education", "Sedimentology", "Semiotics",
+            "Social Work", "Sociolinguistics", "Soil Science", "Solar Physics",
+            "Special Education", "Speech-Language Pathology", "Sports Science",
+            "Statistics (Applied)", "Statistics (Theoretical)", "Stem Cell Biology",
+            "Structural Biology", "Structural Engineering", "Surgery", "Surveying",
+            "Systems Biology", "Systems Engineering", "Taxation", "Teacher Education",
+            "Telecommunications", "Textile Engineering", "Theology", "Toxicology",
+            "Transportation Engineering", "Urology", "Veterinary Medicine", "Virology",
+            "Visual Arts", "Web Development", "Women's Studies", "World History",
+            "Zoology"
         ];
 
-        // Comprehensive database of roles and skills across all domains
+        // Comprehensive database of roles and skills across all domains (simplified for brevity)
+        // Note: This is a small sample. You would need to expand this significantly to match the new domains.
         const roleRequirements = {
             // Natural Sciences
             "Research Scientist": ["Research Methodology", "Data Analysis", "Scientific Writing", "Laboratory Techniques", "Statistical Analysis", "Critical Thinking", "Peer Review", "Grant Writing"],
             "Lab Technician": ["Laboratory Safety", "Equipment Operation", "Sample Preparation", "Data Recording", "Quality Control", "Documentation", "Basic Chemistry", "Attention to Detail"],
             "Science Educator": ["Curriculum Development", "Pedagogy", "Subject Matter Expertise", "Classroom Management", "Assessment Design", "Educational Technology", "Student Engagement", "Differentiated Instruction"],
-            
             // Mathematics
             "Mathematician": ["Advanced Mathematics", "Proof Writing", "Abstract Reasoning", "Problem Solving", "Computational Methods", "Mathematical Modeling", "Research Publication", "Academic Collaboration"],
             "Data Analyst": ["Statistical Analysis", "Programming", "Data Visualization", "Database Management", "Machine Learning", "Business Acumen", "Communication", "Problem Solving"],
             "Actuary": ["Probability Theory", "Risk Assessment", "Financial Mathematics", "Insurance Principles", "Regulatory Knowledge", "Modeling", "Communication", "Attention to Detail"],
-            
             // Engineering
             "Software Engineer": ["Programming", "System Design", "Algorithms", "Database Management", "Version Control", "Testing", "Agile Methodologies", "Problem Solving"],
             "Civil Engineer": ["Structural Analysis", "Project Management", "CAD Software", "Materials Science", "Construction Standards", "Environmental Regulations", "Cost Estimation", "Risk Assessment"],
             "Biomedical Engineer": ["Biology", "Engineering Principles", "Medical Device Design", "Regulatory Affairs", "Biomechanics", "Tissue Engineering", "Clinical Trials", "Problem Solving"],
-            
             // Medicine
             "Physician": ["Clinical Diagnosis", "Patient Care", "Medical Knowledge", "Communication", "Ethics", "Evidence-Based Practice", "Team Collaboration", "Continuous Learning"],
             "Medical Researcher": ["Clinical Research", "Biostatistics", "Regulatory Compliance", "Protocol Development", "Data Management", "Publication", "Grant Writing", "Ethical Standards"],
             "Public Health Specialist": ["Epidemiology", "Biostatistics", "Health Policy", "Community Health", "Program Evaluation", "Cultural Competency", "Data Analysis", "Communication"],
-            
             // Social Sciences
             "Sociologist": ["Social Theory", "Research Methods", "Statistical Analysis", "Qualitative Research", "Cultural Analysis", "Writing", "Critical Thinking", "Ethics"],
             "Psychologist": ["Psychological Theory", "Research Methods", "Assessment", "Therapeutic Techniques", "Ethics", "Data Analysis", "Communication", "Cultural Sensitivity"],
             "Political Scientist": ["Political Theory", "Research Methods", "Statistical Analysis", "Policy Analysis", "Comparative Politics", "International Relations", "Writing", "Critical Thinking"],
-            
             // Humanities
             "Historian": ["Historical Research", "Archival Research", "Critical Analysis", "Writing", "Source Evaluation", "Period Knowledge", "Interpretation", "Argumentation"],
             "Philosopher": ["Philosophical Reasoning", "Critical Thinking", "Argumentation", "Writing", "Historical Knowledge", "Logic", "Ethics", "Metaphysics"],
             "Literary Scholar": ["Literary Theory", "Textual Analysis", "Research Methods", "Writing", "Historical Context", "Critical Interpretation", "Comparative Literature", "Language Skills"],
-            
             // Business
             "Business Analyst": ["Data Analysis", "Process Modeling", "Requirements Gathering", "Stakeholder Management", "Communication", "Problem Solving", "Project Management", "Business Acumen"],
             "Marketing Manager": ["Market Research", "Consumer Behavior", "Brand Management", "Digital Marketing", "Analytics", "Communication", "Strategic Planning", "Creativity"],
             "Financial Analyst": ["Financial Modeling", "Valuation", "Risk Analysis", "Accounting", "Economics", "Data Analysis", "Communication", "Attention to Detail"],
-            
             // Law
             "Lawyer": ["Legal Research", "Writing", "Advocacy", "Client Counseling", "Negotiation", "Ethics", "Attention to Detail", "Critical Thinking"],
             "Legal Researcher": ["Legal Databases", "Case Analysis", "Statutory Interpretation", "Writing", "Research Methods", "Citation", "Attention to Detail", "Analytical Skills"],
             "Compliance Officer": ["Regulatory Knowledge", "Risk Assessment", "Policy Development", "Auditing", "Training", "Communication", "Attention to Detail", "Ethics"],
-            
             // Education
             "University Professor": ["Subject Expertise", "Research", "Teaching", "Curriculum Development", "Mentoring", "Publishing", "Grant Writing", "Academic Service"],
             "Instructional Designer": ["Learning Theory", "Curriculum Design", "Educational Technology", "Assessment", "Project Management", "Communication", "Creativity", "Problem Solving"],
             "Education Policy Analyst": ["Policy Analysis", "Research Methods", "Data Analysis", "Stakeholder Engagement", "Writing", "Communication", "Political Acumen", "Ethics"],
-            
             // Arts
             "Fine Artist": ["Technical Skills", "Creativity", "Art History", "Conceptual Development", "Presentation", "Marketing", "Critical Analysis", "Portfolio Development"],
             "Art Historian": ["Art History", "Research Methods", "Critical Analysis", "Writing", "Museum Studies", "Cultural Context", "Foreign Languages", "Visual Analysis"],
             "Musician": ["Performance", "Theory", "Composition", "Ear Training", "Music History", "Practice", "Collaboration", "Creativity"],
-            
             // Computer Science
             "AI Researcher": ["Machine Learning", "Deep Learning", "Mathematics", "Programming", "Research Methods", "Algorithm Design", "Data Analysis", "Publication"],
             "Cybersecurity Specialist": ["Network Security", "Risk Assessment", "Incident Response", "Encryption", "Compliance", "Forensics", "Communication", "Problem Solving"],
             "Systems Architect": ["System Design", "Scalability", "Cloud Computing", "Security", "Performance Optimization", "Documentation", "Communication", "Problem Solving"],
-            
             // Environmental Science
             "Environmental Scientist": ["Ecology", "Environmental Chemistry", "Data Analysis", "GIS", "Regulatory Knowledge", "Field Work", "Report Writing", "Sustainability"],
             "Climate Researcher": ["Climate Modeling", "Data Analysis", "Statistics", "Programming", "Research Methods", "Publication", "Policy Understanding", "Communication"],
             "Conservation Biologist": ["Ecology", "Wildlife Management", "Conservation Planning", "Field Research", "Data Analysis", "Policy", "Community Engagement", "Writing"],
-            
             // Additional specialized roles
             "Bioinformatician": ["Genomics", "Programming", "Statistics", "Database Management", "Algorithm Design", "Biological Knowledge", "Data Analysis", "Research"],
             "Nanotechnologist": ["Materials Science", "Physics", "Chemistry", "Fabrication Techniques", "Characterization", "Safety Protocols", "Research", "Innovation"],
             "Astrophysicist": ["Mathematics", "Physics", "Computational Methods", "Observational Techniques", "Data Analysis", "Research", "Publication", "Instrumentation"],
             "Neuroscientist": ["Neuroanatomy", "Neurophysiology", "Research Methods", "Data Analysis", "Statistics", "Laboratory Techniques", "Ethics", "Communication"],
             "Linguist": ["Phonetics", "Syntax", "Semantics", "Sociolinguistics", "Research Methods", "Data Analysis", "Language Teaching", "Cross-cultural Communication"],
-            "Archaeologist": ["Field Methods", "Artifact Analysis", "Dating Techniques", "Cultural Context", "Documentation", "Research", "Writing", "Preservation"]
+            "Archaeologist": ["Field Methods", "Artifact Analysis", "Dating Techniques", "Cultural Context", "Documentation", "Research", "Writing", "Preservation"],
+            // Examples from new domains
+            "Data Scientist": ["Programming", "Statistics", "Machine Learning", "Data Visualization", "Big Data Technologies", "Communication", "Problem Solving", "Domain Expertise"],
+            "Environmental Engineer": ["Environmental Science", "Engineering Principles", "Pollution Control", "Waste Management", "Regulations", "Project Management", "Modeling", "Risk Assessment"],
+            "Digital Marketing Specialist": ["Digital Marketing Channels", "SEO/SEM", "Social Media", "Analytics", "Content Marketing", "Email Marketing", "Marketing Automation", "Communication"],
+            "Clinical Psychologist": ["Psychological Assessment", "Therapeutic Interventions", "Ethics", "Research", "Communication", "Cultural Competency", "Case Management", "Supervision"],
+            "Urban Planner": ["Urban Design", "GIS", "Policy Analysis", "Community Engagement", "Environmental Planning", "Transportation Planning", "Zoning Regulations", "Project Management"],
+            "Biostatistician": ["Statistics", "Biostatistics", "R/Python", "Clinical Trials", "Epidemiology", "Data Analysis", "Communication", "Regulatory Knowledge"],
+            "Genetic Counselor": ["Genetics", "Genomics", "Counseling", "Communication", "Ethics", "Risk Assessment", "Pedigree Analysis", "Laboratory Knowledge"],
+            "Robotics Engineer": ["Robotics", "Mechanical Engineering", "Electrical Engineering", "Control Systems", "Programming", "Sensor Integration", "Problem Solving", "System Design"],
+            "Cybersecurity Analyst": ["Network Security", "Incident Response", "Vulnerability Assessment", "Security Tools", "Risk Management", "Compliance", "Forensics", "Communication"],
+            "User Experience (UX) Designer": ["UX Research", "Interaction Design", "Prototyping", "Usability Testing", "Information Architecture", "Visual Design", "Empathy", "Communication"],
+            "Supply Chain Manager": ["Supply Chain Management", "Logistics", "Procurement", "Inventory Management", "Demand Planning", "Analytics", "Negotiation", "Problem Solving"],
+            "Renewable Energy Engineer": ["Renewable Energy Technologies", "Engineering Principles", "Project Management", "Energy Systems", "Environmental Impact", "Regulations", "Design", "Analysis"],
+            "Forensic Accountant": ["Accounting", "Auditing", "Fraud Investigation", "Legal Knowledge", "Analytical Skills", "Attention to Detail", "Communication", "Report Writing"],
+            "Health Informatics Specialist": ["Healthcare Systems", "Information Technology", "Data Management", "EHRs", "Privacy/Security", "Analytics", "Communication", "Project Management"],
+            "Game Developer": ["Programming", "Game Design", "Graphics", "Audio", "Storytelling", "Project Management", "Teamwork", "Problem Solving"],
+            "Ethnomusicologist": ["Music Theory", "Ethnography", "Cultural Studies", "Research Methods", "Field Recording", "Analysis", "Writing", "Performance"],
+            "Museum Curator": ["Art/History Knowledge", "Collection Management", "Exhibition Planning", "Research", "Writing", "Public Speaking", "Grant Writing", "Administration"],
+            "Science Writer": ["Scientific Knowledge", "Writing", "Editing", "Communication", "Research", "SEO", "Interviewing", "Storytelling"],
+            "Patent Attorney": ["Legal Knowledge", "Technical Expertise", "Patent Law", "Writing", "Communication", "Negotiation", "Analytical Skills", "Attention to Detail"],
+            "Agricultural Economist": ["Economics", "Agriculture", "Statistics", "Policy Analysis", "Market Research", "Data Analysis", "Communication", "Report Writing"]
         };
 
-        // Learning resources database
+        // Learning resources database (simplified for brevity)
+        // Note: This is a small sample. You would need to expand this significantly to match the new skills.
         const learningResources = {
             "Research Methodology": [
                 { name: "Research Methods for Beginners - Coursera", url: "#" },
@@ -492,6 +696,134 @@
                 { name: "Scientific Writing - Nature", url: "#" },
                 { name: "Academic Writing Skills - Coursera", url: "#" }
             ],
+            "Programming": [
+                { name: "Programming Fundamentals - freeCodeCamp", url: "#" },
+                { name: "Advanced Programming - Coursera", url: "#" }
+            ],
+            "Machine Learning": [
+                { name: "Machine Learning - Coursera", url: "#" },
+                { name: "Deep Learning - edX", url: "#" }
+            ],
+            "Statistics": [
+                { name: "Statistics Fundamentals - Khan Academy", url: "#" },
+                { name: "Applied Statistics - Coursera", url: "#" }
+            ],
+            "Communication": [
+                { name: "Professional Communication - Coursera", url: "#" },
+                { name: "Interpersonal Skills - edX", url: "#" }
+            ],
+            "Problem Solving": [
+                { name: "Problem Solving Skills - edX", url: "#" },
+                { name: "Creative Problem Solving - Coursera", url: "#" }
+            ],
+            "Project Management": [
+                { name: "Project Management - Coursera", url: "#" },
+                { name: "PMP Certification - edX", url: "#" }
+            ],
+            "Critical Thinking": [
+                { name: "Critical Thinking Skills - edX", url: "#" },
+                { name: "Logical Reasoning - Coursera", url: "#" }
+            ],
+            "Writing": [
+                { name: "Academic Writing - Coursera", url: "#" },
+                { name: "Professional Writing - edX", url: "#" }
+            ],
+            "Data Visualization": [
+                { name: "Data Visualization - DataCamp", url: "#" },
+                { name: "Information Visualization - Coursera", url: "#" }
+            ],
+            "Database Management": [
+                { name: "Database Design - Coursera", url: "#" },
+                { name: "SQL Fundamentals - DataCamp", url: "#" }
+            ],
+            "Cybersecurity": [
+                { name: "Cybersecurity Fundamentals - Coursera", url: "#" },
+                { name: "Ethical Hacking - Udemy", url: "#" }
+            ],
+            "Cloud Computing": [
+                { name: "Cloud Computing Basics - Coursera", url: "#" },
+                { name: "AWS Fundamentals - AWS Training", url: "#" }
+            ],
+            "User Experience (UX)": [
+                { name: "UX Design Fundamentals - Coursera", url: "#" },
+                { name: "Interaction Design - Interaction Design Foundation", url: "#" }
+            ],
+            "Digital Marketing": [
+                { name: "Digital Marketing - Google", url: "#" },
+                { name: "Social Media Marketing - Coursera", url: "#" }
+            ],
+            "SEO": [
+                { name: "SEO Training - Moz", url: "#" },
+                { name: "Advanced SEO - Coursera", url: "#" }
+            ],
+            "Supply Chain Management": [
+                { name: "Supply Chain Fundamentals - Coursera", url: "#" },
+                { name: "Logistics Management - edX", url: "#" }
+            ],
+            "Renewable Energy": [
+                { name: "Renewable Energy Principles - Coursera", url: "#" },
+                { name: "Solar Energy Engineering - edX", url: "#" }
+            ],
+            "Fraud Investigation": [
+                { name: "Fraud Examination - ACFE", url: "#" },
+                { name: "Forensic Accounting - Coursera", url: "#" }
+            ],
+            "Healthcare Systems": [
+                { name: "Healthcare Delivery - Coursera", url: "#" },
+                { name: "Health Policy - edX", url: "#" }
+            ],
+            "Game Design": [
+                { name: "Game Design Fundamentals - Coursera", url: "#" },
+                { name: "Narrative Design - Game Design Online", url: "#" }
+            ],
+            "Ethnography": [
+                { name: "Ethnographic Methods - Coursera", url: "#" },
+                { name: "Cultural Anthropology - edX", url: "#" }
+            ],
+            "Collection Management": [
+                { name: "Museum Collections - Coursera", url: "#" },
+                { name: "Preservation Techniques - Smithsonian", url: "#" }
+            ],
+            "Editing": [
+                { name: "Copy Editing - Coursera", url: "#" },
+                { name: "Grammar & Style - edX", url: "#" }
+            ],
+            "Patent Law": [
+                { name: "Intellectual Property Law - Coursera", url: "#" },
+                { name: "Patent Drafting - USPTO", url: "#" }
+            ],
+            "Agriculture": [
+                { name: "Introduction to Agriculture - Coursera", url: "#" },
+                { name: "Crop Science - edX", url: "#" }
+            ],
+            "Market Research": [
+                { name: "Market Analysis - Coursera", url: "#" },
+                { name: "Consumer Insights - edX", url: "#" }
+            ],
+            "Policy Analysis": [
+                { name: "Policy Analysis Methods - Coursera", url: "#" },
+                { name: "Public Policy - edX", url: "#" }
+            ],
+            "Grant Writing": [
+                { name: "Grant Writing Workshop - NSF", url: "#" },
+                { name: "Successful Grant Applications - Coursera", url: "#" }
+            ],
+            "Teaching": [
+                { name: "Pedagogy - Coursera", url: "#" },
+                { name: "Classroom Management - edX", url: "#" }
+            ],
+            "Mentoring": [
+                { name: "Coaching and Mentoring - Coursera", url: "#" },
+                { name: "Leadership Development - edX", url: "#" }
+            ],
+            "Publishing": [
+                { name: "Academic Publishing - Nature", url: "#" },
+                { name: "Writing for Publication - Coursera", url: "#" }
+            ],
+            "Academic Service": [
+                { name: "Academic Leadership - Coursera", url: "#" },
+                { name: "Committee Work - University Resources", url: "#" }
+            ],
             "Laboratory Techniques": [
                 { name: "Lab Safety and Techniques - MIT", url: "#" },
                 { name: "Advanced Laboratory Methods - edX", url: "#" }
@@ -500,17 +832,9 @@
                 { name: "Statistics for Researchers - Khan Academy", url: "#" },
                 { name: "Applied Statistics - Coursera", url: "#" }
             ],
-            "Critical Thinking": [
-                { name: "Critical Thinking Skills - edX", url: "#" },
-                { name: "Logical Reasoning - Coursera", url: "#" }
-            ],
             "Peer Review": [
                 { name: "Peer Review Process - Elsevier", url: "#" },
                 { name: "Becoming a Reviewer - Wiley", url: "#" }
-            ],
-            "Grant Writing": [
-                { name: "Grant Writing Workshop - NSF", url: "#" },
-                { name: "Successful Grant Applications - Coursera", url: "#" }
             ],
             "Laboratory Safety": [
                 { name: "Lab Safety Certification - OSHA", url: "#" },
@@ -588,10 +912,6 @@
                 { name: "Abstract Thinking - Coursera", url: "#" },
                 { name: "Logical Reasoning - edX", url: "#" }
             ],
-            "Problem Solving": [
-                { name: "Problem Solving Skills - edX", url: "#" },
-                { name: "Creative Problem Solving - Coursera", url: "#" }
-            ],
             "Computational Methods": [
                 { name: "Computational Mathematics - MIT", url: "#" },
                 { name: "Numerical Methods - Coursera", url: "#" }
@@ -608,10 +928,6 @@
                 { name: "Research Collaboration - edX", url: "#" },
                 { name: "Academic Networking - Coursera", url: "#" }
             ],
-            "Programming": [
-                { name: "Programming Fundamentals - freeCodeCamp", url: "#" },
-                { name: "Advanced Programming - Coursera", url: "#" }
-            ],
             "System Design": [
                 { name: "System Design - Coursera", url: "#" },
                 { name: "Software Architecture - edX", url: "#" }
@@ -619,10 +935,6 @@
             "Algorithms": [
                 { name: "Algorithms - Khan Academy", url: "#" },
                 { name: "Advanced Algorithms - Coursera", url: "#" }
-            ],
-            "Database Management": [
-                { name: "Database Design - Coursera", url: "#" },
-                { name: "SQL Fundamentals - DataCamp", url: "#" }
             ],
             "Version Control": [
                 { name: "Git Fundamentals - GitHub", url: "#" },
@@ -639,10 +951,6 @@
             "Structural Analysis": [
                 { name: "Structural Engineering - MIT", url: "#" },
                 { name: "Advanced Structural Analysis - Coursera", url: "#" }
-            ],
-            "Project Management": [
-                { name: "Project Management - Coursera", url: "#" },
-                { name: "PMP Certification - edX", url: "#" }
             ],
             "CAD Software": [
                 { name: "AutoCAD Training - Autodesk", url: "#" },
@@ -700,10 +1008,6 @@
                 { name: "Medical Education - Coursera", url: "#" },
                 { name: "Continuing Medical Education - edX", url: "#" }
             ],
-            "Communication": [
-                { name: "Professional Communication - Coursera", url: "#" },
-                { name: "Interpersonal Skills - edX", url: "#" }
-            ],
             "Ethics": [
                 { name: "Professional Ethics - Coursera", url: "#" },
                 { name: "Ethical Reasoning - edX", url: "#" }
@@ -759,10 +1063,6 @@
             "Cultural Analysis": [
                 { name: "Cultural Studies - Coursera", url: "#" },
                 { name: "Cross-Cultural Analysis - edX", url: "#" }
-            ],
-            "Writing": [
-                { name: "Academic Writing - Coursera", url: "#" },
-                { name: "Professional Writing - edX", url: "#" }
             ],
             "Source Evaluation": [
                 { name: "Information Literacy - Coursera", url: "#" },
@@ -900,10 +1200,6 @@
                 { name: "Legal Analysis - Coursera", url: "#" },
                 { name: "Critical Legal Thinking - edX", url: "#" }
             ],
-            "Policy Analysis": [
-                { name: "Policy Analysis Methods - Coursera", url: "#" },
-                { name: "Public Policy - edX", url: "#" }
-            ],
             "Stakeholder Engagement": [
                 { name: "Stakeholder Management - Coursera", url: "#" },
                 { name: "Public Engagement - edX", url: "#" }
@@ -980,10 +1276,6 @@
                 { name: "Ensemble Work - Conservatory", url: "#" },
                 { name: "Creative Collaboration - Coursera", url: "#" }
             ],
-            "Machine Learning": [
-                { name: "Machine Learning - Coursera", url: "#" },
-                { name: "Deep Learning - edX", url: "#" }
-            ],
             "Deep Learning": [
                 { name: "Neural Networks - Coursera", url: "#" },
                 { name: "Advanced Deep Learning - edX", url: "#" }
@@ -1019,10 +1311,6 @@
             "Scalability": [
                 { name: "Scalable Systems - Coursera", url: "#" },
                 { name: "High Availability - edX", url: "#" }
-            ],
-            "Cloud Computing": [
-                { name: "Cloud Architecture - Coursera", url: "#" },
-                { name: "Cloud Security - edX", url: "#" }
             ],
             "Security": [
                 { name: "Information Security - Coursera", url: "#" },
@@ -1180,17 +1468,24 @@
             });
         }
 
-        // Filter roles by domain
+        // Filter roles by domain - Improved matching logic
         function filterRolesByDomain(domain) {
             const roles = Object.keys(roleRequirements);
-            const filteredRoles = roles.filter(role => 
-                role.toLowerCase().includes(domain.toLowerCase()) || 
-                domain.toLowerCase().includes(role.toLowerCase().split(' ')[0].toLowerCase())
-            );
-            
-            // If no specific matches, show all roles
-            const displayRoles = filteredRoles.length > 0 ? filteredRoles : roles;
-            
+            const domainLower = domain.toLowerCase();
+            const filteredRoles = roles.filter(role => {
+                const roleLower = role.toLowerCase();
+                // Direct match in role name
+                if (roleLower.includes(domainLower)) return true;
+                // Match if domain is part of the role's first word (e.g., "Computer" matches "Software Engineer")
+                const roleFirstWord = roleLower.split(' ')[0];
+                if (domainLower.includes(roleFirstWord)) return true;
+                // Fuzzy match: check if domain words are present in role
+                const domainWords = domainLower.split(' ');
+                return domainWords.some(word => roleLower.includes(word));
+            });
+
+            // If no specific matches, show all roles (or a large default set)
+            const displayRoles = filteredRoles.length > 0 ? filteredRoles.slice(0, 100) : roles.slice(0, 100); // Limit to 100 for performance
             updateRolesList(displayRoles);
         }
 
@@ -1203,29 +1498,37 @@
                 div.textContent = role;
                 div.addEventListener('click', function() {
                     roleSearchInput.value = role;
-                    rolesList.innerHTML = '';
+                    rolesList.innerHTML = ''; // Clear list on selection
                 });
                 rolesList.appendChild(div);
             });
         }
 
-        // Search roles
+        // Search roles - Improved search with debouncing
+        let searchTimeout;
         roleSearchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
             const searchTerm = this.value.toLowerCase();
             if (searchTerm.length > 0) {
-                const matchingRoles = Object.keys(roleRequirements).filter(role => 
-                    role.toLowerCase().includes(searchTerm)
-                );
-                updateRolesList(matchingRoles);
+                searchTimeout = setTimeout(() => {
+                    const matchingRoles = Object.keys(roleRequirements).filter(role =>
+                        role.toLowerCase().includes(searchTerm)
+                    );
+                    updateRolesList(matchingRoles.slice(0, 50)); // Limit results for performance
+                }, 300); // Debounce delay
             } else {
                 rolesList.innerHTML = '';
             }
         });
 
         // Display current skills as tags
+        let skillsTimeout;
         currentSkillsInput.addEventListener('input', function() {
-            const skills = this.value.split(',').map(skill => skill.trim()).filter(skill => skill);
-            displaySkills(skills, currentSkillsDisplay);
+            clearTimeout(skillsTimeout);
+            skillsTimeout = setTimeout(() => {
+                const skills = this.value.split(',').map(skill => skill.trim()).filter(skill => skill);
+                displaySkills(skills, currentSkillsDisplay);
+            }, 300); // Debounce delay
         });
 
         function displaySkills(skills, container) {
@@ -1244,28 +1547,26 @@
             roleSearchInput.value = "Research Scientist";
             displaySkills(["Research Methodology", "Data Analysis", "Scientific Writing", "Critical Thinking", "Statistical Analysis"], currentSkillsDisplay);
             rolesList.innerHTML = '';
+            // Clear previous results
+            resultsContainer.innerHTML = '<div class="empty-state"><div>📊</div><p>Select a domain, choose a role, enter your skills, then click "Analyze Skill Gap"</p></div>';
         });
 
         // Analyze skill gap
         analyzeBtn.addEventListener('click', function() {
             const userSkills = currentSkillsInput.value.split(',').map(skill => skill.trim().toLowerCase()).filter(skill => skill);
-            const targetRole = roleSearchInput.value;
-            
+            const targetRole = roleSearchInput.value.trim();
             if (!targetRole) {
                 alert("Please select or enter a target job role");
                 return;
             }
-            
             if (userSkills.length === 0) {
                 alert("Please enter your current skills");
                 return;
             }
-            
             // Show loading
             loadingElement.style.display = 'block';
             resultsContainer.innerHTML = '';
             rolesList.innerHTML = '';
-            
             // Simulate processing time
             setTimeout(() => {
                 analyzeSkills(userSkills, targetRole);
@@ -1274,12 +1575,26 @@
         });
 
         function analyzeSkills(userSkills, targetRole) {
-            // Get required skills for the role
-            const requiredSkills = roleRequirements[targetRole] || 
-                                 roleRequirements[Object.keys(roleRequirements).find(role => 
-                                     role.toLowerCase().includes(targetRole.toLowerCase()))] || 
-                                 [];
-            
+            // Get required skills for the role - Improved matching
+            let requiredSkills = [];
+            if (roleRequirements[targetRole]) {
+                requiredSkills = roleRequirements[targetRole];
+            } else {
+                // Find a close match if exact role not found
+                const roleKeys = Object.keys(roleRequirements);
+                const targetRoleLower = targetRole.toLowerCase();
+                const matchedKey = roleKeys.find(role => role.toLowerCase() === targetRoleLower);
+                if (matchedKey) {
+                     requiredSkills = roleRequirements[matchedKey];
+                } else {
+                    // Fallback: find partial match
+                    const partialMatchKey = roleKeys.find(role => role.toLowerCase().includes(targetRoleLower));
+                    if (partialMatchKey) {
+                        requiredSkills = roleRequirements[partialMatchKey];
+                    }
+                }
+            }
+
             if (requiredSkills.length === 0) {
                 resultsContainer.innerHTML = `
                     <div class="empty-state">
@@ -1289,21 +1604,20 @@
                 `;
                 return;
             }
-            
+
             // Convert user skills to lowercase for comparison
             const userSkillsLower = userSkills.map(skill => skill.toLowerCase());
-            
-            // Find matching and missing skills
-            const hasSkills = requiredSkills.filter(skill => 
-                userSkillsLower.includes(skill.toLowerCase()) || 
-                userSkillsLower.some(userSkill => 
-                    skill.toLowerCase().includes(userSkill) || 
-                    userSkill.includes(skill.toLowerCase())
-                )
-            );
-            
+            // Find matching and missing skills - Improved matching logic
+            const hasSkills = requiredSkills.filter(skill => {
+                const skillLower = skill.toLowerCase();
+                return userSkillsLower.some(userSkill =>
+                    skillLower === userSkill || // Exact match
+                    skillLower.includes(userSkill) || // User skill is part of required skill
+                    userSkill.includes(skillLower) // Required skill is part of user skill
+                );
+            });
             const missingSkills = requiredSkills.filter(skill => !hasSkills.includes(skill));
-            
+
             // Generate results HTML
             let resultsHTML = `
                 <div class="result-category has-skills">
@@ -1312,14 +1626,12 @@
                         ${hasSkills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
                     </div>
                 </div>
-                
                 <div class="result-category missing-skills">
                     <h3 class="category-title">❌ Skills You Need to Develop</h3>
                     <div class="skill-list">
                         ${missingSkills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
                     </div>
                 </div>
-                
                 <div class="result-category suggested-resources">
                     <h3 class="category-title">📚 Suggested Learning Resources</h3>
                     <ul class="resource-list">
@@ -1339,7 +1651,6 @@
                         }).join('')}
                     </ul>
                 </div>
-                
                 <div class="btn-group">
                     <button class="btn" onclick="exportReport('${targetRole}', ${JSON.stringify(hasSkills)}, ${JSON.stringify(missingSkills)})">
                         📥 Export Report (JSON)
@@ -1349,7 +1660,6 @@
                     </button>
                 </div>
             `;
-            
             resultsContainer.innerHTML = resultsHTML;
         }
 
@@ -1361,7 +1671,6 @@
                 missingSkills: missingSkills,
                 generatedAt: new Date().toISOString()
             };
-            
             const blob = new Blob([JSON.stringify(report, null, 2)], {type: 'application/json'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -1372,20 +1681,15 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }
-
         function exportTextReport(targetRole, hasSkills, missingSkills) {
             const report = `SKILL GAP ANALYSIS REPORT
 ========================
-
 Target Role: ${targetRole}
 Generated: ${new Date().toLocaleString()}
-
 SKILLS YOU ALREADY HAVE:
 ${hasSkills.map(skill => `- ${skill}`).join('\n')}
-
 SKILLS YOU NEED TO DEVELOP:
 ${missingSkills.map(skill => `- ${skill}`).join('\n')}
-
 RECOMMENDED LEARNING RESOURCES:
 ${missingSkills.slice(0, 5).map(skill => {
     const resources = learningResources[skill] || [
@@ -1394,11 +1698,9 @@ ${missingSkills.slice(0, 5).map(skill => {
     ];
     return `\n${skill}:\n${resources.map(res => `  - ${res.name}`).join('\n')}`;
 }).join('')}
-
 ---
 Report generated by Universal Skill Gap Visualizer
 `;
-            
             const blob = new Blob([report], {type: 'text/plain'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -1413,9 +1715,11 @@ Report generated by Universal Skill Gap Visualizer
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
             initializeDomains();
-            // Show all roles initially
-            updateRolesList(Object.keys(roleRequirements));
+            // Show a limited set of roles initially to improve load time
+            const initialRoles = Object.keys(roleRequirements).slice(0, 100);
+            updateRolesList(initialRoles);
         });
     </script>
 </body>
-</html>
+</html> 
+               
