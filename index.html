@@ -1,507 +1,597 @@
-              <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Universal Skill Gap Visualizer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #87CEEB;
-            --primary-dark: #5BAED4;
-            --secondary: #f5f5f5;
-            --dark: #333;
-            --light: #fff;
-            --success: #4CAF50;
-            --warning: #FF9800;
-            --danger: #F44336;
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --accent: #4cc9f0;
+            --dark: #2b2d42;
+            --light: #f8f9fa;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
             --gray: #808080;
             --light-gray: #e0e0e0;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
         }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
             color: var(--dark);
             line-height: 1.6;
+            min-height: 100vh;
+            padding-bottom: 2rem;
         }
+        
         .container {
             width: 95%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 15px; /* Reduced padding for smaller screens */
+            padding: 15px;
         }
+        
         header {
             text-align: center;
-            margin-bottom: 20px; /* Reduced margin */
-            padding: 15px 0; /* Reduced padding */
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            margin-bottom: 25px;
+            padding: 20px 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-            border-radius: 8px; /* Slightly smaller radius */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slightly reduced shadow */
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
         }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+        }
+        
         h1 {
-            font-size: 2rem; /* Smaller font size for mobile */
-            margin-bottom: 8px; /* Reduced margin */
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            position: relative;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
+        
         .subtitle {
-            font-size: 1rem; /* Smaller font size */
+            font-size: 1.1rem;
             opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
         }
+        
         .app-container {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 20px; /* Reduced gap */
+            gap: 25px;
         }
-        @media (min-width: 768px) {
-            .container {
-                padding: 20px;
-            }
-            header {
-                margin-bottom: 30px;
-                padding: 20px 0;
-                border-radius: 10px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            }
-            h1 {
-                font-size: 2.5rem;
-                margin-bottom: 10px;
-            }
-            .subtitle {
-                font-size: 1.1rem;
-            }
+        
+        @media (min-width: 992px) {
             .app-container {
-                gap: 30px;
                 grid-template-columns: 1fr 1fr;
             }
         }
+        
         .input-section, .results-section {
             background: var(--light);
-            padding: 20px; /* Reduced padding */
-            border-radius: 8px; /* Slightly smaller radius */
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Slightly reduced shadow */
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
         }
-        @media (min-width: 768px) {
-             .input-section, .results-section {
-                padding: 25px;
-                border-radius: 10px;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-             }
+        
+        .input-section:hover, .results-section:hover {
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
         }
+        
         .section-title {
-            color: var(--primary-dark);
-            margin-bottom: 15px; /* Reduced margin */
-            padding-bottom: 8px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
             border-bottom: 2px solid var(--light-gray);
-            font-size: 1.4rem; /* Slightly smaller title */
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        @media (min-width: 768px) {
-            .section-title {
-                 font-size: 1.5rem;
-                 margin-bottom: 20px;
-            }
+        
+        .section-title i {
+            background: rgba(67, 97, 238, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
         }
+        
         .form-group {
-            margin-bottom: 15px; /* Reduced margin */
+            margin-bottom: 20px;
         }
-        @media (min-width: 768px) {
-            .form-group {
-                 margin-bottom: 20px;
-            }
-        }
+        
         label {
             display: block;
-            margin-bottom: 6px; /* Reduced margin */
+            margin-bottom: 8px;
             font-weight: 600;
             color: var(--dark);
-            font-size: 0.95rem; /* Slightly smaller label */
+            font-size: 1.05rem;
         }
-        @media (min-width: 768px) {
-            label {
-                 margin-bottom: 8px;
-                 font-size: 1rem;
-            }
+        
+        .domain-select-container {
+            position: relative;
         }
-        input, select, textarea {
+        
+        .domain-select-container::after {
+            content: "\f078";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            pointer-events: none;
+        }
+        
+        select {
             width: 100%;
-            padding: 10px; /* Slightly smaller padding */
+            padding: 14px;
             border: 2px solid var(--light-gray);
-            border-radius: 5px;
-            font-size: 15px; /* Slightly smaller font */
-            transition: border-color 0.3s;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: white;
+            appearance: none;
+            cursor: pointer;
+            transition: var(--transition);
         }
-        @media (min-width: 768px) {
-            input, select, textarea {
-                 padding: 12px;
-                 font-size: 16px;
-            }
-        }
-        input:focus, select:focus, textarea:focus {
+        
+        select:focus {
             outline: none;
             border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
         }
+        
+        input, textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
         textarea {
-            min-height: 100px; /* Slightly smaller default height */
+            min-height: 120px;
             resize: vertical;
         }
-        @media (min-width: 768px) {
-            textarea {
-                 min-height: 120px;
-            }
-        }
+        
         .btn {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 10px 20px; /* Slightly smaller padding */
-            font-size: 15px; /* Slightly smaller font */
+            padding: 14px 25px;
+            font-size: 16px;
             font-weight: 600;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 6px rgba(67, 97, 238, 0.3);
         }
-        @media (min-width: 768px) {
-           .btn {
-                padding: 12px 25px;
-                font-size: 16px;
-           }
-        }
+        
         .btn:hover {
             background: var(--primary-dark);
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 6px 8px rgba(67, 97, 238, 0.4);
         }
+        
         .btn:active {
             transform: translateY(0);
         }
+        
         .btn:disabled {
             background: var(--light-gray);
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
         }
+        
         .btn-secondary {
-            background: var(--gray);
+            background: var(--secondary);
+            box-shadow: 0 4px 6px rgba(114, 9, 183, 0.3);
         }
+        
         .btn-secondary:hover {
-            background: #666;
+            background: #5e0a9c;
+            box-shadow: 0 6px 8px rgba(114, 9, 183, 0.4);
         }
+        
         .btn-group {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 12px;
+            margin-top: 25px;
         }
+        
         .skill-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px; /* Slightly smaller gap */
-            margin-top: 10px;
+            gap: 10px;
+            margin-top: 15px;
         }
+        
         .skill-tag {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white;
-            padding: 4px 8px; /* Slightly smaller padding */
+            padding: 6px 14px;
             border-radius: 20px;
-            font-size: 13px; /* Slightly smaller font */
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        @media (min-width: 768px) {
-            .skill-tag {
-                 padding: 5px 10px;
-                 font-size: 14px;
-            }
+        
+        .skill-tag i {
+            font-size: 12px;
         }
+        
         .results-container {
-            margin-top: 15px; /* Reduced margin */
+            margin-top: 20px;
         }
-        @media (min-width: 768px) {
-            .results-container {
-                 margin-top: 20px;
-            }
-        }
+        
         .result-category {
-            margin-bottom: 20px; /* Reduced margin */
+            margin-bottom: 25px;
+            animation: fadeIn 0.5s ease-out;
         }
-        @media (min-width: 768px) {
-            .result-category {
-                 margin-bottom: 25px;
-            }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+        
         .category-title {
-            font-size: 16px; /* Slightly smaller font */
+            font-size: 1.25rem;
             font-weight: 600;
-            margin-bottom: 12px; /* Reduced margin */
-            padding-bottom: 6px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
             border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        @media (min-width: 768px) {
-            .category-title {
-                 font-size: 18px;
-                 margin-bottom: 15px;
-                 padding-bottom: 8px;
-            }
-        }
+        
         .has-skills .category-title {
             color: var(--success);
         }
+        
         .missing-skills .category-title {
             color: var(--danger);
         }
+        
         .suggested-resources .category-title {
             color: var(--warning);
         }
+        
         .resource-list {
             list-style-type: none;
             padding-left: 0;
         }
+        
         .resource-item {
-            padding: 10px; /* Slightly smaller padding */
-            margin-bottom: 8px; /* Reduced margin */
-            background: var(--secondary);
-            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 12px;
+            background: #f8f9ff;
+            border-radius: 8px;
             border-left: 4px solid var(--primary);
+            transition: var(--transition);
         }
-         @media (min-width: 768px) {
-            .resource-item {
-                 padding: 12px;
-                 margin-bottom: 10px;
-            }
-         }
+        
+        .resource-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        }
+        
         .resource-item strong {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            color: var(--primary-dark);
         }
+        
         .resource-item ul {
-            list-style-type: disc; /* Use disc for inner list */
-            padding-left: 20px; /* Indent inner list */
-            margin-top: 5px;
+            list-style-type: none;
+            padding-left: 0;
         }
+        
         .resource-item li {
-            margin-bottom: 3px;
+            margin-bottom: 6px;
+            padding-left: 25px;
+            position: relative;
         }
+        
+        .resource-item li::before {
+            content: "\f058";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--success);
+        }
+        
         .resource-item a {
             color: var(--primary-dark);
             text-decoration: none;
             font-weight: 500;
-            font-size: 0.95rem; /* Slightly smaller link font */
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
         }
+        
         .resource-item a:hover {
+            color: var(--secondary);
             text-decoration: underline;
         }
+        
         .loading {
             display: none;
             text-align: center;
-            padding: 20px;
+            padding: 30px;
         }
+        
         .spinner {
             border: 4px solid rgba(0, 0, 0, 0.1);
             border-radius: 50%;
             border-top: 4px solid var(--primary);
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
+            margin: 0 auto 20px;
         }
+        
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        
         .empty-state {
             text-align: center;
-            padding: 30px 15px; /* Adjusted padding */
+            padding: 40px 20px;
             color: var(--gray);
         }
-        .empty-state i, .empty-state div {
-            font-size: 36px; /* Smaller icon size */
-            margin-bottom: 12px;
-            display: block;
+        
+        .empty-state i {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: var(--light-gray);
         }
-        @media (min-width: 768px) {
-            .empty-state {
-                 padding: 40px 20px;
-            }
-            .empty-state i, .empty-state div {
-                 font-size: 48px;
-                 margin-bottom: 15px;
-            }
+        
+        .empty-state p {
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin: 0 auto;
         }
+        
         footer {
             text-align: center;
-            margin-top: 30px; /* Reduced margin */
-            padding: 15px; /* Reduced padding */
+            margin-top: 40px;
+            padding: 20px;
             color: var(--gray);
-            font-size: 12px; /* Smaller font size */
+            font-size: 0.95rem;
         }
-        @media (min-width: 768px) {
-            footer {
-                 margin-top: 40px;
-                 padding: 20px;
-                 font-size: 14px;
-            }
-        }
+        
         .example-btn {
             background: none;
             border: 1px solid var(--primary);
             color: var(--primary);
-            padding: 6px 12px; /* Slightly smaller padding */
-            border-radius: 5px;
+            padding: 12px 20px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 13px; /* Slightly smaller font */
-            margin-top: 8px; /* Reduced margin */
-            width: 100%; /* Full width on small screens */
+            font-size: 15px;
+            font-weight: 500;
+            margin-top: 15px;
+            width: 100%;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
-        @media (min-width: 768px) {
-            .example-btn {
-                 padding: 8px 15px;
-                 font-size: 14px;
-                 margin-top: 10px;
-                 width: auto; /* Auto width on larger screens */
-            }
-        }
+        
         .example-btn:hover {
             background: var(--primary);
             color: white;
         }
-        .domain-selector {
+        
+        .domain-options {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Smaller min width */
-            gap: 8px; /* Slightly smaller gap */
-            margin-bottom: 15px; /* Reduced margin */
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
         }
-        @media (min-width: 768px) {
-            .domain-selector {
-                 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                 gap: 10px;
-                 margin-bottom: 20px;
-            }
-        }
-        .domain-btn {
-            background: var(--light-gray);
-            border: none;
-            padding: 8px; /* Slightly smaller padding */
-            border-radius: 5px;
-            cursor: pointer;
+        
+        .domain-option {
+            background: white;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            padding: 15px;
             text-align: center;
-            transition: all 0.3s;
-            font-size: 0.85rem; /* Smaller font size */
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
         }
-        @media (min-width: 768px) {
-            .domain-btn {
-                 padding: 10px;
-                 font-size: 1rem;
-            }
+        
+        .domain-option:hover {
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.05);
         }
-        .domain-btn:hover {
-            background: var(--primary);
-            color: white;
+        
+        .domain-option.active {
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            font-weight: 600;
         }
-        .domain-btn.active {
-            background: var(--primary-dark);
-            color: white;
-        }
+        
         .role-search {
-            margin-bottom: 12px; /* Reduced margin */
+            margin-bottom: 15px;
         }
-        @media (min-width: 768px) {
-            .role-search {
-                 margin-bottom: 15px;
-            }
-        }
-        .role-search input {
-            margin-bottom: 8px; /* Reduced margin */
-        }
-        @media (min-width: 768px) {
-            .role-search input {
-                 margin-bottom: 10px;
-            }
-        }
+        
         .roles-list {
-            max-height: 180px; /* Slightly smaller height */
+            max-height: 220px;
             overflow-y: auto;
             border: 1px solid var(--light-gray);
-            border-radius: 5px;
-            padding: 8px; /* Slightly smaller padding */
-            background-color: white; /* Ensure background for list */
+            border-radius: 8px;
+            padding: 10px;
+            background-color: white;
+            margin-top: 10px;
+            display: none;
         }
-        @media (min-width: 768px) {
-            .roles-list {
-                 max-height: 200px;
-                 padding: 10px;
-            }
+        
+        .roles-list.show {
+            display: block;
         }
+        
         .role-item {
-            padding: 6px; /* Slightly smaller padding */
+            padding: 10px;
             cursor: pointer;
-            border-radius: 3px;
-            font-size: 0.9rem; /* Slightly smaller font */
+            border-radius: 5px;
+            transition: var(--transition);
+            font-size: 0.95rem;
         }
-        @media (min-width: 768px) {
-            .role-item {
-                 padding: 8px;
-                 font-size: 1rem;
-            }
-        }
+        
         .role-item:hover {
             background: var(--light-gray);
+        }
+        
+        .role-item:first-child {
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+        
+        .role-item:last-child {
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .highlight {
+            background-color: rgba(255, 235, 59, 0.3);
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.4rem;
+            }
+            
+            .input-section, .results-section {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Universal Skill Gap Visualizer</h1>
+            <h1><i class="fas fa-graduation-cap"></i> Universal Skill Gap Visualizer</h1>
             <p class="subtitle">Identify skill gaps across all educational and research domains worldwide</p>
         </header>
+        
         <div class="app-container">
             <div class="input-section">
-                <h2 class="section-title">Your Skills & Target Role</h2>
+                <h2 class="section-title"><i class="fas fa-user-edit"></i> Your Skills & Target Role</h2>
+                
                 <div class="form-group">
-                    <label>Domain Selection</label>
-                    <div class="domain-selector" id="domain-selector">
-                        <!-- Domains will be populated by JavaScript -->
+                    <label for="domain-select"><i class="fas fa-book"></i> Select Domain</label>
+                    <div class="domain-select-container">
+                        <select id="domain-select">
+                            <option value="">-- Select a Domain --</option>
+                            <!-- Domains will be populated by JavaScript -->
+                        </select>
                     </div>
                 </div>
+                
                 <div class="form-group">
-                    <label for="role-search">Search Target Role</label>
+                    <label for="role-search"><i class="fas fa-briefcase"></i> Search Target Role</label>
                     <input type="text" id="role-search" placeholder="Search for a role...">
                     <div class="roles-list" id="roles-list"></div>
                 </div>
+                
                 <div class="form-group">
-                    <label for="current-skills">Your Current Skills (comma-separated)</label>
+                    <label for="current-skills"><i class="fas fa-list"></i> Your Current Skills (comma-separated)</label>
                     <textarea id="current-skills" placeholder="e.g., Research Methodology, Statistical Analysis, Critical Thinking, Academic Writing"></textarea>
                     <div class="skill-list" id="current-skills-display"></div>
                 </div>
-                <button id="analyze-btn" class="btn">Analyze Skill Gap</button>
-                <button id="example-btn" class="example-btn">Load Example Data</button>
+                
+                <button id="analyze-btn" class="btn"><i class="fas fa-chart-bar"></i> Analyze Skill Gap</button>
+                <button id="example-btn" class="example-btn"><i class="fas fa-lightbulb"></i> Load Example Data</button>
             </div>
+            
             <div class="results-section">
-                <h2 class="section-title">Analysis Results</h2>
+                <h2 class="section-title"><i class="fas fa-chart-line"></i> Analysis Results</h2>
                 <div class="loading" id="loading">
                     <div class="spinner"></div>
-                    <p>Analyzing your skills...</p>
+                    <p>Analyzing your skills and generating recommendations...</p>
                 </div>
                 <div class="results-container" id="results-container">
                     <div class="empty-state">
-                        <div>📊</div>
+                        <i class="fas fa-search"></i>
                         <p>Select a domain, choose a role, enter your skills, then click "Analyze Skill Gap"</p>
                     </div>
                 </div>
             </div>
         </div>
+        
         <footer>
             <p>Universal Skill Gap Visualizer &copy; 2025 | Helping researchers and students worldwide | All rights reserved. Created by Samar Jeet Jamwal</p>
         </footer>
     </div>
+    
     <script>
         // Expanded database of educational and research domains
         const domains = [
-            // Existing Domains
             "Natural Sciences", "Mathematics", "Engineering", "Medicine",
             "Social Sciences", "Humanities", "Business", "Law",
             "Education", "Arts", "Computer Science", "Environmental Science",
@@ -515,7 +605,6 @@
             "Statistics", "Data Science", "Artificial Intelligence", "Robotics",
             "Cybersecurity", "Bioinformatics", "Genetics", "Neuroscience",
             "Archaeology", "Religious Studies", "Ethics",
-
             // Additional Expanded Domains
             "Aerospace Engineering", "Agricultural Economics", "Agricultural Engineering",
             "American Studies", "Anatomy", "Ancient History", "Animal Science",
@@ -599,9 +688,8 @@
             "Visual Arts", "Web Development", "Women's Studies", "World History",
             "Zoology"
         ];
-
-        // Comprehensive database of roles and skills across all domains (simplified for brevity)
-        // Note: This is a small sample. You would need to expand this significantly to match the new domains.
+        
+        // Comprehensive database of roles and skills across all domains
         const roleRequirements = {
             // Natural Sciences
             "Research Scientist": ["Research Methodology", "Data Analysis", "Scientific Writing", "Laboratory Techniques", "Statistical Analysis", "Critical Thinking", "Peer Review", "Grant Writing"],
@@ -680,766 +768,1176 @@
             "Patent Attorney": ["Legal Knowledge", "Technical Expertise", "Patent Law", "Writing", "Communication", "Negotiation", "Analytical Skills", "Attention to Detail"],
             "Agricultural Economist": ["Economics", "Agriculture", "Statistics", "Policy Analysis", "Market Research", "Data Analysis", "Communication", "Report Writing"]
         };
-
-        // Learning resources database (simplified for brevity)
-        // Note: This is a small sample. You would need to expand this significantly to match the new skills.
+        
+        // Learning resources database
         const learningResources = {
             "Research Methodology": [
-                { name: "Research Methods for Beginners - Coursera", url: "#" },
-                { name: "Advanced Research Design - edX", url: "#" }
+                { name: "Research Methods for Beginners - Coursera", url: "https://www.coursera.org" },
+                { name: "Advanced Research Design - edX", url: "https://www.edx.org" }
             ],
             "Data Analysis": [
-                { name: "Data Analysis Fundamentals - DataCamp", url: "#" },
-                { name: "Statistical Analysis with R - Udemy", url: "#" }
+                { name: "Data Analysis Fundamentals - DataCamp", url: "https://www.datacamp.com" },
+                { name: "Statistical Analysis with R - Udemy", url: "https://www.udemy.com" }
             ],
             "Scientific Writing": [
-                { name: "Scientific Writing - Nature", url: "#" },
-                { name: "Academic Writing Skills - Coursera", url: "#" }
+                { name: "Scientific Writing - Nature", url: "https://www.nature.com" },
+                { name: "Academic Writing Skills - Coursera", url: "https://www.coursera.org" }
             ],
             "Programming": [
-                { name: "Programming Fundamentals - freeCodeCamp", url: "#" },
-                { name: "Advanced Programming - Coursera", url: "#" }
+                { name: "Programming Fundamentals - freeCodeCamp", url: "https://www.freecodecamp.org" },
+                { name: "Advanced Programming - Coursera", url: "https://www.coursera.org" }
             ],
             "Machine Learning": [
-                { name: "Machine Learning - Coursera", url: "#" },
-                { name: "Deep Learning - edX", url: "#" }
+                { name: "Machine Learning - Coursera", url: "https://www.coursera.org" },
+                { name: "Deep Learning - edX", url: "https://www.edx.org" }
             ],
             "Statistics": [
-                { name: "Statistics Fundamentals - Khan Academy", url: "#" },
-                { name: "Applied Statistics - Coursera", url: "#" }
+                { name: "Statistics Fundamentals - Khan Academy", url: "https://www.khanacademy.org" },
+                { name: "Applied Statistics - Coursera", url: "https://www.coursera.org" }
             ],
             "Communication": [
-                { name: "Professional Communication - Coursera", url: "#" },
-                { name: "Interpersonal Skills - edX", url: "#" }
+                { name: "Professional Communication - Coursera", url: "https://www.coursera.org" },
+                { name: "Interpersonal Skills - edX", url: "https://www.edx.org" }
             ],
             "Problem Solving": [
-                { name: "Problem Solving Skills - edX", url: "#" },
-                { name: "Creative Problem Solving - Coursera", url: "#" }
+                { name: "Problem Solving Skills - edX", url: "https://www.edx.org" },
+                { name: "Creative Problem Solving - Coursera", url: "https://www.coursera.org" }
             ],
             "Project Management": [
-                { name: "Project Management - Coursera", url: "#" },
-                { name: "PMP Certification - edX", url: "#" }
+                { name: "Project Management - Coursera", url: "https://www.coursera.org" },
+                { name: "PMP Certification - edX", url: "https://www.edx.org" }
             ],
             "Critical Thinking": [
-                { name: "Critical Thinking Skills - edX", url: "#" },
-                { name: "Logical Reasoning - Coursera", url: "#" }
+                { name: "Critical Thinking Skills - edX", url: "https://www.edx.org" },
+                { name: "Logical Reasoning - Coursera", url: "https://www.coursera.org" }
             ],
             "Writing": [
-                { name: "Academic Writing - Coursera", url: "#" },
-                { name: "Professional Writing - edX", url: "#" }
+                { name: "Academic Writing - Coursera", url: "https://www.coursera.org" },
+                { name: "Professional Writing - edX", url: "https://www.edx.org" }
             ],
             "Data Visualization": [
-                { name: "Data Visualization - DataCamp", url: "#" },
-                { name: "Information Visualization - Coursera", url: "#" }
+                { name: "Data Visualization - DataCamp", url: "https://www.datacamp.com" },
+                { name: "Information Visualization - Coursera", url: "https://www.coursera.org" }
             ],
             "Database Management": [
-                { name: "Database Design - Coursera", url: "#" },
-                { name: "SQL Fundamentals - DataCamp", url: "#" }
+                { name: "Database Design - Coursera", url: "https://www.coursera.org" },
+                { name: "SQL Fundamentals - DataCamp", url: "https://www.datacamp.com" }
             ],
             "Cybersecurity": [
-                { name: "Cybersecurity Fundamentals - Coursera", url: "#" },
-                { name: "Ethical Hacking - Udemy", url: "#" }
+                { name: "Cybersecurity Fundamentals - Coursera", url: "https://www.coursera.org" },
+                { name: "Ethical Hacking - Udemy", url: "https://www.udemy.com" }
             ],
             "Cloud Computing": [
-                { name: "Cloud Computing Basics - Coursera", url: "#" },
-                { name: "AWS Fundamentals - AWS Training", url: "#" }
+                { name: "Cloud Computing Basics - Coursera", url: "https://www.coursera.org" },
+                { name: "AWS Fundamentals - AWS Training", url: "https://aws.amazon.com/training/" }
             ],
             "User Experience (UX)": [
-                { name: "UX Design Fundamentals - Coursera", url: "#" },
-                { name: "Interaction Design - Interaction Design Foundation", url: "#" }
+                { name: "UX Design Fundamentals - Coursera", url: "https://www.coursera.org" },
+                { name: "Interaction Design - Interaction Design Foundation", url: "https://www.interaction-design.org" }
             ],
             "Digital Marketing": [
-                { name: "Digital Marketing - Google", url: "#" },
-                { name: "Social Media Marketing - Coursera", url: "#" }
+                { name: "Digital Marketing - Google", url: "https://learndigital.withgoogle.com" },
+                { name: "Social Media Marketing - Coursera", url: "https://www.coursera.org" }
             ],
             "SEO": [
-                { name: "SEO Training - Moz", url: "#" },
-                { name: "Advanced SEO - Coursera", url: "#" }
+                { name: "SEO Training - Moz", url: "https://moz.com" },
+                { name: "Advanced SEO - Coursera", url: "https://www.coursera.org" }
             ],
             "Supply Chain Management": [
-                { name: "Supply Chain Fundamentals - Coursera", url: "#" },
-                { name: "Logistics Management - edX", url: "#" }
+                { name: "Supply Chain Fundamentals - Coursera", url: "https://www.coursera.org" },
+                { name: "Logistics Management - edX", url: "https://www.edx.org" }
             ],
             "Renewable Energy": [
-                { name: "Renewable Energy Principles - Coursera", url: "#" },
-                { name: "Solar Energy Engineering - edX", url: "#" }
+                { name: "Renewable Energy Principles - Coursera", url: "https://www.coursera.org" },
+                { name: "Solar Energy Engineering - edX", url: "https://www.edx.org" }
             ],
             "Fraud Investigation": [
-                { name: "Fraud Examination - ACFE", url: "#" },
-                { name: "Forensic Accounting - Coursera", url: "#" }
+                { name: "Fraud Examination - ACFE", url: "https://www.acfe.com" },
+                { name: "Forensic Accounting - Coursera", url: "https://www.coursera.org" }
             ],
             "Healthcare Systems": [
-                { name: "Healthcare Delivery - Coursera", url: "#" },
-                { name: "Health Policy - edX", url: "#" }
+                { name: "Healthcare Delivery - Coursera", url: "https://www.coursera.org" },
+                { name: "Health Policy - edX", url: "https://www.edx.org" }
             ],
             "Game Design": [
-                { name: "Game Design Fundamentals - Coursera", url: "#" },
-                { name: "Narrative Design - Game Design Online", url: "#" }
+                { name: "Game Design Fundamentals - Coursera", url: "https://www.coursera.org" },
+                { name: "Narrative Design - Game Design Online", url: "https://www.gamedesignonline.com" }
             ],
             "Ethnography": [
-                { name: "Ethnographic Methods - Coursera", url: "#" },
-                { name: "Cultural Anthropology - edX", url: "#" }
+                { name: "Ethnographic Methods - Coursera", url: "https://www.coursera.org" },
+                { name: "Cultural Anthropology - edX", url: "https://www.edx.org" }
             ],
             "Collection Management": [
-                { name: "Museum Collections - Coursera", url: "#" },
-                { name: "Preservation Techniques - Smithsonian", url: "#" }
+                { name: "Museum Collections - Coursera", url: "https://www.coursera.org" },
+                { name: "Preservation Techniques - Smithsonian", url: "https://www.si.edu" }
             ],
             "Editing": [
-                { name: "Copy Editing - Coursera", url: "#" },
-                { name: "Grammar & Style - edX", url: "#" }
+                { name: "Copy Editing - Coursera", url: "https://www.coursera.org" },
+                { name: "Grammar & Style - edX", url: "https://www.edx.org" }
             ],
             "Patent Law": [
-                { name: "Intellectual Property Law - Coursera", url: "#" },
-                { name: "Patent Drafting - USPTO", url: "#" }
+                { name: "Intellectual Property Law - Coursera", url: "https://www.coursera.org" },
+                { name: "Patent Drafting - USPTO", url: "https://www.uspto.gov" }
             ],
             "Agriculture": [
-                { name: "Introduction to Agriculture - Coursera", url: "#" },
-                { name: "Crop Science - edX", url: "#" }
+                { name: "Introduction to Agriculture - Coursera", url: "https://www.coursera.org" },
+                { name: "Crop Science - edX", url: "https://www.edx.org" }
             ],
             "Market Research": [
-                { name: "Market Analysis - Coursera", url: "#" },
-                { name: "Consumer Insights - edX", url: "#" }
+                { name: "Market Analysis - Coursera", url: "https://www.coursera.org" },
+                { name: "Consumer Insights - edX", url: "https://www.edx.org" }
             ],
             "Policy Analysis": [
-                { name: "Policy Analysis Methods - Coursera", url: "#" },
-                { name: "Public Policy - edX", url: "#" }
+                { name: "Policy Analysis Methods - Coursera", url: "https://www.coursera.org" },
+                { name: "Public Policy - edX", url: "https://www.edx.org" }
             ],
             "Grant Writing": [
-                { name: "Grant Writing Workshop - NSF", url: "#" },
-                { name: "Successful Grant Applications - Coursera", url: "#" }
+                { name: "Grant Writing Workshop - NSF", url: "https://www.nsf.gov" },
+                { name: "Successful Grant Applications - Coursera", url: "https://www.coursera.org" }
             ],
             "Teaching": [
-                { name: "Pedagogy - Coursera", url: "#" },
-                { name: "Classroom Management - edX", url: "#" }
+                { name: "Pedagogy - Coursera", url: "https://www.coursera.org" },
+                { name: "Classroom Management - edX", url: "https://www.edx.org" }
             ],
             "Mentoring": [
-                { name: "Coaching and Mentoring - Coursera", url: "#" },
-                { name: "Leadership Development - edX", url: "#" }
+                { name: "Coaching and Mentoring - Coursera", url: "https://www.coursera.org" },
+                { name: "Leadership Development - edX", url: "https://www.edx.org" }
             ],
             "Publishing": [
-                { name: "Academic Publishing - Nature", url: "#" },
-                { name: "Writing for Publication - Coursera", url: "#" }
+                { name: "Academic Publishing - Nature", url: "https://www.nature.com" },
+                { name: "Writing for Publication - Coursera", url: "https://www.coursera.org" }
             ],
             "Academic Service": [
-                { name: "Academic Leadership - Coursera", url: "#" },
+                { name: "Academic Leadership - Coursera", url: "https://www.coursera.org" },
                 { name: "Committee Work - University Resources", url: "#" }
             ],
             "Laboratory Techniques": [
-                { name: "Lab Safety and Techniques - MIT", url: "#" },
-                { name: "Advanced Laboratory Methods - edX", url: "#" }
+                { name: "Lab Safety and Techniques - MIT", url: "https://web.mit.edu" },
+                { name: "Advanced Laboratory Methods - edX", url: "https://www.edx.org" }
             ],
             "Statistical Analysis": [
-                { name: "Statistics for Researchers - Khan Academy", url: "#" },
-                { name: "Applied Statistics - Coursera", url: "#" }
+                { name: "Statistics for Researchers - Khan Academy", url: "https://www.khanacademy.org" },
+                { name: "Applied Statistics - Coursera", url: "https://www.coursera.org" }
             ],
             "Peer Review": [
-                { name: "Peer Review Process - Elsevier", url: "#" },
-                { name: "Becoming a Reviewer - Wiley", url: "#" }
+                { name: "Peer Review Process - Elsevier", url: "https://www.elsevier.com" },
+                { name: "Becoming a Reviewer - Wiley", url: "https://www.wiley.com" }
             ],
             "Laboratory Safety": [
-                { name: "Lab Safety Certification - OSHA", url: "#" },
-                { name: "Chemical Safety - ACS", url: "#" }
+                { name: "Lab Safety Certification - OSHA", url: "https://www.osha.gov" },
+                { name: "Chemical Safety - ACS", url: "https://www.acs.org" }
             ],
             "Equipment Operation": [
                 { name: "Instrument Training - Manufacturer", url: "#" },
                 { name: "Lab Equipment Certification - University", url: "#" }
             ],
             "Sample Preparation": [
-                { name: "Sample Prep Techniques - Lab Manager", url: "#" },
-                { name: "Quality Sample Handling - Coursera", url: "#" }
+                { name: "Sample Prep Techniques - Lab Manager", url: "https://www.labmanager.com" },
+                { name: "Quality Sample Handling - Coursera", url: "https://www.coursera.org" }
             ],
             "Data Recording": [
-                { name: "Data Management - Research Data Alliance", url: "#" },
-                { name: "Electronic Lab Notebooks - Coursera", url: "#" }
+                { name: "Data Management - Research Data Alliance", url: "https://www.rd-alliance.org" },
+                { name: "Electronic Lab Notebooks - Coursera", url: "https://www.coursera.org" }
             ],
             "Quality Control": [
-                { name: "Quality Assurance - ISO", url: "#" },
-                { name: "Lab Quality Standards - edX", url: "#" }
+                { name: "Quality Assurance - ISO", url: "https://www.iso.org" },
+                { name: "Lab Quality Standards - edX", url: "https://www.edx.org" }
             ],
             "Documentation": [
-                { name: "Technical Documentation - IEEE", url: "#" },
-                { name: "Lab Documentation Best Practices - Coursera", url: "#" }
+                { name: "Technical Documentation - IEEE", url: "https://www.ieee.org" },
+                { name: "Lab Documentation Best Practices - Coursera", url: "https://www.coursera.org" }
             ],
             "Basic Chemistry": [
-                { name: "General Chemistry - Khan Academy", url: "#" },
-                { name: "Intro to Chemistry - edX", url: "#" }
+                { name: "General Chemistry - Khan Academy", url: "https://www.khanacademy.org" },
+                { name: "Intro to Chemistry - edX", url: "https://www.edx.org" }
             ],
             "Attention to Detail": [
-                { name: "Attention to Detail Training - LinkedIn", url: "#" },
-                { name: "Precision in Research - Coursera", url: "#" }
+                { name: "Attention to Detail Training - LinkedIn", url: "https://www.linkedin.com" },
+                { name: "Precision in Research - Coursera", url: "https://www.coursera.org" }
             ],
             "Curriculum Development": [
-                { name: "Curriculum Design - edX", url: "#" },
-                { name: "Backward Design - Coursera", url: "#" }
+                { name: "Curriculum Design - edX", url: "https://www.edx.org" },
+                { name: "Backward Design - Coursera", url: "https://www.coursera.org" }
             ],
             "Pedagogy": [
-                { name: "Teaching Methods - Teachers College", url: "#" },
-                { name: "Learning Theory - Coursera", url: "#" }
+                { name: "Teaching Methods - Teachers College", url: "https://www.tc.columbia.edu" },
+                { name: "Learning Theory - Coursera", url: "https://www.coursera.org" }
             ],
             "Subject Matter Expertise": [
                 { name: "Advanced Subject Study - University", url: "#" },
                 { name: "Specialized Knowledge - Professional Bodies", url: "#" }
             ],
             "Classroom Management": [
-                { name: "Classroom Management - edX", url: "#" },
-                { name: "Behavior Management - Coursera", url: "#" }
+                { name: "Classroom Management - edX", url: "https://www.edx.org" },
+                { name: "Behavior Management - Coursera", url: "https://www.coursera.org" }
             ],
             "Assessment Design": [
-                { name: "Assessment Methods - edX", url: "#" },
-                { name: "Evaluation Design - Coursera", url: "#" }
+                { name: "Assessment Methods - edX", url: "https://www.edx.org" },
+                { name: "Evaluation Design - Coursera", url: "https://www.coursera.org" }
             ],
             "Educational Technology": [
-                { name: "EdTech Fundamentals - Coursera", url: "#" },
-                { name: "Digital Learning Tools - edX", url: "#" }
+                { name: "EdTech Fundamentals - Coursera", url: "https://www.coursera.org" },
+                { name: "Digital Learning Tools - edX", url: "https://www.edx.org" }
             ],
             "Student Engagement": [
-                { name: "Engaging Students - edX", url: "#" },
-                { name: "Active Learning - Coursera", url: "#" }
+                { name: "Engaging Students - edX", url: "https://www.edx.org" },
+                { name: "Active Learning - Coursera", url: "https://www.coursera.org" }
             ],
             "Differentiated Instruction": [
-                { name: "Differentiation Strategies - Coursera", url: "#" },
-                { name: "Inclusive Teaching - edX", url: "#" }
+                { name: "Differentiation Strategies - Coursera", url: "https://www.coursera.org" },
+                { name: "Inclusive Teaching - edX", url: "https://www.edx.org" }
             ],
             "Advanced Mathematics": [
-                { name: "Higher Mathematics - MIT", url: "#" },
-                { name: "Abstract Mathematics - Coursera", url: "#" }
+                { name: "Higher Mathematics - MIT", url: "https://web.mit.edu" },
+                { name: "Abstract Mathematics - Coursera", url: "https://www.coursera.org" }
             ],
             "Proof Writing": [
-                { name: "Mathematical Proofs - Khan Academy", url: "#" },
-                { name: "Proof Techniques - edX", url: "#" }
+                { name: "Mathematical Proofs - Khan Academy", url: "https://www.khanacademy.org" },
+                { name: "Proof Techniques - edX", url: "https://www.edx.org" }
             ],
             "Abstract Reasoning": [
-                { name: "Abstract Thinking - Coursera", url: "#" },
-                { name: "Logical Reasoning - edX", url: "#" }
+                { name: "Abstract Thinking - Coursera", url: "https://www.coursera.org" },
+                { name: "Logical Reasoning - edX", url: "https://www.edx.org" }
             ],
             "Computational Methods": [
-                { name: "Computational Mathematics - MIT", url: "#" },
-                { name: "Numerical Methods - Coursera", url: "#" }
+                { name: "Computational Mathematics - MIT", url: "https://web.mit.edu" },
+                { name: "Numerical Methods - Coursera", url: "https://www.coursera.org" }
             ],
             "Mathematical Modeling": [
-                { name: "Modeling Techniques - Coursera", url: "#" },
-                { name: "Applied Mathematical Modeling - edX", url: "#" }
+                { name: "Modeling Techniques - Coursera", url: "https://www.coursera.org" },
+                { name: "Applied Mathematical Modeling - edX", url: "https://www.edx.org" }
             ],
             "Research Publication": [
-                { name: "Academic Publishing - Nature", url: "#" },
-                { name: "Writing for Publication - Coursera", url: "#" }
+                { name: "Academic Publishing - Nature", url: "https://www.nature.com" },
+                { name: "Writing for Publication - Coursera", url: "https://www.coursera.org" }
             ],
             "Academic Collaboration": [
-                { name: "Research Collaboration - edX", url: "#" },
-                { name: "Academic Networking - Coursera", url: "#" }
+                { name: "Research Collaboration - edX", url: "https://www.edx.org" },
+                { name: "Academic Networking - Coursera", url: "https://www.coursera.org" }
             ],
             "System Design": [
-                { name: "System Design - Coursera", url: "#" },
-                { name: "Software Architecture - edX", url: "#" }
+                { name: "System Design - Coursera", url: "https://www.coursera.org" },
+                { name: "Software Architecture - edX", url: "https://www.edx.org" }
             ],
             "Algorithms": [
-                { name: "Algorithms - Khan Academy", url: "#" },
-                { name: "Advanced Algorithms - Coursera", url: "#" }
+                { name: "Algorithms - Khan Academy", url: "https://www.khanacademy.org" },
+                { name: "Advanced Algorithms - Coursera", url: "https://www.coursera.org" }
             ],
             "Version Control": [
-                { name: "Git Fundamentals - GitHub", url: "#" },
-                { name: "Advanced Git - Coursera", url: "#" }
+                { name: "Git Fundamentals - GitHub", url: "https://github.com" },
+                { name: "Advanced Git - Coursera", url: "https://www.coursera.org" }
             ],
             "Testing": [
-                { name: "Software Testing - edX", url: "#" },
-                { name: "Test Automation - Coursera", url: "#" }
+                { name: "Software Testing - edX", url: "https://www.edx.org" },
+                { name: "Test Automation - Coursera", url: "https://www.coursera.org" }
             ],
             "Agile Methodologies": [
-                { name: "Agile Fundamentals - Scrum.org", url: "#" },
-                { name: "Scrum Master Certification - Coursera", url: "#" }
+                { name: "Agile Fundamentals - Scrum.org", url: "https://www.scrum.org" },
+                { name: "Scrum Master Certification - Coursera", url: "https://www.coursera.org" }
             ],
             "Structural Analysis": [
-                { name: "Structural Engineering - MIT", url: "#" },
-                { name: "Advanced Structural Analysis - Coursera", url: "#" }
+                { name: "Structural Engineering - MIT", url: "https://web.mit.edu" },
+                { name: "Advanced Structural Analysis - Coursera", url: "https://www.coursera.org" }
             ],
             "CAD Software": [
-                { name: "AutoCAD Training - Autodesk", url: "#" },
-                { name: "3D Modeling - Coursera", url: "#" }
+                { name: "AutoCAD Training - Autodesk", url: "https://www.autodesk.com" },
+                { name: "3D Modeling - Coursera", url: "https://www.coursera.org" }
             ],
             "Materials Science": [
-                { name: "Materials Engineering - edX", url: "#" },
-                { name: "Advanced Materials - Coursera", url: "#" }
+                { name: "Materials Engineering - edX", url: "https://www.edx.org" },
+                { name: "Advanced Materials - Coursera", url: "https://www.coursera.org" }
             ],
             "Construction Standards": [
-                { name: "Building Codes - ICC", url: "#" },
-                { name: "Construction Standards - Coursera", url: "#" }
+                { name: "Building Codes - ICC", url: "https://www.iccsafe.org" },
+                { name: "Construction Standards - Coursera", url: "https://www.coursera.org" }
             ],
             "Environmental Regulations": [
-                { name: "Environmental Law - EPA", url: "#" },
-                { name: "Regulatory Compliance - Coursera", url: "#" }
+                { name: "Environmental Law - EPA", url: "https://www.epa.gov" },
+                { name: "Regulatory Compliance - Coursera", url: "https://www.coursera.org" }
             ],
             "Cost Estimation": [
-                { name: "Cost Engineering - AACE", url: "#" },
-                { name: "Estimation Techniques - Coursera", url: "#" }
+                { name: "Cost Engineering - AACE", url: "https://www.aacei.org" },
+                { name: "Estimation Techniques - Coursera", url: "https://www.coursera.org" }
             ],
             "Risk Assessment": [
-                { name: "Risk Management - Coursera", url: "#" },
-                { name: "Risk Assessment Methods - edX", url: "#" }
+                { name: "Risk Management - Coursera", url: "https://www.coursera.org" },
+                { name: "Risk Assessment Methods - edX", url: "https://www.edx.org" }
             ],
             "Medical Device Design": [
-                { name: "Biomedical Design - Coursera", url: "#" },
-                { name: "Medical Device Regulations - edX", url: "#" }
+                { name: "Biomedical Design - Coursera", url: "https://www.coursera.org" },
+                { name: "Medical Device Regulations - edX", url: "https://www.edx.org" }
             ],
             "Regulatory Affairs": [
-                { name: "Regulatory Affairs - RAPS", url: "#" },
-                { name: "FDA Regulations - Coursera", url: "#" }
+                { name: "Regulatory Affairs - RAPS", url: "https://www.raps.org" },
+                { name: "FDA Regulations - Coursera", url: "https://www.coursera.org" }
             ],
             "Biomechanics": [
-                { name: "Biomechanics Fundamentals - Coursera", url: "#" },
-                { name: "Advanced Biomechanics - edX", url: "#" }
+                { name: "Biomechanics Fundamentals - Coursera", url: "https://www.coursera.org" },
+                { name: "Advanced Biomechanics - edX", url: "https://www.edx.org" }
             ],
             "Tissue Engineering": [
-                { name: "Tissue Engineering - MIT", url: "#" },
-                { name: "Regenerative Medicine - Coursera", url: "#" }
+                { name: "Tissue Engineering - MIT", url: "https://web.mit.edu" },
+                { name: "Regenerative Medicine - Coursera", url: "https://www.coursera.org" }
             ],
             "Clinical Trials": [
-                { name: "Clinical Trial Design - Coursera", url: "#" },
-                { name: "Good Clinical Practice - edX", url: "#" }
+                { name: "Clinical Trial Design - Coursera", url: "https://www.coursera.org" },
+                { name: "Good Clinical Practice - edX", url: "https://www.edx.org" }
             ],
             "Clinical Diagnosis": [
-                { name: "Clinical Reasoning - Coursera", url: "#" },
+                { name: "Clinical Reasoning - Coursera", url: "https://www.coursera.org" },
                 { name: "Diagnostic Skills - Medical Schools", url: "#" }
             ],
             "Patient Care": [
                 { name: "Patient Care Skills - Medical Schools", url: "#" },
-                { name: "Bedside Manner - Coursera", url: "#" }
+                { name: "Bedside Manner - Coursera", url: "https://www.coursera.org" }
             ],
             "Medical Knowledge": [
-                { name: "Medical Education - Coursera", url: "#" },
-                { name: "Continuing Medical Education - edX", url: "#" }
+                { name: "Medical Education - Coursera", url: "https://www.coursera.org" },
+                { name: "Continuing Medical Education - edX", url: "https://www.edx.org" }
             ],
             "Ethics": [
-                { name: "Professional Ethics - Coursera", url: "#" },
-                { name: "Ethical Reasoning - edX", url: "#" }
+                { name: "Professional Ethics - Coursera", url: "https://www.coursera.org" },
+                { name: "Ethical Reasoning - edX", url: "https://www.edx.org" }
             ],
             "Evidence-Based Practice": [
-                { name: "Evidence-Based Medicine - Coursera", url: "#" },
-                { name: "Clinical Research Methods - edX", url: "#" }
+                { name: "Evidence-Based Medicine - Coursera", url: "https://www.coursera.org" },
+                { name: "Clinical Research Methods - edX", url: "https://www.edx.org" }
             ],
             "Team Collaboration": [
-                { name: "Teamwork Skills - Coursera", url: "#" },
-                { name: "Collaborative Leadership - edX", url: "#" }
+                { name: "Teamwork Skills - Coursera", url: "https://www.coursera.org" },
+                { name: "Collaborative Leadership - edX", url: "https://www.edx.org" }
             ],
             "Continuous Learning": [
-                { name: "Lifelong Learning - Coursera", url: "#" },
-                { name: "Professional Development - edX", url: "#" }
+                { name: "Lifelong Learning - Coursera", url: "https://www.coursera.org" },
+                { name: "Professional Development - edX", url: "https://www.edx.org" }
             ],
             "Clinical Research": [
-                { name: "Clinical Research Methods - Coursera", url: "#" },
-                { name: "Clinical Trial Management - edX", url: "#" }
+                { name: "Clinical Research Methods - Coursera", url: "https://www.coursera.org" },
+                { name: "Clinical Trial Management - edX", url: "https://www.edx.org" }
             ],
             "Biostatistics": [
-                { name: "Biostatistics Fundamentals - Coursera", url: "#" },
-                { name: "Advanced Biostatistics - edX", url: "#" }
+                { name: "Biostatistics Fundamentals - Coursera", url: "https://www.coursera.org" },
+                { name: "Advanced Biostatistics - edX", url: "https://www.edx.org" }
             ],
             "Regulatory Compliance": [
-                { name: "Regulatory Compliance - Coursera", url: "#" },
-                { name: "Compliance Management - edX", url: "#" }
+                { name: "Regulatory Compliance - Coursera", url: "https://www.coursera.org" },
+                { name: "Compliance Management - edX", url: "https://www.edx.org" }
             ],
             "Protocol Development": [
-                { name: "Research Protocol Design - Coursera", url: "#" },
-                { name: "Study Design - edX", url: "#" }
+                { name: "Research Protocol Design - Coursera", url: "https://www.coursera.org" },
+                { name: "Study Design - edX", url: "https://www.edx.org" }
             ],
             "Data Management": [
-                { name: "Clinical Data Management - Coursera", url: "#" },
-                { name: "Data Governance - edX", url: "#" }
+                { name: "Clinical Data Management - Coursera", url: "https://www.coursera.org" },
+                { name: "Data Governance - edX", url: "https://www.edx.org" }
             ],
             "Publication": [
-                { name: "Academic Writing - Nature", url: "#" },
-                { name: "Scientific Publication - Coursera", url: "#" }
+                { name: "Academic Writing - Nature", url: "https://www.nature.com" },
+                { name: "Scientific Publication - Coursera", url: "https://www.coursera.org" }
             ],
             "Social Theory": [
-                { name: "Social Theory - Coursera", url: "#" },
-                { name: "Classical Social Theory - edX", url: "#" }
+                { name: "Social Theory - Coursera", url: "https://www.coursera.org" },
+                { name: "Classical Social Theory - edX", url: "https://www.edx.org" }
             ],
             "Research Methods": [
-                { name: "Social Research Methods - Coursera", url: "#" },
-                { name: "Qualitative Research - edX", url: "#" }
+                { name: "Social Research Methods - Coursera", url: "https://www.coursera.org" },
+                { name: "Qualitative Research - edX", url: "https://www.edx.org" }
             ],
             "Qualitative Research": [
-                { name: "Qualitative Methods - Coursera", url: "#" },
-                { name: "Ethnographic Research - edX", url: "#" }
+                { name: "Qualitative Methods - Coursera", url: "https://www.coursera.org" },
+                { name: "Ethnographic Research - edX", url: "https://www.edx.org" }
             ],
             "Cultural Analysis": [
-                { name: "Cultural Studies - Coursera", url: "#" },
-                { name: "Cross-Cultural Analysis - edX", url: "#" }
+                { name: "Cultural Studies - Coursera", url: "https://www.coursera.org" },
+                { name: "Cross-Cultural Analysis - edX", url: "https://www.edx.org" }
             ],
             "Source Evaluation": [
-                { name: "Information Literacy - Coursera", url: "#" },
-                { name: "Source Criticism - edX", url: "#" }
+                { name: "Information Literacy - Coursera", url: "https://www.coursera.org" },
+                { name: "Source Criticism - edX", url: "https://www.edx.org" }
             ],
             "Period Knowledge": [
-                { name: "Historical Periods - Coursera", url: "#" },
-                { name: "Specialized Historical Knowledge - edX", url: "#" }
+                { name: "Historical Periods - Coursera", url: "https://www.coursera.org" },
+                { name: "Specialized Historical Knowledge - edX", url: "https://www.edx.org" }
             ],
             "Interpretation": [
-                { name: "Historical Interpretation - Coursera", url: "#" },
-                { name: "Textual Interpretation - edX", url: "#" }
+                { name: "Historical Interpretation - Coursera", url: "https://www.coursera.org" },
+                { name: "Textual Interpretation - edX", url: "https://www.edx.org" }
             ],
             "Argumentation": [
-                { name: "Argumentative Writing - Coursera", url: "#" },
-                { name: "Logical Argumentation - edX", url: "#" }
+                { name: "Argumentative Writing - Coursera", url: "https://www.coursera.org" },
+                { name: "Logical Argumentation - edX", url: "https://www.edx.org" }
             ],
             "Philosophical Reasoning": [
-                { name: "Philosophical Methods - Coursera", url: "#" },
-                { name: "Critical Reasoning - edX", url: "#" }
+                { name: "Philosophical Methods - Coursera", url: "https://www.coursera.org" },
+                { name: "Critical Reasoning - edX", url: "https://www.edx.org" }
             ],
             "Logic": [
-                { name: "Formal Logic - Coursera", url: "#" },
-                { name: "Symbolic Logic - edX", url: "#" }
+                { name: "Formal Logic - Coursera", url: "https://www.coursera.org" },
+                { name: "Symbolic Logic - edX", url: "https://www.edx.org" }
             ],
             "Metaphysics": [
-                { name: "Metaphysics - Coursera", url: "#" },
-                { name: "Ontology - edX", url: "#" }
+                { name: "Metaphysics - Coursera", url: "https://www.coursera.org" },
+                { name: "Ontology - edX", url: "https://www.edx.org" }
             ],
             "Literary Theory": [
-                { name: "Literary Criticism - Coursera", url: "#" },
-                { name: "Contemporary Literary Theory - edX", url: "#" }
+                { name: "Literary Criticism - Coursera", url: "https://www.coursera.org" },
+                { name: "Contemporary Literary Theory - edX", url: "https://www.edx.org" }
             ],
             "Textual Analysis": [
-                { name: "Text Analysis Methods - Coursera", url: "#" },
-                { name: "Close Reading - edX", url: "#" }
+                { name: "Text Analysis Methods - Coursera", url: "https://www.coursera.org" },
+                { name: "Close Reading - edX", url: "https://www.edx.org" }
             ],
             "Historical Context": [
-                { name: "Historical Contextualization - Coursera", url: "#" },
-                { name: "Cultural History - edX", url: "#" }
+                { name: "Historical Contextualization - Coursera", url: "https://www.coursera.org" },
+                { name: "Cultural History - edX", url: "https://www.edx.org" }
             ],
             "Critical Interpretation": [
-                { name: "Critical Analysis - Coursera", url: "#" },
-                { name: "Interpretive Methods - edX", url: "#" }
+                { name: "Critical Analysis - Coursera", url: "https://www.coursera.org" },
+                { name: "Interpretive Methods - edX", url: "https://www.edx.org" }
             ],
             "Comparative Literature": [
-                { name: "Comparative Literature - Coursera", url: "#" },
-                { name: "World Literature - edX", url: "#" }
+                { name: "Comparative Literature - Coursera", url: "https://www.coursera.org" },
+                { name: "World Literature - edX", url: "https://www.edx.org" }
             ],
             "Language Skills": [
-                { name: "Foreign Languages - Coursera", url: "#" },
-                { name: "Linguistic Competence - edX", url: "#" }
+                { name: "Foreign Languages - Coursera", url: "https://www.coursera.org" },
+                { name: "Linguistic Competence - edX", url: "https://www.edx.org" }
             ],
             "Process Modeling": [
-                { name: "Business Process Modeling - Coursera", url: "#" },
-                { name: "Process Improvement - edX", url: "#" }
+                { name: "Business Process Modeling - Coursera", url: "https://www.coursera.org" },
+                { name: "Process Improvement - edX", url: "https://www.edx.org" }
             ],
             "Requirements Gathering": [
-                { name: "Requirements Engineering - Coursera", url: "#" },
-                { name: "Stakeholder Analysis - edX", url: "#" }
+                { name: "Requirements Engineering - Coursera", url: "https://www.coursera.org" },
+                { name: "Stakeholder Analysis - edX", url: "https://www.edx.org" }
             ],
             "Stakeholder Management": [
-                { name: "Stakeholder Engagement - Coursera", url: "#" },
-                { name: "Project Stakeholder Management - edX", url: "#" }
+                { name: "Stakeholder Engagement - Coursera", url: "https://www.coursera.org" },
+                { name: "Project Stakeholder Management - edX", url: "https://www.edx.org" }
             ],
             "Business Acumen": [
-                { name: "Business Fundamentals - Coursera", url: "#" },
-                { name: "Strategic Thinking - edX", url: "#" }
+                { name: "Business Fundamentals - Coursera", url: "https://www.coursera.org" },
+                { name: "Strategic Thinking - edX", url: "https://www.edx.org" }
             ],
             "Market Research": [
-                { name: "Market Analysis - Coursera", url: "#" },
-                { name: "Consumer Insights - edX", url: "#" }
+                { name: "Market Analysis - Coursera", url: "https://www.coursera.org" },
+                { name: "Consumer Insights - edX", url: "https://www.edx.org" }
             ],
             "Consumer Behavior": [
-                { name: "Consumer Psychology - Coursera", url: "#" },
-                { name: "Behavioral Economics - edX", url: "#" }
+                { name: "Consumer Psychology - Coursera", url: "https://www.coursera.org" },
+                { name: "Behavioral Economics - edX", url: "https://www.edx.org" }
             ],
             "Brand Management": [
-                { name: "Brand Strategy - Coursera", url: "#" },
-                { name: "Brand Marketing - edX", url: "#" }
+                { name: "Brand Strategy - Coursera", url: "https://www.coursera.org" },
+                { name: "Brand Marketing - edX", url: "https://www.edx.org" }
             ],
             "Digital Marketing": [
-                { name: "Digital Marketing - Google", url: "#" },
-                { name: "Social Media Marketing - Coursera", url: "#" }
+                { name: "Digital Marketing - Google", url: "https://learndigital.withgoogle.com" },
+                { name: "Social Media Marketing - Coursera", url: "https://www.coursera.org" }
             ],
             "Analytics": [
-                { name: "Marketing Analytics - Coursera", url: "#" },
-                { name: "Data-Driven Marketing - edX", url: "#" }
+                { name: "Marketing Analytics - Coursera", url: "https://www.coursera.org" },
+                { name: "Data-Driven Marketing - edX", url: "https://www.edx.org" }
             ],
             "Creativity": [
-                { name: "Creative Thinking - Coursera", url: "#" },
-                { name: "Innovation Skills - edX", url: "#" }
+                { name: "Creative Thinking - Coursera", url: "https://www.coursera.org" },
+                { name: "Innovation Skills - edX", url: "https://www.edx.org" }
             ],
             "Strategic Planning": [
-                { name: "Strategic Management - Coursera", url: "#" },
-                { name: "Business Strategy - edX", url: "#" }
+                { name: "Strategic Management - Coursera", url: "https://www.coursera.org" },
+                { name: "Business Strategy - edX", url: "https://www.edx.org" }
             ],
             "Financial Modeling": [
-                { name: "Financial Modeling - Coursera", url: "#" },
-                { name: "Valuation Methods - edX", url: "#" }
+                { name: "Financial Modeling - Coursera", url: "https://www.coursera.org" },
+                { name: "Valuation Methods - edX", url: "https://www.edx.org" }
             ],
             "Valuation": [
-                { name: "Business Valuation - Coursera", url: "#" },
-                { name: "Investment Valuation - edX", url: "#" }
+                { name: "Business Valuation - Coursera", url: "https://www.coursera.org" },
+                { name: "Investment Valuation - edX", url: "https://www.edx.org" }
             ],
             "Accounting": [
-                { name: "Financial Accounting - Coursera", url: "#" },
-                { name: "Managerial Accounting - edX", url: "#" }
+                { name: "Financial Accounting - Coursera", url: "https://www.coursera.org" },
+                { name: "Managerial Accounting - edX", url: "https://www.edx.org" }
             ],
             "Economics": [
-                { name: "Microeconomics - Coursera", url: "#" },
-                { name: "Macroeconomics - edX", url: "#" }
+                { name: "Microeconomics - Coursera", url: "https://www.coursera.org" },
+                { name: "Macroeconomics - edX", url: "https://www.edx.org" }
             ],
             "Legal Research": [
-                { name: "Legal Research Methods - Coursera", url: "#" },
-                { name: "Case Law Research - edX", url: "#" }
+                { name: "Legal Research Methods - Coursera", url: "https://www.coursera.org" },
+                { name: "Case Law Research - edX", url: "https://www.edx.org" }
             ],
             "Advocacy": [
-                { name: "Legal Advocacy - Coursera", url: "#" },
-                { name: "Courtroom Skills - edX", url: "#" }
+                { name: "Legal Advocacy - Coursera", url: "https://www.coursera.org" },
+                { name: "Courtroom Skills - edX", url: "https://www.edx.org" }
             ],
             "Client Counseling": [
-                { name: "Client Relations - Coursera", url: "#" },
-                { name: "Professional Responsibility - edX", url: "#" }
+                { name: "Client Relations - Coursera", url: "https://www.coursera.org" },
+                { name: "Professional Responsibility - edX", url: "https://www.edx.org" }
             ],
             "Negotiation": [
-                { name: "Legal Negotiation - Coursera", url: "#" },
-                { name: "Conflict Resolution - edX", url: "#" }
+                { name: "Legal Negotiation - Coursera", url: "https://www.coursera.org" },
+                { name: "Conflict Resolution - edX", url: "https://www.edx.org" }
             ],
             "Citation": [
-                { name: "Legal Citation - Coursera", url: "#" },
-                { name: "Bluebook Training - edX", url: "#" }
+                { name: "Legal Citation - Coursera", url: "https://www.coursera.org" },
+                { name: "Bluebook Training - edX", url: "https://www.edx.org" }
             ],
             "Analytical Skills": [
-                { name: "Legal Analysis - Coursera", url: "#" },
-                { name: "Critical Legal Thinking - edX", url: "#" }
+                { name: "Legal Analysis - Coursera", url: "https://www.coursera.org" },
+                { name: "Critical Legal Thinking - edX", url: "https://www.edx.org" }
             ],
             "Stakeholder Engagement": [
-                { name: "Stakeholder Management - Coursera", url: "#" },
-                { name: "Public Engagement - edX", url: "#" }
+                { name: "Stakeholder Management - Coursera", url: "https://www.coursera.org" },
+                { name: "Public Engagement - edX", url: "https://www.edx.org" }
             ],
             "Political Acumen": [
-                { name: "Political Strategy - Coursera", url: "#" },
-                { name: "Government Relations - edX", url: "#" }
+                { name: "Political Strategy - Coursera", url: "https://www.coursera.org" },
+                { name: "Government Relations - edX", url: "https://www.edx.org" }
             ],
             "Technical Skills": [
-                { name: "Artistic Techniques - Coursera", url: "#" },
-                { name: "Studio Practice - edX", url: "#" }
+                { name: "Artistic Techniques - Coursera", url: "https://www.coursera.org" },
+                { name: "Studio Practice - edX", url: "https://www.edx.org" }
             ],
             "Art History": [
-                { name: "Art History Survey - Coursera", url: "#" },
-                { name: "Specialized Art History - edX", url: "#" }
+                { name: "Art History Survey - Coursera", url: "https://www.coursera.org" },
+                { name: "Specialized Art History - edX", url: "https://www.edx.org" }
             ],
             "Conceptual Development": [
-                { name: "Conceptual Art - Coursera", url: "#" },
-                { name: "Creative Development - edX", url: "#" }
+                { name: "Conceptual Art - Coursera", url: "https://www.coursera.org" },
+                { name: "Creative Development - edX", url: "https://www.edx.org" }
             ],
             "Presentation": [
-                { name: "Art Presentation - Coursera", url: "#" },
-                { name: "Portfolio Presentation - edX", url: "#" }
+                { name: "Art Presentation - Coursera", url: "https://www.coursera.org" },
+                { name: "Portfolio Presentation - edX", url: "https://www.edx.org" }
             ],
             "Marketing": [
-                { name: "Art Marketing - Coursera", url: "#" },
-                { name: "Creative Industries - edX", url: "#" }
+                { name: "Art Marketing - Coursera", url: "https://www.coursera.org" },
+                { name: "Creative Industries - edX", url: "https://www.edx.org" }
             ],
             "Portfolio Development": [
-                { name: "Portfolio Creation - Coursera", url: "#" },
-                { name: "Professional Portfolio - edX", url: "#" }
+                { name: "Portfolio Creation - Coursera", url: "https://www.coursera.org" },
+                { name: "Professional Portfolio - edX", url: "https://www.edx.org" }
             ],
             "Museum Studies": [
-                { name: "Museum Management - Coursera", url: "#" },
-                { name: "Curatorial Practice - edX", url: "#" }
+                { name: "Museum Management - Coursera", url: "https://www.coursera.org" },
+                { name: "Curatorial Practice - edX", url: "https://www.edx.org" }
             ],
             "Cultural Context": [
-                { name: "Cultural Studies - Coursera", url: "#" },
-                { name: "Cross-Cultural Analysis - edX", url: "#" }
+                { name: "Cultural Studies - Coursera", url: "https://www.coursera.org" },
+                { name: "Cross-Cultural Analysis - edX", url: "https://www.edx.org" }
             ],
             "Foreign Languages": [
-                { name: "Language Learning - Coursera", url: "#" },
-                { name: "Linguistic Skills - edX", url: "#" }
+                { name: "Language Learning - Coursera", url: "https://www.coursera.org" },
+                { name: "Linguistic Skills - edX", url: "https://www.edx.org" }
             ],
             "Visual Analysis": [
-                { name: "Visual Literacy - Coursera", url: "#" },
-                { name: "Art Analysis - edX", url: "#" }
+                { name: "Visual Literacy - Coursera", url: "https://www.coursera.org" },
+                { name: "Art Analysis - edX", url: "https://www.edx.org" }
             ],
             "Performance": [
                 { name: "Musical Performance - Conservatory", url: "#" },
-                { name: "Stage Performance - Coursera", url: "#" }
+                { name: "Stage Performance - Coursera", url: "https://www.coursera.org" }
             ],
             "Theory": [
-                { name: "Music Theory - Coursera", url: "#" },
-                { name: "Dramatic Theory - edX", url: "#" }
+                { name: "Music Theory - Coursera", url: "https://www.coursera.org" },
+                { name: "Dramatic Theory - edX", url: "https://www.edx.org" }
             ],
             "Composition": [
-                { name: "Musical Composition - Coursera", url: "#" },
-                { name: "Creative Composition - edX", url: "#" }
+                { name: "Musical Composition - Coursera", url: "https://www.coursera.org" },
+                { name: "Creative Composition - edX", url: "https://www.edx.org" }
             ],
             "Ear Training": [
                 { name: "Aural Skills - Conservatory", url: "#" },
-                { name: "Listening Skills - Coursera", url: "#" }
+                { name: "Listening Skills - Coursera", url: "https://www.coursera.org" }
             ],
             "Music History": [
-                { name: "Music History - Coursera", url: "#" },
-                { name: "Historical Performance - edX", url: "#" }
+                { name: "Music History - Coursera", url: "https://www.coursera.org" },
+                { name: "Historical Performance - edX", url: "https://www.edx.org" }
             ],
             "Practice": [
-                { name: "Deliberate Practice - Coursera", url: "#" },
-                { name: "Professional Practice - edX", url: "#" }
+                { name: "Deliberate Practice - Coursera", url: "https://www.coursera.org" },
+                { name: "Professional Practice - edX", url: "https://www.edx.org" }
             ],
             "Collaboration": [
                 { name: "Ensemble Work - Conservatory", url: "#" },
-                { name: "Creative Collaboration - Coursera", url: "#" }
+                { name: "Creative Collaboration - Coursera", url: "https://www.coursera.org" }
             ],
             "Deep Learning": [
-                { name: "Neural Networks - Coursera", url: "#" },
-                { name: "Advanced Deep Learning - edX", url: "#" }
+                { name: "Neural Networks - Coursera", url: "https://www.coursera.org" },
+                { name: "Advanced Deep Learning - edX", url: "https://www.edx.org" }
             ],
             "Mathematics": [
-                { name: "Linear Algebra - Khan Academy", url: "#" },
-                { name: "Calculus - Coursera", url: "#" }
+                { name: "Linear Algebra - Khan Academy", url: "https://www.khanacademy.org" },
+                { name: "Calculus - Coursera", url: "https://www.coursera.org" }
             ],
             "Algorithm Design": [
-                { name: "Algorithmic Thinking - Coursera", url: "#" },
-                { name: "Advanced Algorithms - edX", url: "#" }
+                { name: "Algorithmic Thinking - Coursera", url: "https://www.coursera.org" },
+                { name: "Advanced Algorithms - edX", url: "https://www.edx.org" }
             ],
             "Network Security": [
-                { name: "Cybersecurity Fundamentals - Coursera", url: "#" },
-                { name: "Network Security - edX", url: "#" }
+                { name: "Cybersecurity Fundamentals - Coursera", url: "https://www.coursera.org" },
+                { name: "Network Security - edX", url: "https://www.edx.org" }
             ],
             "Incident Response": [
-                { name: "Incident Handling - Coursera", url: "#" },
-                { name: "Forensic Response - edX", url: "#" }
+                { name: "Incident Handling - Coursera", url: "https://www.coursera.org" },
+                { name: "Forensic Response - edX", url: "https://www.edx.org" }
             ],
             "Encryption": [
-                { name: "Cryptography - Coursera", url: "#" },
-                { name: "Applied Cryptography - edX", url: "#" }
+                { name: "Cryptography - Coursera", url: "https://www.coursera.org" },
+                { name: "Applied Cryptography - edX", url: "https://www.edx.org" }
             ],
             "Compliance": [
-                { name: "Security Compliance - Coursera", url: "#" },
-                { name: "Regulatory Compliance - edX", url: "#" }
+                { name: "Security Compliance - Coursera", url: "https://www.coursera.org" },
+                { name: "Regulatory Compliance - edX", url: "https://www.edx.org" }
             ],
             "Forensics": [
-                { name: "Digital Forensics - Coursera", url: "#" },
-                { name: "Computer Forensics - edX", url: "#" }
+                { name: "Digital Forensics - Coursera", url: "https://www.coursera.org" },
+                { name: "Computer Forensics - edX", url: "https://www.edx.org" }
             ],
             "Scalability": [
-                { name: "Scalable Systems - Coursera", url: "#" },
-                { name: "High Availability - edX", url: "#" }
+                { name: "Scalable Systems - Coursera", url: "https://www.coursera.org" },
+                { name: "High Availability - edX", url: "https://www.edx.org" }
             ],
             "Security": [
-                { name: "Information Security - Coursera", url: "#" },
-                { name: "Application Security - edX", url: "#" }
+                { name: "Information Security - Coursera", url: "https://www.coursera.org" },
+                { name: "Application Security - edX", url: "https://www.edx.org" }
             ],
             "Performance Optimization": [
-                { name: "System Performance - Coursera", url: "#" },
-                { name: "Database Optimization - edX", url: "#" }
+                { name: "System Performance - Coursera", url: "https://www.coursera.org" },
+                { name: "Database Optimization - edX", url: "https://www.edx.org" }
             ],
             "Ecology": [
-                { name: "Ecological Principles - Coursera", url: "#" },
-                { name: "Ecosystem Dynamics - edX", url: "#" }
+                { name: "Ecological Principles - Coursera", url: "https://www.coursera.org" },
+                { name: "Ecosystem Dynamics - edX", url: "https://www.edx.org" }
             ],
             "Environmental Chemistry": [
-                { name: "Environmental Chemistry - Coursera", url: "#" },
-                { name: "Pollution Chemistry - edX", url: "#" }
+                { name: "Environmental Chemistry - Coursera", url: "https://www.coursera.org" },
+                { name: "Pollution Chemistry - edX", url: "https://www.edx.org" }
             ],
             "GIS": [
-                { name: "Geographic Information Systems - Coursera", url: "#" },
-                { name: "Spatial Analysis - edX", url: "#" }
+                { name: "Geographic Information Systems - Coursera", url: "https://www.coursera.org" },
+                { name: "Spatial Analysis - edX", url: "https://www.edx.org" }
             ],
             "Field Work": [
-                { name: "Field Research Methods - Coursera", url: "#" },
-                { name: "Field Safety - edX", url: "#" }
+                { name: "Field Research Methods - Coursera", url: "https://www.coursera.org" },
+                { name: "Field Safety - edX", url: "https://www.edx.org" }
             ],
             "Sustainability": [
-                { name: "Sustainable Development - Coursera", url: "#" },
-                { name: "Environmental Sustainability - edX", url: "#" }
+                { name: "Sustainable Development - Coursera", url: "https://www.coursera.org" },
+                { name: "Environmental Sustainability - edX", url: "https://www.edx.org" }
             ],
             "Climate Modeling": [
-                { name: "Climate Science - Coursera", url: "#" },
-                { name: "Atmospheric Modeling - edX", url: "#" }
+                { name: "Climate Science - Coursera", url: "https://www.coursera.org" },
+                { name: "Atmospheric Modeling - edX", url: "https://www.edx.org" }
             ],
             "Wildlife Management": [
-                { name: "Wildlife Conservation - Coursera", url: "#" },
-                { name: "Animal Behavior - edX", url: "#" }
+                { name: "Wildlife Conservation - Coursera", url: "https://www.coursera.org" },
+                { name: "Animal Behavior - edX", url: "https://www.edx.org" }
             ],
             "Conservation Planning": [
-                { name: "Conservation Biology - Coursera", url: "#" },
-                { name: "Protected Areas - edX", url: "#" }
+                { name: "Conservation Biology - Coursera", url: "https://www.coursera.org" },
+                { name: "Protected Areas - edX", url: "https://www.edx.org" }
             ],
             "Genomics": [
-                { name: "Genomic Analysis - Coursera", url: "#" },
-                { name: "Computational Genomics - edX", url: "#" }
+                { name: "Genomic Analysis - Coursera", url: "https://www.coursera.org" },
+                { name: "Computational Genomics - edX", url: "https://www.edx.org" }
             ],
             "Nanotechnology": [
-                { name: "Nanomaterials - Coursera", url: "#" },
-                { name: "Nanofabrication - edX", url: "#" }
+                { name: "Nanomaterials - Coursera", url: "https://www.coursera.org" },
+                { name: "Nanofabrication - edX", url: "https://www.edx.org" }
             ],
             "Fabrication Techniques": [
-                { name: "Nanofabrication - Coursera", url: "#" },
-                { name: "Clean Room Techniques - edX", url: "#" }
+                { name: "Nanofabrication - Coursera", url: "https://www.coursera.org" },
+                { name: "Clean Room Techniques - edX", url: "https://www.edx.org" }
             ],
             "Characterization": [
-                { name: "Material Characterization - Coursera", url: "#" },
-                { name: "Analytical Techniques - edX", url: "#" }
+                { name: "Material Characterization - Coursera", url: "https://www.coursera.org" },
+                { name: "Analytical Techniques - edX", url: "https://www.edx.org" }
             ],
             "Safety Protocols": [
-                { name: "Lab Safety - Coursera", url: "#" },
-                { name: "Nanomaterial Safety - edX", url: "#" }
+                { name: "Lab Safety - Coursera", url: "https://www.coursera.org" },
+                { name: "Nanomaterial Safety - edX", url: "https://www.edx.org" }
             ],
             "Innovation": [
-                { name: "Innovation Management - Coursera", url: "#" },
-                { name: "Technology Innovation - edX", url: "#" }
+                { name: "Innovation Management - Coursera", url: "https://www.coursera.org" },
+                { name: "Technology Innovation - edX", url: "https://www.edx.org" }
             ],
             "Physics": [
-                { name: "Classical Physics - Khan Academy", url: "#" },
-                { name: "Quantum Physics - Coursera", url: "#" }
+                { name: "Classical Physics - Khan Academy", url: "https://www.khanacademy.org" },
+                { name: "Quantum Physics - Coursera", url: "https://www.coursera.org" }
             ],
             "Chemistry": [
-                { name: "General Chemistry - Khan Academy", url: "#" },
-                { name: "Organic Chemistry - Coursera", url: "#" }
+                { name: "General Chemistry - Khan Academy", url: "https://www.khanacademy.org" },
+                { name: "Organic Chemistry - Coursera", url: "https://www.coursera.org" }
             ],
             "Observational Techniques": [
-                { name: "Astronomical Observation - Coursera", url: "#" },
-                { name: "Telescope Operation - edX", url: "#" }
+                { name: "Astronomical Observation - Coursera", url: "https://www.coursera.org" },
+                { name: "Telescope Operation - edX", url: "https://www.edx.org" }
             ],
             "Instrumentation": [
-                { name: "Scientific Instruments - Coursera", url: "#" },
-                { name: "Lab Instrumentation - edX", url: "#" }
+                { name: "Scientific Instruments - Coursera", url: "https://www.coursera.org" },
+                { name: "Lab Instrumentation - edX", url: "https://www.edx.org" }
             ],
             "Neuroanatomy": [
-                { name: "Brain Anatomy - Coursera", url: "#" },
-                { name: "Neuroimaging - edX", url: "#" }
+                { name: "Brain Anatomy - Coursera", url: "https://www.coursera.org" },
+                { name: "Neuroimaging - edX", url: "https://www.edx.org" }
             ],
             "Neurophysiology": [
-                { name: "Neural Function - Coursera", url: "#" },
-                { name: "Cellular Neuroscience - edX", url: "#" }
+                { name: "Neural Function - Coursera", url: "https://www.coursera.org" },
+                { name: "Cellular Neuroscience - edX", url: "https://www.edx.org" }
             ],
             "Phonetics": [
-                { name: "Speech Sounds - Coursera", url: "#" },
-                { name: "Phonetic Analysis - edX", url: "#" }
+                { name: "Speech Sounds - Coursera", url: "https://www.coursera.org" },
+                { name: "Phonetic Analysis - edX", url: "https://www.edx.org" }
             ],
             "Syntax": [
-                { name: "Grammatical Structure - Coursera", url: "#" },
-                { name: "Syntactic Theory - edX", url: "#" }
+                { name: "Grammatical Structure - Coursera", url: "https://www.coursera.org" },
+                { name: "Syntactic Theory - edX", url: "https://www.edx.org" }
             ],
             "Semantics": [
-                { name: "Meaning in Language - Coursera", url: "#" },
-                { name: "Semantic Theory - edX", url: "#" }
+                { name: "Meaning in Language - Coursera", url: "https://www.coursera.org" },
+                { name: "Semantic Theory - edX", url: "https://www.edx.org" }
             ],
             "Sociolinguistics": [
-                { name: "Language and Society - Coursera", url: "#" },
-                { name: "Social Dialectology - edX", url: "#" }
+                { name: "Language and Society - Coursera", url: "https://www.coursera.org" },
+                { name: "Social Dialectology - edX", url: "https://www.edx.org" }
             ],
             "Language Teaching": [
-                { name: "Language Pedagogy - Coursera", url: "#" },
-                { name: "Second Language Acquisition - edX", url: "#" }
+                { name: "Language Pedagogy - Coursera", url: "https://www.coursera.org" },
+                { name: "Second Language Acquisition - edX", url: "https://www.edx.org" }
             ],
             "Cross-cultural Communication": [
-                { name: "Intercultural Communication - Coursera", url: "#" },
-                { name: "Global Communication - edX", url: "#" }
+                { name: "Intercultural Communication - Coursera", url: "https://www.coursera.org" },
+                { name: "Global Communication - edX", url: "https://www.edx.org" }
             ],
             "Field Methods": [
-                { name: "Archaeological Fieldwork - Coursera", url: "#" },
-                { name: "Excavation Techniques - edX", url: "#" }
+                { name: "Archaeological Fieldwork - Coursera", url: "https://www.coursera.org" },
+                { name: "Excavation Techniques - edX", url: "https://www.edx.org" }
             ],
             "Artifact Analysis": [
-                { name: "Material Analysis - Coursera", url: "#" },
-                { name: "Conservation Science - edX", url: "#" }
+                { name: "Material Analysis - Coursera", url: "https://www.coursera.org" },
+                { name: "Conservation Science - edX", url: "https://www.edx.org" }
             ],
             "Dating Techniques": [
-                { name: "Radiocarbon Dating - Coursera", url: "#" },
-                { name: "Chronometric Methods - edX", url: "#" }
+                { name: "Radiocarbon Dating - Coursera", url: "https://www.coursera.org" },
+                { name: "Chronometric Methods - edX", url: "https://www.edx.org" }
+            ]
+        };
+
+        // Premier institutions database
+        const premierInstitutions = {
+            // Natural Sciences
+            "Natural Sciences": [
+                { name: "Harvard University (USA)", url: "https://www.harvard.edu" },
+                { name: "University of Cambridge (UK)", url: "https://www.cam.ac.uk" },
+                { name: "Indian Institute of Science (India)", url: "https://www.iisc.ac.in" },
+                { name: "Max Planck Society (Germany)", url: "https://www.mpg.de/en" },
+                { name: "University of Oxford (UK)", url: "https://www.ox.ac.uk" },
+                { name: "Tsinghua University (China)", url: "https://www.tsinghua.edu.cn" },
+                { name: "Stanford University (USA)", url: "https://stanford.edu" },
+                { name: "National University of Singapore (Singapore)", url: "https://nus.edu.sg" }
+            ],
+            // Mathematics
+            "Mathematics": [
+                { name: "MIT (USA)", url: "https://math.mit.edu" },
+                { name: "Princeton University (USA)", url: "https://www.math.princeton.edu" },
+                { name: "University of Cambridge (UK)", url: "https://www.dpmms.cam.ac.uk" },
+                { name: "Institute for Advanced Study (USA)", url: "https://www.ias.edu" },
+                { name: "University of Oxford (UK)", url: "https://www.maths.ox.ac.uk" },
+                { name: "Peking University (China)", url: "https://english.math.pku.edu.cn" },
+                { name: "ETH Zurich (Switzerland)", url: "https://math.ethz.ch" },
+                { name: "Tata Institute of Fundamental Research (India)", url: "https://www.tifr.res.in" }
+            ],
+            // Engineering
+            "Engineering": [
+                { name: "MIT (USA)", url: "https://web.mit.edu" },
+                { name: "Stanford University (USA)", url: "https://engineering.stanford.edu" },
+                { name: "ETH Zurich (Switzerland)", url: "https://ethz.ch" },
+                { name: "National University of Singapore (Singapore)", url: "https://nus.edu.sg" },
+                { name: "Tsinghua University (China)", url: "https://www.tsinghua.edu.cn" },
+                { name: "IIT Bombay (India)", url: "https://www.iitb.ac.in" },
+                { name: "University of Cambridge (UK)", url: "https://www.eng.cam.ac.uk" },
+                { name: "Technical University of Munich (Germany)", url: "https://www.tum.de" }
+            ],
+            // Medicine
+            "Medicine": [
+                { name: "Johns Hopkins University (USA)", url: "https://www.hopkinsmedicine.org" },
+                { name: "Harvard Medical School (USA)", url: "https://hms.harvard.edu" },
+                { name: "University of Oxford (UK)", url: "https://www.medsci.ox.ac.uk" },
+                { name: "University of Cambridge (UK)", url: "https://www.med.cam.ac.uk" },
+                { name: "Peking Union Medical College (China)", url: "https://www.pumc.edu.cn" },
+                { name: "All India Institute of Medical Sciences (India)", url: "https://www.aiims.edu" },
+                { name: "Charité - Universitätsmedizin Berlin (Germany)", url: "https://www.charite.de" },
+                { name: "University of Toronto (Canada)", url: "https://www.utoronto.ca" }
+            ],
+            // Computer Science
+            "Computer Science": [
+                { name: "MIT (USA)", url: "https://www.csail.mit.edu" },
+                { name: "Stanford University (USA)", url: "https://cs.stanford.edu" },
+                { name: "Carnegie Mellon University (USA)", url: "https://www.cs.cmu.edu" },
+                { name: "University of Cambridge (UK)", url: "https://www.cl.cam.ac.uk" },
+                { name: "Tsinghua University (China)", url: "https://www.tsinghua.edu.cn" },
+                { name: "IIT Delhi (India)", url: "https://www.iitd.ac.in" },
+                { name: "ETH Zurich (Switzerland)", url: "https://inf.ethz.ch" },
+                { name: "National University of Singapore (Singapore)", url: "https://www.comp.nus.edu.sg" }
+            ],
+            // Business
+            "Business": [
+                { name: "Harvard Business School (USA)", url: "https://www.hbs.edu" },
+                { name: "Stanford Graduate School of Business (USA)", url: "https://www.gsb.stanford.edu" },
+                { name: "INSEAD (France/Singapore)", url: "https://www.insead.edu" },
+                { name: "London Business School (UK)", url: "https://www.london.edu" },
+                { name: "IIM Ahmedabad (India)", url: "https://www.iima.ac.in" },
+                { name: "CEIBS (China)", url: "https://www.ceibs.edu" },
+                { name: "HEC Paris (France)", url: "https://www.hec.edu" },
+                { name: "Wharton School, University of Pennsylvania (USA)", url: "https://www.wharton.upenn.edu" }
+            ],
+            // Law
+            "Law": [
+                { name: "Harvard Law School (USA)", url: "https://hls.harvard.edu" },
+                { name: "Yale Law School (USA)", url: "https://law.yale.edu" },
+                { name: "University of Oxford (UK)", url: "https://www.law.ox.ac.uk" },
+                { name: "University of Cambridge (UK)", url: "https://www.law.cam.ac.uk" },
+                { name: "National University of Singapore (Singapore)", url: "https://law.nus.edu.sg" },
+                { name: "Tsinghua University School of Law (China)", url: "https://www.law.tsinghua.edu.cn" },
+                { name: "Faculty of Law, University of Delhi (India)", url: "https://law.du.ac.in" },
+                { name: "Max Planck Institute for Comparative Public Law and International Law (Germany)", url: "https://www.mpicc.de/en" }
+            ],
+            // Psychology
+            "Psychology": [
+                { name: "Stanford University (USA)", url: "https://psychology.stanford.edu" },
+                { name: "Harvard University (USA)", url: "https://psychology.fas.harvard.edu" },
+                { name: "University of Cambridge (UK)", url: "https://www.psychol.cam.ac.uk" },
+                { name: "University of Oxford (UK)", url: "https://www.psych.ox.ac.uk" },
+                { name: "Peking University (China)", url: "https://psy.pku.edu.cn" },
+                { name: "Jawaharlal Nehru University (India)", url: "https://www.jnu.ac.in" },
+                { name: "Max Planck Institute for Human Cognitive and Brain Sciences (Germany)", url: "https://www.cbs.mpg.de" },
+                { name: "University of Toronto (Canada)", url: "https://psych.utoronto.ca" }
+            ],
+            // Data Science
+            "Data Science": [
+                { name: "UC Berkeley (USA)", url: "https://datascience.berkeley.edu" },
+                { name: "Carnegie Mellon University (USA)", url: "https://www.cmu.edu" },
+                { name: "University of Washington (USA)", url: "https://www.washington.edu" },
+                { name: "University of Oxford (UK)", url: "https://www.ox.ac.uk" },
+                { name: "National University of Singapore (Singapore)", url: "https://nus.edu.sg" },
+                { name: "IIT Madras (India)", url: "https://www.iitm.ac.in" },
+                { name: "ETH Zurich (Switzerland)", url: "https://ethz.ch" },
+                { name: "Tsinghua University (China)", url: "https://www.tsinghua.edu.cn" }
+            ],
+            // Artificial Intelligence
+            "Artificial Intelligence": [
+                { name: "MIT (USA)", url: "https://www.csail.mit.edu" },
+                { name: "Stanford University (USA)", url: "https://ai.stanford.edu" },
+                { name: "Carnegie Mellon University (USA)", url: "https://www.cs.cmu.edu" },
+                { name: "University of Edinburgh (UK)", url: "https://www.ed.ac.uk" },
+                { name: "Tsinghua University (China)", url: "https://www.tsinghua.edu.cn" },
+                { name: "IIT Kharagpur (India)", url: "https://www.iitkgp.ac.in" },
+                { name: "Technical University of Munich (Germany)", url: "https://www.tum.de" },
+                { name: "National University of Singapore (Singapore)", url: "https://nus.edu.sg" }
+            ],
+            // Cybersecurity
+            "Cybersecurity": [
+                { name: "Georgia Tech (USA)", url: "https://www.gatech.edu" },
+                { name: "University of Maryland (USA)", url: "https://www.umd.edu" },
+                { name: "Royal Holloway, University of London (UK)", url: "https://www.royalholloway.ac.uk" },
+                { name: "Technion - Israel Institute of Technology (Israel)", url: "https://www.technion.ac.il" },
+                { name: "IIT Delhi (India)", url: "https://www.iitd.ac.in" },
+                { name: "Tsinghua University (China)", url: "https://www.tsinghua.edu.cn" },
+                { name: "Ruhr University Bochum (Germany)", url: "https://www.ruhr-uni-bochum.de" },
+                { name: "National University of Singapore (Singapore)", url: "https://nus.edu.sg" }
+            ],
+            // Environmental Science
+            "Environmental Science": [
+                { name: "Stanford University (USA)", url: "https://stanford.edu" },
+                { name: "Yale School of Environment (USA)", url: "https://environment.yale.edu" },
+                { name: "University of Cambridge (UK)", url: "https://www.cam.ac.uk" },
+                { name: "ETH Zurich (Switzerland)", url: "https://ethz.ch" },
+                { name: "Tsinghua University (China)", url: "https://www.tsinghua.edu.cn" },
+                { name: "IISc Bangalore (India)", url: "https://iisc.ac.in" },
+                { name: "University of Freiburg (Germany)", url: "https://www.uni-freiburg.de" },
+                { name: "National University of Singapore (Singapore)", url: "https://nus.edu.sg" }
+            ],
+            // Neuroscience
+            "Neuroscience": [
+                { name: "Harvard University (USA)", url: "https://neuro.hms.harvard.edu" },
+                { name: "Stanford University (USA)", url: "https://neuroscience.stanford.edu" },
+                { name: "University of Cambridge (UK)", url: "https://www.neuroscience.cam.ac.uk" },
+                { name: "Max Planck Institute for Brain Research (Germany)", url: "https://www.mpg.de/en" },
+                { name: "Peking University (China)", url: "https://psy.pku.edu.cn" },
+                { name: "NCBS Bangalore (India)", url: "https://www.ncbs.res.in" },
+                { name: "University of Oxford (UK)", url: "https://www.neuroscience.ox.ac.uk" },
+                { name: "University of Toronto (Canada)", url: "https://neuroscience.utoronto.ca" }
+            ],
+            // Bioinformatics
+            "Bioinformatics": [
+                { name: "UC San Diego (USA)", url: "https://bioinformatics.ucsd.edu" },
+                { name: "Johns Hopkins University (USA)", url: "https://www.jhu.edu" },
+                { name: "University of Cambridge (UK)", url: "https://www.cam.ac.uk" },
+                { name: "ETH Zurich (Switzerland)", url: "https://ethz.ch" },
+                { name: "Tsinghua University (China)", url: "https://www.tsinghua.edu.cn" },
+                { name: "IIT Madras (India)", url: "https://www.iitm.ac.in" },
+                { name: "Technical University of Munich (Germany)", url: "https://www.tum.de" },
+                { name: "National University of Singapore (Singapore)", url: "https://nus.edu.sg" }
+            ],
+            // Biotechnology
+            "Biotechnology": [
+                { name: "MIT (USA)", url: "https://web.mit.edu" },
+                { name: "Stanford University (USA)", url: "https://stanford.edu" },
+                { name: "University of Cambridge (UK)", url: "https://www.cam.ac.uk" },
+                { name: "ETH Zurich (Switzerland)", url: "https://ethz.ch" },
+                { name: "Tsinghua University (China)", url: "https://www.tsinghua.edu.cn" },
+                { name: "IIT Delhi (India)", url: "https://www.iitd.ac.in" },
+                { name: "Technical University of Munich (Germany)", url: "https://www.tum.de" },
+                { name: "National University of Singapore (Singapore)", url: "https://nus.edu.sg" }
+            ],
+            // Nanotechnology
+            "Nanotechnology": [
+                { name: "MIT (USA)", url: "https://web.mit.edu" },
+                { name: "Stanford University (USA)", url: "https://stanford.edu" },
+                { name: "University of Cambridge (UK)", url: "https://www.cam.ac.uk" },
+                { name: "Max Planck Institute (Germany)", url: "https://www.mpg.de/en" },
+                { name: "Tsinghua University (China)", url: "https://www.tsinghua.edu.cn" },
+                { name: "IIT Bombay (India)", url: "https://www.iitb.ac.in" },
+                { name: "ETH Zurich (Switzerland)", url: "https://ethz.ch" },
+                { name: "National University of Singapore (Singapore)", url: "https://nus.edu.sg" }
+            ],
+            // Space Science
+            "Space Science": [
+                { name: "Caltech (USA)", url: "https://www.caltech.edu" },
+                { name: "MIT (USA)", url: "https://web.mit.edu" },
+                { name: "University of Cambridge (UK)", url: "https://www.cam.ac.uk" },
+                { name: "Max Planck Institute (Germany)", url: "https://www.mpg.de/en" },
+                { name: "Tsinghua University (China)", url: "https://www.tsinghua.edu.cn" },
+                { name: "ISRO (India)", url: "https://www.isro.gov.in" },
+                { name: "DLR (Germany)", url: "https://www.dlr.de" },
+                { name: "JAXA (Japan)", url: "https://global.jaxa.jp" }
+            ],
+            // Education
+            "Education": [
+                { name: "Harvard Graduate School of Education (USA)", url: "https://www.gse.harvard.edu" },
+                { name: "Stanford Graduate School of Education (USA)", url: "https://ed.stanford.edu" },
+                { name: "University of Cambridge (UK)", url: "https://www.educ.cam.ac.uk" },
+                { name: "University of Oxford (UK)", url: "https://www.education.ox.ac.uk" },
+                { name: "National Institute of Educational Planning and Administration (India)", url: "https://www.niepa.ac.in" },
+                { name: "Beijing Normal University (China)", url: "https://english.bnu.edu.cn" },
+                { name: "University of Tübingen (Germany)", url: "https://uni-tuebingen.de" },
+                { name: "Ontario Institute for Studies in Education, University of Toronto (Canada)", url: "https://www.oise.utoronto.ca" }
+            ],
+            // Economics
+            "Economics": [
+                { name: "Harvard University (USA)", url: "https://economics.harvard.edu" },
+                { name: "MIT (USA)", url: "https://economics.mit.edu" },
+                { name: "University of Chicago (USA)", url: "https://economics.uchicago.edu" },
+                { name: "London School of Economics (UK)", url: "https://www.lse.ac.uk" },
+                { name: "Peking University (China)", url: "https://english.eco.pku.edu.cn" },
+                { name: "Delhi School of Economics (India)", url: "https://www.dse.ac.in" },
+                { name: "Humboldt University of Berlin (Germany)", url: "https://www.hu-berlin.de" },
+                { name: "University of Toronto (Canada)", url: "https://www.economics.utoronto.ca" }
+            ],
+            // Political Science
+            "Political Science": [
+                { name: "Harvard University (USA)", url: "https://gov.harvard.edu" },
+                { name: "Stanford University (USA)", url: "https://politicalscience.stanford.edu" },
+                { name: "University of Oxford (UK)", url: "https://www.politics.ox.ac.uk" },
+                { name: "University of Cambridge (UK)", url: "https://www.polis.cam.ac.uk" },
+                { name: "Jawaharlal Nehru University (India)", url: "https://www.jnu.ac.in" },
+                { name: "Tsinghua University (China)", url: "https://www.tsinghua.edu.cn" },
+                { name: "Free University of Berlin (Germany)", url: "https://www.fu-berlin.de" },
+                { name: "University of Toronto (Canada)", url: "https://politics.utoronto.ca" }
+            ],
+            // Sociology
+            "Sociology": [
+                { name: "Harvard University (USA)", url: "https://sociology.fas.harvard.edu" },
+                { name: "University of Chicago (USA)", url: "https://sociology.uchicago.edu" },
+                { name: "University of Oxford (UK)", url: "https://www.sociology.ox.ac.uk" },
+                { name: "University of Cambridge (UK)", url: "https://www.soc.cam.ac.uk" },
+                { name: "Jawaharlal Nehru University (India)", url: "https://www.jnu.ac.in" },
+                { name: "Peking University (China)", url: "https://sociology.pku.edu.cn" },
+                { name: "Humboldt University of Berlin (Germany)", url: "https://www.hu-berlin.de" },
+                { name: "University of Toronto (Canada)", url: "https://sociology.utoronto.ca" }
+            ],
+            // Humanities
+            "Humanities": [
+                { name: "Harvard University (USA)", url: "https://humans.harvard.edu" },
+                { name: "University of Oxford (UK)", url: "https://www.ox.ac.uk" },
+                { name: "University of Cambridge (UK)", url: "https://www.cam.ac.uk" },
+                { name: "Sorbonne University (France)", url: "https://www.sorbonne-universite.fr" },
+                { name: "Jawaharlal Nehru University (India)", url: "https://www.jnu.ac.in" },
+                { name: "Peking University (China)", url: "https://english.pku.edu.cn" },
+                { name: "Humboldt University of Berlin (Germany)", url: "https://www.hu-berlin.de" },
+                { name: "University of Toronto (Canada)", url: "https://www.utoronto.ca" }
+            ],
+            // History
+            "History": [
+                { name: "Harvard University (USA)", url: "https://history.fas.harvard.edu" },
+                { name: "University of Oxford (UK)", url: "https://www.history.ox.ac.uk" },
+                { name: "University of Cambridge (UK)", url: "https://www.hist.cam.ac.uk" },
+                { name: "Sorbonne University (France)", url: "https://www.sorbonne-universite.fr" },
+                { name: "Jawaharlal Nehru University (India)", url: "https://www.jnu.ac.in" },
+                { name: "Peking University (China)", url: "https://english.hist.pku.edu.cn" },
+                { name: "Heidelberg University (Germany)", url: "https://www.uni-heidelberg.de" },
+                { name: "University of Toronto (Canada)", url: "https://history.utoronto.ca" }
+            ],
+            // Philosophy
+            "Philosophy": [
+                { name: "Harvard University (USA)", url: "https://philosophy.fas.harvard.edu" },
+                { name: "University of Oxford (UK)", url: "https://www.philosophy.ox.ac.uk" },
+                { name: "University of Cambridge (UK)", url: "https://www.phil.cam.ac.uk" },
+                { name: "Sorbonne University (France)", url: "https://www.sorbonne-universite.fr" },
+                { name: "Jawaharlal Nehru University (India)", url: "https://www.jnu.ac.in" },
+                { name: "Peking University (China)", url: "https://english.phil.pku.edu.cn" },
+                { name: "Ludwig Maximilian University of Munich (Germany)", url: "https://www.lmu.de" },
+                { name: "University of Toronto (Canada)", url: "https://philosophy.utoronto.ca" }
+            ],
+            // Literature
+            "Literature": [
+                { name: "Harvard University (USA)", url: "https://english.fas.harvard.edu" },
+                { name: "University of Oxford (UK)", url: "https://www.english.ox.ac.uk" },
+                { name: "University of Cambridge (UK)", url: "https://www.english.cam.ac.uk" },
+                { name: "Sorbonne University (France)", url: "https://www.sorbonne-universite.fr" },
+                { name: "Jawaharlal Nehru University (India)", url: "https://www.jnu.ac.in" },
+                { name: "Peking University (China)", url: "https://english.pku.edu.cn" },
+                { name: "Freie Universität Berlin (Germany)", url: "https://www.fu-berlin.de" },
+                { name: "University of Toronto (Canada)", url: "https://english.utoronto.ca" }
+            ],
+            // Linguistics
+            "Linguistics": [
+                { name: "MIT (USA)", url: "https://linguistics.mit.edu" },
+                { name: "Stanford University (USA)", url: "https://linguistics.stanford.edu" },
+                { name: "University of Cambridge (UK)", url: "https://www.ling.cam.ac.uk" },
+                { name: "University of Oxford (UK)", url: "https://www.ling-phil.ox.ac.uk" },
+                { name: "Jawaharlal Nehru University (India)", url: "https://www.jnu.ac.in" },
+                { name: "Peking University (China)", url: "https://english.pku.edu.cn" },
+                { name: "Humboldt University of Berlin (Germany)", url: "https://www.hu-berlin.de" },
+                { name: "University of Toronto (Canada)", url: "https://linguistics.utoronto.ca" }
+            ],
+            // Arts
+            "Arts": [
+                { name: "Rhode Island School of Design (USA)", url: "https://www.risd.edu" },
+                { name: "Royal College of Art (UK)", url: "https://www.rca.ac.uk" },
+                { name: "School of the Art Institute of Chicago (USA)", url: "https://www.saic.edu" },
+                { name: "Central Saint Martins, University of the Arts London (UK)", url: "https://www.arts.ac.uk" },
+                { name: "National Institute of Design (India)", url: "https://www.nid.edu" },
+                { name: "Tsinghua University Academy of Arts & Design (China)", url: "https://www.tsinghua.edu.cn" },
+                { name: "Hochschule für Gestaltung Karlsruhe (Germany)", url: "https://www.hfg-karlsruhe.de" },
+                { name: "Emily Carr University of Art + Design (Canada)", url: "https://ecuad.ca" }
+            ],
+            // Public Health
+            "Public Health": [
+                { name: "Harvard T.H. Chan School of Public Health (USA)", url: "https://www.hsph.harvard.edu" },
+                { name: "Johns Hopkins Bloomberg School of Public Health (USA)", url: "https://publichealth.jhu.edu" },
+                { name: "London School of Hygiene & Tropical Medicine (UK)", url: "https://www.lshtm.ac.uk" },
+                { name: "University of Oxford (UK)", url: "https://www.ox.ac.uk" },
+                { name: "Peking University Health Science Center (China)", url: "https://www.bjmu.edu.cn" },
+                { name: "All India Institute of Medical Sciences (India)", url: "https://www.aiims.edu" },
+                { name: "Charité - Universitätsmedizin Berlin (Germany)", url: "https://www.charite.de" },
+                { name: "University of Toronto Dalla Lana School of Public Health (Canada)", url: "https://dlsph.utoronto.ca" }
+            ],
+            // Agriculture
+            "Agriculture": [
+                { name: "University of California, Davis (USA)", url: "https://plantbio.ucdavis.edu" },
+                { name: "Wageningen University & Research (Netherlands)", url: "https://www.wur.nl" },
+                { name: "University of Florida (USA)", url: "https://ag.ufl.edu" },
+                { name: "University of Reading (UK)", url: "https://www.reading.ac.uk" },
+                { name: "Indian Agricultural Research Institute (India)", url: "https://www.iari.res.in" },
+                { name: "China Agricultural University (China)", url: "https://www.cau.edu.cn" },
+                { name: "University of Hohenheim (Germany)", url: "https://uni-hohenheim.de" },
+                { name: "University of Guelph (Canada)", url: "https://www.uoguelph.ca" }
+            ],
+            // Veterinary Science
+            "Veterinary Science": [
+                { name: "Royal Veterinary College, University of London (UK)", url: "https://www.rvc.ac.uk" },
+                { name: "University of California, Davis (USA)", url: "https://www.vetmed.ucdavis.edu" },
+                { name: "University of Edinburgh (UK)", url: "https://www.ed.ac.uk" },
+                { name: "Cornell University (USA)", url: "https://www.vet.cornell.edu" },
+                { name: "Indian Veterinary Research Institute (India)", url: "https://ivri.nic.in" },
+                { name: "China Agricultural University (China)", url: "https://www.cau.edu.cn" },
+                { name: "Free University of Berlin (Germany)", url: "https://www.fu-berlin.de" },
+                { name: "University of Guelph (Canada)", url: "https://www.uoguelph.ca" }
+            ],
+            // Marine Science
+            "Marine Science": [
+                { name: "Scripps Institution of Oceanography, UC San Diego (USA)", url: "https://scripps.ucsd.edu" },
+                { name: "Woods Hole Oceanographic Institution (USA)", url: "https://www.whoi.edu" },
+                { name: "University of Southampton (UK)", url: "https://www.southampton.ac.uk" },
+                { name: "Alfred Wegener Institute (Germany)", url: "https://www.awi.de" },
+                { name: "National Institute of Oceanography (India)", url: "https://nio.org" },
+                { name: "Second Institute of Oceanography, MNR (China)", url: "http://www.sio.org.cn" },
+                { name: "University of Bremen (Germany)", url: "https://www.uni-bremen.de" },
+                { name: "Dalhousie University (Canada)", url: "https://www.dal.ca" }
+            ],
+            // Statistics
+            "Statistics": [
+                { name: "Stanford University (USA)", url: "https://statistics.stanford.edu" },
+                { name: "University of California, Berkeley (USA)", url: "https://statistics.berkeley.edu" },
+                { name: "University of Cambridge (UK)", url: "https://www.statslab.cam.ac.uk" },
+                { name: "University of Oxford (UK)", url: "https://www.stats.ox.ac.uk" },
+                { name: "Indian Statistical Institute (India)", url: "https://www.isical.ac.in" },
+                { name: "Peking University (China)", url: "https://english.math.pku.edu.cn" },
+                { name: "Humboldt University of Berlin (Germany)", url: "https://www.hu-berlin.de" },
+                { name: "University of Toronto (Canada)", url: "https://www.statistics.utoronto.ca" }
+            ],
+            // Robotics
+            "Robotics": [
+                { name: "Carnegie Mellon University (USA)", url: "https://www.ri.cmu.edu" },
+                { name: "MIT (USA)", url: "https://meche.mit.edu" },
+                { name: "Stanford University (USA)", url: "https://stanford.edu" },
+                { name: "ETH Zurich (Switzerland)", url: "https://ethz.ch" },
+                { name: "Tsinghua University (China)", url: "https://www.tsinghua.edu.cn" },
+                { name: "IIT Madras (India)", url: "https://www.iitm.ac.in" },
+                { name: "Technical University of Munich (Germany)", url: "https://www.tum.de" },
+                { name: "University of Toronto (Canada)", url: "https://www.utoronto.ca" }
+            ],
+            // Genetics
+            "Genetics": [
+                { name: "Harvard Medical School (USA)", url: "https://hms.harvard.edu" },
+                { name: "University of Cambridge (UK)", url: "https://www.genetics.cam.ac.uk" },
+                { name: "Stanford University (USA)", url: "https://stanford.edu" },
+                { name: "University of Oxford (UK)", url: "https://www.well.ox.ac.uk" },
+                { name: "Peking University (China)", url: "https://life.pku.edu.cn" },
+                { name: "Jawaharlal Nehru University (India)", url: "https://www.jnu.ac.in" },
+                { name: "Max Planck Institute for Molecular Genetics (Germany)", url: "https://www.molgen.mpg.de" },
+                { name: "University of Toronto (Canada)", url: "https://www.utoronto.ca" }
+            ],
+            // Archaeology
+            "Archaeology": [
+                { name: "University of Cambridge (UK)", url: "https://www.arch.cam.ac.uk" },
+                { name: "University of Oxford (UK)", url: "https://www.arch.ox.ac.uk" },
+                { name: "Harvard University (USA)", url: "https://anthropology.fas.harvard.edu" },
+                { name: "University of California, Berkeley (USA)", url: "https://archaeology.berkeley.edu" },
+                { name: "Jawaharlal Nehru University (India)", url: "https://www.jnu.ac.in" },
+                { name: "Peking University (China)", url: "https://archaeology.pku.edu.cn" },
+                { name: "Heidelberg University (Germany)", url: "https://www.uni-heidelberg.de" },
+                { name: "University of Toronto (Canada)", url: "https://anthropology.utoronto.ca" }
+            ],
+            // Religious Studies
+            "Religious Studies": [
+                { name: "Harvard Divinity School (USA)", url: "https://hds.harvard.edu" },
+                { name: "University of Oxford (UK)", url: "https://www.theology.ox.ac.uk" },
+                { name: "University of Cambridge (UK)", url: "https://www.divinity.cam.ac.uk" },
+                { name: "Sorbonne University (France)", url: "https://www.sorbonne-universite.fr" },
+                { name: "Jawaharlal Nehru University (India)", url: "https://www.jnu.ac.in" },
+                { name: "Peking University (China)", url: "https://english.pku.edu.cn" },
+                { name: "Ludwig Maximilian University of Munich (Germany)", url: "https://www.lmu.de" },
+                { name: "University of Toronto (Canada)", url: "https://religion.utoronto.ca" }
+            ],
+            // Ethics
+            "Ethics": [
+                { name: "Princeton University (USA)", url: "https://philosophy.princeton.edu" },
+                { name: "University of Oxford (UK)", url: "https://www.practicalethics.ox.ac.uk" },
+                { name: "Harvard University (USA)", url: "https://philosophy.fas.harvard.edu" },
+                { name: "University of Cambridge (UK)", url: "https://www.phil.cam.ac.uk" },
+                { name: "Jawaharlal Nehru University (India)", url: "https://www.jnu.ac.in" },
+                { name: "Peking University (China)", url: "https://english.phil.pku.edu.cn" },
+                { name: "Humboldt University of Berlin (Germany)", url: "https://www.hu-berlin.de" },
+                { name: "University of Toronto (Canada)", url: "https://philosophy.utoronto.ca" }
             ]
         };
 
         // DOM Elements
-        const domainSelector = document.getElementById('domain-selector');
+        const domainSelect = document.getElementById('domain-select');
         const roleSearchInput = document.getElementById('role-search');
         const rolesList = document.getElementById('roles-list');
         const currentSkillsInput = document.getElementById('current-skills');
@@ -1448,27 +1946,18 @@
         const resultsContainer = document.getElementById('results-container');
         const loadingElement = document.getElementById('loading');
         const currentSkillsDisplay = document.getElementById('current-skills-display');
-
+        
         // Initialize domain selector
         function initializeDomains() {
-            domainSelector.innerHTML = '';
             domains.forEach(domain => {
-                const btn = document.createElement('button');
-                btn.className = 'domain-btn';
-                btn.textContent = domain;
-                btn.addEventListener('click', function() {
-                    // Remove active class from all buttons
-                    document.querySelectorAll('.domain-btn').forEach(b => b.classList.remove('active'));
-                    // Add active class to clicked button
-                    this.classList.add('active');
-                    // Filter roles based on domain
-                    filterRolesByDomain(domain);
-                });
-                domainSelector.appendChild(btn);
+                const option = document.createElement('option');
+                option.value = domain;
+                option.textContent = domain;
+                domainSelect.appendChild(option);
             });
         }
-
-        // Filter roles by domain - Improved matching logic
+        
+        // Filter roles by domain
         function filterRolesByDomain(domain) {
             const roles = Object.keys(roleRequirements);
             const domainLower = domain.toLowerCase();
@@ -1476,35 +1965,41 @@
                 const roleLower = role.toLowerCase();
                 // Direct match in role name
                 if (roleLower.includes(domainLower)) return true;
-                // Match if domain is part of the role's first word (e.g., "Computer" matches "Software Engineer")
+                // Match if domain is part of the role's first word
                 const roleFirstWord = roleLower.split(' ')[0];
                 if (domainLower.includes(roleFirstWord)) return true;
                 // Fuzzy match: check if domain words are present in role
                 const domainWords = domainLower.split(' ');
                 return domainWords.some(word => roleLower.includes(word));
             });
-
-            // If no specific matches, show all roles (or a large default set)
-            const displayRoles = filteredRoles.length > 0 ? filteredRoles.slice(0, 100) : roles.slice(0, 100); // Limit to 100 for performance
+            // If no specific matches, show all roles
+            const displayRoles = filteredRoles.length > 0 ? filteredRoles.slice(0, 100) : roles.slice(0, 100);
             updateRolesList(displayRoles);
         }
-
+        
         // Update roles list
         function updateRolesList(roles) {
             rolesList.innerHTML = '';
+            if (roles.length === 0) {
+                rolesList.classList.remove('show');
+                return;
+            }
+            
             roles.forEach(role => {
                 const div = document.createElement('div');
                 div.className = 'role-item';
                 div.textContent = role;
                 div.addEventListener('click', function() {
                     roleSearchInput.value = role;
-                    rolesList.innerHTML = ''; // Clear list on selection
+                    rolesList.classList.remove('show');
                 });
                 rolesList.appendChild(div);
             });
+            
+            rolesList.classList.add('show');
         }
-
-        // Search roles - Improved search with debouncing
+        
+        // Search roles with debouncing
         let searchTimeout;
         roleSearchInput.addEventListener('input', function() {
             clearTimeout(searchTimeout);
@@ -1514,13 +2009,13 @@
                     const matchingRoles = Object.keys(roleRequirements).filter(role =>
                         role.toLowerCase().includes(searchTerm)
                     );
-                    updateRolesList(matchingRoles.slice(0, 50)); // Limit results for performance
-                }, 300); // Debounce delay
+                    updateRolesList(matchingRoles.slice(0, 50));
+                }, 300);
             } else {
-                rolesList.innerHTML = '';
+                rolesList.classList.remove('show');
             }
         });
-
+        
         // Display current skills as tags
         let skillsTimeout;
         currentSkillsInput.addEventListener('input', function() {
@@ -1528,54 +2023,64 @@
             skillsTimeout = setTimeout(() => {
                 const skills = this.value.split(',').map(skill => skill.trim()).filter(skill => skill);
                 displaySkills(skills, currentSkillsDisplay);
-            }, 300); // Debounce delay
+            }, 300);
         });
-
+        
         function displaySkills(skills, container) {
             container.innerHTML = '';
             skills.forEach(skill => {
                 const tag = document.createElement('span');
                 tag.className = 'skill-tag';
-                tag.textContent = skill;
+                tag.innerHTML = `<i class="fas fa-check-circle"></i> ${skill}`;
                 container.appendChild(tag);
             });
         }
-
+        
         // Example data
         exampleBtn.addEventListener('click', function() {
+            domainSelect.value = "Natural Sciences";
             currentSkillsInput.value = "Research Methodology, Data Analysis, Scientific Writing, Critical Thinking, Statistical Analysis";
             roleSearchInput.value = "Research Scientist";
             displaySkills(["Research Methodology", "Data Analysis", "Scientific Writing", "Critical Thinking", "Statistical Analysis"], currentSkillsDisplay);
-            rolesList.innerHTML = '';
-            // Clear previous results
-            resultsContainer.innerHTML = '<div class="empty-state"><div>📊</div><p>Select a domain, choose a role, enter your skills, then click "Analyze Skill Gap"</p></div>';
+            rolesList.classList.remove('show');
+            resultsContainer.innerHTML = '<div class="empty-state"><i class="fas fa-search"></i><p>Select a domain, choose a role, enter your skills, then click "Analyze Skill Gap"</p></div>';
         });
-
+        
         // Analyze skill gap
         analyzeBtn.addEventListener('click', function() {
+            const selectedDomain = domainSelect.value;
             const userSkills = currentSkillsInput.value.split(',').map(skill => skill.trim().toLowerCase()).filter(skill => skill);
             const targetRole = roleSearchInput.value.trim();
+            
+            if (!selectedDomain) {
+                alert("Please select a domain");
+                return;
+            }
+            
             if (!targetRole) {
                 alert("Please select or enter a target job role");
                 return;
             }
+            
             if (userSkills.length === 0) {
                 alert("Please enter your current skills");
                 return;
             }
+            
             // Show loading
             loadingElement.style.display = 'block';
             resultsContainer.innerHTML = '';
-            rolesList.innerHTML = '';
+            rolesList.classList.remove('show');
+            
             // Simulate processing time
             setTimeout(() => {
-                analyzeSkills(userSkills, targetRole);
+                analyzeSkills(userSkills, targetRole, selectedDomain);
                 loadingElement.style.display = 'none';
             }, 1500);
         });
-
-        function analyzeSkills(userSkills, targetRole) {
-            // Get required skills for the role - Improved matching
+        
+        function analyzeSkills(userSkills, targetRole, selectedDomain) {
+            // Get required skills for the role
             let requiredSkills = [];
             if (roleRequirements[targetRole]) {
                 requiredSkills = roleRequirements[targetRole];
@@ -1594,57 +2099,150 @@
                     }
                 }
             }
-
+            
             if (requiredSkills.length === 0) {
                 resultsContainer.innerHTML = `
                     <div class="empty-state">
-                        <div>❓</div>
+                        <i class="fas fa-question-circle"></i>
                         <p>No skill requirements found for "${targetRole}". Please try another role.</p>
                     </div>
                 `;
                 return;
             }
-
+            
             // Convert user skills to lowercase for comparison
             const userSkillsLower = userSkills.map(skill => skill.toLowerCase());
-            // Find matching and missing skills - Improved matching logic
+            
+            // Find matching and missing skills
             const hasSkills = requiredSkills.filter(skill => {
                 const skillLower = skill.toLowerCase();
                 return userSkillsLower.some(userSkill =>
-                    skillLower === userSkill || // Exact match
-                    skillLower.includes(userSkill) || // User skill is part of required skill
-                    userSkill.includes(skillLower) // Required skill is part of user skill
+                    skillLower === userSkill || 
+                    skillLower.includes(userSkill) || 
+                    userSkill.includes(skillLower)
                 );
             });
+            
             const missingSkills = requiredSkills.filter(skill => !hasSkills.includes(skill));
-
+            
+            // Determine relevant domains for the target role
+            const relevantDomainsForRole = [];
+            for (const domain of domains) {
+                if (targetRole.toLowerCase().includes(domain.toLowerCase())) {
+                    relevantDomainsForRole.push(domain);
+                }
+            }
+            
+            // If no direct match, try to infer from skills
+            if (relevantDomainsForRole.length === 0) {
+                const domainSkillCount = {};
+                for (const skill of requiredSkills) {
+                    for (const domain of domains) {
+                        const domainFirstWord = domain.toLowerCase().split(' ')[0];
+                        if (skill.toLowerCase().includes(domainFirstWord) && 
+                            !domainSkillCount[domain]) {
+                            domainSkillCount[domain] = 0;
+                        }
+                        if (skill.toLowerCase().includes(domainFirstWord)) {
+                            domainSkillCount[domain]++;
+                        }
+                    }
+                }
+                
+                const sortedDomains = Object.entries(domainSkillCount)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 3)
+                    .map(entry => entry[0]);
+                    
+                relevantDomainsForRole.push(...sortedDomains);
+            }
+            
+            // Ensure we have at least some domains
+            if (relevantDomainsForRole.length === 0) {
+                relevantDomainsForRole.push(selectedDomain);
+            }
+            
             // Generate results HTML
             let resultsHTML = `
                 <div class="result-category has-skills">
-                    <h3 class="category-title">✅ Skills You Already Have</h3>
+                    <h3 class="category-title"><i class="fas fa-check-circle"></i> Skills You Already Have</h3>
                     <div class="skill-list">
-                        ${hasSkills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
+                        ${hasSkills.map(skill => `<span class="skill-tag"><i class="fas fa-check"></i> ${skill}</span>`).join('')}
                     </div>
                 </div>
                 <div class="result-category missing-skills">
-                    <h3 class="category-title">❌ Skills You Need to Develop</h3>
+                    <h3 class="category-title"><i class="fas fa-exclamation-circle"></i> Skills You Need to Develop</h3>
                     <div class="skill-list">
-                        ${missingSkills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
+                        ${missingSkills.map(skill => `<span class="skill-tag"><i class="fas fa-times"></i> ${skill}</span>`).join('')}
                     </div>
                 </div>
                 <div class="result-category suggested-resources">
-                    <h3 class="category-title">📚 Suggested Learning Resources</h3>
+                    <h3 class="category-title"><i class="fas fa-graduation-cap"></i> Relevant Educational & Research Domains</h3>
+                    <div class="skill-list">
+                        ${relevantDomainsForRole.map(domain => `<span class="skill-tag"><i class="fas fa-book"></i> ${domain}</span>`).join('')}
+                    </div>
+                </div>
+                <div class="result-category suggested-resources">
+                    <h3 class="category-title"><i class="fas fa-book-open"></i> Suggested Learning Resources</h3>
                     <ul class="resource-list">
                         ${missingSkills.slice(0, 5).map(skill => {
                             const resources = learningResources[skill] || [
-                                { name: `Learning Path for ${skill} - Coursera`, url: "#" },
-                                { name: `${skill} Fundamentals - Udemy`, url: "#" }
+                                { name: `Learning Path for ${skill} - Coursera`, url: "https://www.coursera.org" },
+                                { name: `${skill} Fundamentals - Udemy`, url: "https://www.udemy.com" }
                             ];
                             return `
                                 <li class="resource-item">
                                     <strong>${skill}:</strong>
                                     <ul>
-                                        ${resources.map(res => `<li><a href="${res.url}" target="_blank">${res.name}</a></li>`).join('')}
+                                        ${resources.map(res => `<li><a href="${res.url}" target="_blank"><i class="fas fa-external-link-alt"></i> ${res.name}</a></li>`).join('')}
+                                    </ul>
+                                </li>
+                            `;
+                        }).join('')}
+                    </ul>
+                </div>
+                <div class="result-category suggested-resources">
+                    <h3 class="category-title"><i class="fas fa-university"></i> Premier Institutions Worldwide</h3>
+                    <ul class="resource-list">
+                        ${missingSkills.slice(0, 5).map(skill => {
+                            // Find relevant domains for the skill
+                            const relevantDomains = [];
+                            for (const domain of domains) {
+                                const domainFirstWord = domain.toLowerCase().split(' ')[0];
+                                if (skill.toLowerCase().includes(domainFirstWord) && !relevantDomains.includes(domain)) {
+                                    relevantDomains.push(domain);
+                                }
+                            }
+                            
+                            // If no specific domain found from skill name, use the role's domains
+                            if (relevantDomains.length === 0) {
+                                relevantDomains.push(...relevantDomainsForRole);
+                            }
+                            
+                            // Get institutions for each domain
+                            const institutions = [];
+                            relevantDomains.forEach(domain => {
+                                if (premierInstitutions[domain]) {
+                                    institutions.push(...premierInstitutions[domain]);
+                                }
+                            });
+                            
+                            // Limit to 3 unique institutions
+                            const uniqueInstitutions = [];
+                            const institutionNames = new Set();
+                            for (const inst of institutions) {
+                                if (!institutionNames.has(inst.name)) {
+                                    uniqueInstitutions.push(inst);
+                                    institutionNames.add(inst.name);
+                                    if (uniqueInstitutions.length >= 3) break;
+                                }
+                            }
+                            
+                            return `
+                                <li class="resource-item">
+                                    <strong>${skill}:</strong>
+                                    <ul>
+                                        ${uniqueInstitutions.map(inst => `<li><a href="${inst.url}" target="_blank"><i class="fas fa-external-link-alt"></i> ${inst.name}</a></li>`).join('')}
                                     </ul>
                                 </li>
                             `;
@@ -1653,16 +2251,17 @@
                 </div>
                 <div class="btn-group">
                     <button class="btn" onclick="exportReport('${targetRole}', ${JSON.stringify(hasSkills)}, ${JSON.stringify(missingSkills)})">
-                        📥 Export Report (JSON)
+                        <i class="fas fa-download"></i> Export Report (JSON)
                     </button>
                     <button class="btn btn-secondary" onclick="exportTextReport('${targetRole}', ${JSON.stringify(hasSkills)}, ${JSON.stringify(missingSkills)})">
-                        📄 Export Report (Text)
+                        <i class="fas fa-file-alt"></i> Export Report (Text)
                     </button>
                 </div>
             `;
+            
             resultsContainer.innerHTML = resultsHTML;
         }
-
+        
         // Export functions
         function exportReport(targetRole, hasSkills, missingSkills) {
             const report = {
@@ -1681,6 +2280,7 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }
+        
         function exportTextReport(targetRole, hasSkills, missingSkills) {
             const report = `SKILL GAP ANALYSIS REPORT
 ========================
@@ -1690,14 +2290,6 @@ SKILLS YOU ALREADY HAVE:
 ${hasSkills.map(skill => `- ${skill}`).join('\n')}
 SKILLS YOU NEED TO DEVELOP:
 ${missingSkills.map(skill => `- ${skill}`).join('\n')}
-RECOMMENDED LEARNING RESOURCES:
-${missingSkills.slice(0, 5).map(skill => {
-    const resources = learningResources[skill] || [
-        { name: `Learning Path for ${skill} - Coursera`, url: "#" },
-        { name: `${skill} Fundamentals - Udemy`, url: "#" }
-    ];
-    return `\n${skill}:\n${resources.map(res => `  - ${res.name}`).join('\n')}`;
-}).join('')}
 ---
 Report generated by Universal Skill Gap Visualizer
 `;
@@ -1711,11 +2303,10 @@ Report generated by Universal Skill Gap Visualizer
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }
-
+        
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
             initializeDomains();
-            // Show a limited set of roles initially to improve load time
             const initialRoles = Object.keys(roleRequirements).slice(0, 100);
             updateRolesList(initialRoles);
         });
