@@ -109,10 +109,6 @@ To add new roles or domains:
 - Edge 79+
 - Mobile browsers (iOS Safari, Android Chrome)
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
